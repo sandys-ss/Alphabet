@@ -6,6 +6,7 @@
 package com.devproject.alphabet;
 
 import com.devproject.form.Main;
+import com.devproject.form.TesFrame;
 
 /**
  *
@@ -18,8 +19,10 @@ public class Alphabet {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        Main FormUtama = new Main();
-        FormUtama.setVisible(true);
+        //Main FormUtama = new Main();
+        //FormUtama.setVisible(true);
+        TesFrame Testing = new TesFrame();
+        Testing.setVisible(true);
     }
     
 }

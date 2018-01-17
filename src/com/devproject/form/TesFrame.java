@@ -27,7 +27,10 @@ public class TesFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        pMaster1 = new com.devproject.form.pMaster();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().add(pMaster1, java.awt.BorderLayout.CENTER);
 
         setSize(new java.awt.Dimension(1300, 700));
         setLocationRelativeTo(null);
@@ -69,5 +72,6 @@ public class TesFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private com.devproject.form.pMaster pMaster1;
     // End of variables declaration//GEN-END:variables
 }
