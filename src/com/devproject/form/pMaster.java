@@ -30,6 +30,7 @@ public class pMaster extends javax.swing.JPanel {
         panelBackground1 = new com.devproject.component.PanelBackground();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        panelTransparan1 = new com.devproject.component.PanelTransparan();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -48,7 +49,8 @@ public class pMaster extends javax.swing.JPanel {
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        panelBackground1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, 1300, -1));
+        panelBackground1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 1340, 460));
+        panelBackground1.add(panelTransparan1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 480, 1340, 200));
 
         add(panelBackground1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
@@ -58,5 +60,6 @@ public class pMaster extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private com.devproject.component.PanelBackground panelBackground1;
+    private com.devproject.component.PanelTransparan panelTransparan1;
     // End of variables declaration//GEN-END:variables
 }

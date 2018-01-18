@@ -5,8 +5,11 @@
  */
 package com.devproject.form;
 
+import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  *
@@ -19,10 +22,29 @@ public class Main extends javax.swing.JFrame {
      */
     public Main() {
         initComponents();
+        card();
+        aksi_tombol();
+    }
+    
+    private void card () {
+        pCard.add(pMain, "panelutama");
+        pCard.add(pMaster, "panelmaster");
+        CardLayout c1 = (CardLayout)pCard.getLayout();
+        c1.show(pCard, "panelutama");        
         
-        //this.setExtendedState(Main.MAXIMIZED_BOTH);
-        
-        
+    }
+    
+    private void aksi_tombol () {
+        pMain.addActionListenerMaster(new Aksi_menuUtama_master());
+    }
+    
+    class Aksi_menuUtama_master implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            CardLayout c1 = (CardLayout)pCard.getLayout();
+            c1.show(pCard, "panelmaster");            
+        }
     }
 
     /**
@@ -35,11 +57,19 @@ public class Main extends javax.swing.JFrame {
     private void initComponents() {
 
         pCard = new javax.swing.JPanel();
+        pMaster = new com.devproject.form.pMaster();
+        pMain = new com.devproject.form.pMain();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
+
+        pCard.setLayout(new java.awt.CardLayout());
+        pCard.add(pMaster, "card3");
+        pCard.add(pMain, "card2");
+
         getContentPane().add(pCard, java.awt.BorderLayout.CENTER);
 
-        setSize(new java.awt.Dimension(1300, 700));
+        setSize(new java.awt.Dimension(1366, 728));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -81,5 +111,7 @@ public class Main extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel pCard;
+    private com.devproject.form.pMain pMain;
+    private com.devproject.form.pMaster pMaster;
     // End of variables declaration//GEN-END:variables
 }
