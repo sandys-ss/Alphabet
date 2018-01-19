@@ -5,11 +5,19 @@
  */
 package com.devproject.form;
 
+import com.devproject.conn.Koneksi;
 import java.awt.CardLayout;
-import java.awt.Dimension;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+import org.apache.poi.ss.usermodel.Row;
 
 /**
  *
@@ -20,6 +28,8 @@ public class Main extends javax.swing.JFrame {
     /**
      * Creates new form Main
      */
+    Connection connection;
+    
     public Main() {
         initComponents();
         card();
@@ -35,16 +45,26 @@ public class Main extends javax.swing.JFrame {
     }
     
     private void aksi_tombol () {
+        //pMain Action
         pMain.addActionListenerMaster(new Aksi_menuUtama_master());
+        
+        //pMaster Action
+        pMaster.addActionListenerImport(new Aksi_import());
     }
     
     class Aksi_menuUtama_master implements ActionListener {
-
         @Override
         public void actionPerformed(ActionEvent ae) {
             CardLayout c1 = (CardLayout)pCard.getLayout();
             c1.show(pCard, "panelmaster");            
         }
+    }
+    
+    class Aksi_import implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+      
+        }    
     }
 
     /**
