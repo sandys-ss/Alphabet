@@ -28,8 +28,12 @@ public class pMaster extends javax.swing.JPanel {
         isitabel();
     }
     
-    public void addActionListenerImport (ActionListener l) {
+    public void addActionListenerMasterImport (ActionListener l) {
         btnimport.addActionListener(l);
+    }
+    
+    public void addActionListenerMasterback (ActionListener l) {
+        btnback.addActionListener(l);
     }
     
     public void isitabel () {

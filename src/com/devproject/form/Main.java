@@ -5,19 +5,20 @@
  */
 package com.devproject.form;
 
-import com.devproject.conn.Koneksi;
 import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.poifs.filesystem.POIFSFileSystem;
-import org.apache.poi.ss.usermodel.Row;
+import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  *
@@ -28,7 +29,7 @@ public class Main extends javax.swing.JFrame {
     /**
      * Creates new form Main
      */
-    Connection connection;
+    private static Connection connection;
     
     public Main() {
         initComponents();
@@ -39,6 +40,8 @@ public class Main extends javax.swing.JFrame {
     private void card () {
         pCard.add(pMain, "panelutama");
         pCard.add(pMaster, "panelmaster");
+        pCard.add(pMdetail, "panelmdetail");
+        
         CardLayout c1 = (CardLayout)pCard.getLayout();
         c1.show(pCard, "panelutama");        
         
@@ -49,22 +52,70 @@ public class Main extends javax.swing.JFrame {
         pMain.addActionListenerMaster(new Aksi_menuUtama_master());
         
         //pMaster Action
-        pMaster.addActionListenerImport(new Aksi_import());
+        pMaster.addActionListenerMasterImport(new Aksi_masterimport());
+        pMaster.addActionListenerMasterback(new Aksi_masterback());
+        
     }
     
     class Aksi_menuUtama_master implements ActionListener {
+
         @Override
         public void actionPerformed(ActionEvent ae) {
-            CardLayout c1 = (CardLayout)pCard.getLayout();
-            c1.show(pCard, "panelmaster");            
+            CardLayout c1 = (CardLayout) pCard.getLayout();
+            c1.show(pCard, "panelmaster");
         }
     }
     
-    class Aksi_import implements ActionListener {
+    class Aksi_masterimport implements ActionListener {
+
         @Override
         public void actionPerformed(ActionEvent ae) {
-      
-        }    
+            try {
+                readXLSXFile();
+            } catch (IOException ex) {
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
+    class Aksi_masterback implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            CardLayout c1 = (CardLayout) pCard.getLayout();
+            c1.show(pCard, "panelutama");
+        }
+    }
+       
+    public static void readXLSXFile() throws IOException {
+        InputStream ExcelFileToRead = new FileInputStream("D:/Test.xlsx");
+        XSSFWorkbook wb = new XSSFWorkbook(ExcelFileToRead);
+
+        XSSFWorkbook test = new XSSFWorkbook();
+
+        XSSFSheet sheet = wb.getSheetAt(0);
+        XSSFRow row;
+        XSSFCell cell;
+
+        Iterator rows = sheet.rowIterator();
+
+        while (rows.hasNext()) {
+            row = (XSSFRow) rows.next();
+            Iterator cells = row.cellIterator();
+            while (cells.hasNext()) {
+                cell = (XSSFCell) cells.next();
+
+                if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING) {
+                    System.out.print(cell.getStringCellValue() + " ");
+                } else if (cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC) {
+                    System.out.print(cell.getNumericCellValue() + " ");
+                } else {
+                    //U Can Handel Boolean, Formula, Errors
+                }
+            }
+            System.out.println();
+        }
+
     }
 
     /**
@@ -79,6 +130,7 @@ public class Main extends javax.swing.JFrame {
         pCard = new javax.swing.JPanel();
         pMaster = new com.devproject.form.pMaster();
         pMain = new com.devproject.form.pMain();
+        pMdetail = new com.devproject.form.pMdetail();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -86,6 +138,7 @@ public class Main extends javax.swing.JFrame {
         pCard.setLayout(new java.awt.CardLayout());
         pCard.add(pMaster, "card3");
         pCard.add(pMain, "card2");
+        pCard.add(pMdetail, "card4");
 
         getContentPane().add(pCard, java.awt.BorderLayout.CENTER);
 
@@ -133,5 +186,6 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JPanel pCard;
     private com.devproject.form.pMain pMain;
     private com.devproject.form.pMaster pMaster;
+    private com.devproject.form.pMdetail pMdetail;
     // End of variables declaration//GEN-END:variables
 }
