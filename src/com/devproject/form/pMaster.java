@@ -7,9 +7,11 @@ package com.devproject.form;
 
 import com.devproject.conn.Koneksi;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -34,6 +36,14 @@ public class pMaster extends javax.swing.JPanel {
     
     public void addActionListenerMasterback (ActionListener l) {
         btnback.addActionListener(l);
+    }
+    
+     public void addActionListenerMasterTabel (MouseListener l) {
+         tabelMaster.addMouseListener(l);
+     }
+
+    public JTable getTabelMaster() {
+        return tabelMaster;
     }
     
     public void isitabel () {

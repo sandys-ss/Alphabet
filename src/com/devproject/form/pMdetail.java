@@ -6,6 +6,7 @@
 package com.devproject.form;
 
 import java.sql.Connection;
+import javax.swing.JTextField;
 
 /**
  *
@@ -21,6 +22,12 @@ public class pMdetail extends javax.swing.JPanel {
     public pMdetail() {
         initComponents();
     }
+
+    public void setTxtpartnumber(String partnumber) {
+        this.txtpartnumber = txtpartnumber;
+    }
+
+    
     
     
 

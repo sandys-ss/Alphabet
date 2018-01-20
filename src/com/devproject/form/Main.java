@@ -8,6 +8,8 @@ package com.devproject.form;
 import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -54,6 +56,7 @@ public class Main extends javax.swing.JFrame {
         //pMaster Action
         pMaster.addActionListenerMasterImport(new Aksi_masterimport());
         pMaster.addActionListenerMasterback(new Aksi_masterback());
+        pMaster.addActionListenerMasterTabel(new Aksi_mastetabel());
         
     }
     
@@ -86,6 +89,41 @@ public class Main extends javax.swing.JFrame {
             c1.show(pCard, "panelutama");
         }
     }
+    
+    class Aksi_mastetabel implements MouseListener {
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            int x = e.getClickCount();
+            if (x == 2) {
+                //System.out.println("Klik okke. saya part detail");
+                CardLayout c1 = (CardLayout) pCard.getLayout();
+                c1.show(pCard, "panelmdetail");
+                isipartdetail();
+            }
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+            
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+            
+        }
+
+    }
        
     public static void readXLSXFile() throws IOException {
         InputStream ExcelFileToRead = new FileInputStream("D:/Test.xlsx");
@@ -116,6 +154,24 @@ public class Main extends javax.swing.JFrame {
             System.out.println();
         }
 
+    }
+    
+    private void isipartdetail () {
+        int xrow = pMaster.getTabelMaster().getSelectedRow();
+        String partnumber = (String) pMaster.getTabelMaster().getValueAt(xrow, 0);
+        String partname = (String) pMaster.getTabelMaster().getValueAt(xrow, 1);
+        String location = (String) pMaster.getTabelMaster().getValueAt(xrow, 2);
+        String onhand = (String) pMaster.getTabelMaster().getValueAt(xrow, 3);
+        String landedcost = (String) pMaster.getTabelMaster().getValueAt(xrow, 4);
+        String pricelist = (String) pMaster.getTabelMaster().getValueAt(xrow, 5);
+        
+        pMdetail.setTxtpartnumber(partnumber);
+        //txtnopart.setText(nopart);
+        //txtnamapart.setText(namapart);
+        //cmbType.setSelectedItem(type);
+        //txtstock.setText(stock);
+        //txthargabeli.setText(hargabeli);
+        //txthargajual.setText(hargajual);
     }
 
     /**
