@@ -5,6 +5,8 @@
  */
 package com.devproject.form;
 
+import com.devproject.conn.Koneksi;
+import com.devproject.validation.ValidasiMaster;
 import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,9 +16,13 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -142,7 +148,7 @@ public class Main extends javax.swing.JFrame {
 
         @Override
         public void actionPerformed(ActionEvent ae) {
-            
+            searchresult();
         }
     }
        
@@ -192,6 +198,42 @@ public class Main extends javax.swing.JFrame {
         pMdetail.setTxtoh(onhand);
         pMdetail.setTxtlandedcost(landedcost);
         pMdetail.setTxtpricelist(pricelist);
+    }
+    
+    public void searchresult() {
+        Object header [] = {"No Part", "Nama Part", "Type", "Stock",
+                            "Harga Beli", "Harga Jual"};
+   
+        DefaultTableModel model = new DefaultTableModel(null, header) {
+            public boolean isCellEditable(int row, int column) {
+            return false;
+            }
+        };
+        pMaster.getTabelMaster().setModel(model);
+        
+        String sql = "SELECT * From part WHERE CONCAT (id, partnumber, partname, location,"
+                    + "oh, landedcost, price) LIKE '%"+pMaster.getTxtsearch().getText()+"%' ";
+        
+        try {
+            connection = Koneksi.sambung();
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery(sql);
+            while (rs.next()) {
+                String kolom1 = rs.getString(2);
+                String kolom2 = rs.getString(3);
+                String kolom3 = rs.getString(4);
+                String kolom4 = rs.getString(5);
+                String kolom5 = rs.getString(6);
+                String kolom6 = rs.getString(7);
+                
+                String kolom [] = {kolom1, kolom2, kolom3, kolom4,
+                                    kolom5, kolom6};
+                
+                model.addRow(kolom);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     /**

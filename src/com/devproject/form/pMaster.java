@@ -12,6 +12,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -48,6 +49,10 @@ public class pMaster extends javax.swing.JPanel {
     }
     public JTable getTabelMaster() {
         return tabelMaster;
+    }
+
+    public JTextField getTxtsearch() {
+        return txtsearch;
     }
     
     public void isitabel () {
