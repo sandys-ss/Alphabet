@@ -31,17 +31,20 @@ public class pMaster extends javax.swing.JPanel {
     }
     
     public void addActionListenerMasterImport (ActionListener l) {
-        btnimport.addActionListener(l);
+        btnrefresh.addActionListener(l);
     }
     
     public void addActionListenerMasterback (ActionListener l) {
         btnback.addActionListener(l);
     }
     
-     public void addActionListenerMasterTabel (MouseListener l) {
+    public void addActionListenerMasterTabel (MouseListener l) {
          tabelMaster.addMouseListener(l);
-     }
-
+    }
+     
+    public void addActionListenerMastersearch (ActionListener l) {
+         btnsearch.addActionListener(l);
+    }
     public JTable getTabelMaster() {
         return tabelMaster;
     }
@@ -93,11 +96,13 @@ public class pMaster extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         tabelMaster = new javax.swing.JTable();
         panelTransparan1 = new com.devproject.component.PanelTransparan();
-        btnimport = new com.devproject.component.Tombol_Master();
+        btnrefresh = new com.devproject.component.Tombol_Master();
         jTextField1 = new javax.swing.JTextField();
         btnback = new com.devproject.component.Tombol_Master();
         btnsearch = new com.devproject.component.Tombol_Master();
         btnnew = new com.devproject.component.Tombol_Master();
+        btnimport1 = new com.devproject.component.Tombol_Master();
+        btnexport = new com.devproject.component.Tombol_Master();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -119,15 +124,15 @@ public class pMaster extends javax.swing.JPanel {
         tabelMaster.setGridColor(new java.awt.Color(0, 204, 204));
         jScrollPane1.setViewportView(tabelMaster);
 
-        panelBackground1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 1340, 610));
+        panelBackground1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 1340, 620));
 
         panelTransparan1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        btnimport.setForeground(new java.awt.Color(255, 255, 255));
-        btnimport.setText("Import");
-        btnimport.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        panelTransparan1.add(btnimport, new org.netbeans.lib.awtextra.AbsoluteConstraints(1230, 10, 100, 30));
-        panelTransparan1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 10, 250, 30));
+        btnrefresh.setForeground(new java.awt.Color(255, 255, 255));
+        btnrefresh.setText("Refresh");
+        btnrefresh.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        panelTransparan1.add(btnrefresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(1010, 10, 100, 30));
+        panelTransparan1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 10, 250, 30));
 
         btnback.setForeground(new java.awt.Color(255, 255, 255));
         btnback.setText("Back");
@@ -137,12 +142,22 @@ public class pMaster extends javax.swing.JPanel {
         btnsearch.setForeground(new java.awt.Color(255, 255, 255));
         btnsearch.setText("Search");
         btnsearch.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        panelTransparan1.add(btnsearch, new org.netbeans.lib.awtextra.AbsoluteConstraints(1010, 10, 100, 30));
+        panelTransparan1.add(btnsearch, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 10, 100, 30));
 
         btnnew.setForeground(new java.awt.Color(255, 255, 255));
         btnnew.setText("New Part");
         btnnew.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        panelTransparan1.add(btnnew, new org.netbeans.lib.awtextra.AbsoluteConstraints(1120, 10, 100, 30));
+        panelTransparan1.add(btnnew, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 10, 100, 30));
+
+        btnimport1.setForeground(new java.awt.Color(255, 255, 255));
+        btnimport1.setText("Import");
+        btnimport1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        panelTransparan1.add(btnimport1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1120, 10, 100, 30));
+
+        btnexport.setForeground(new java.awt.Color(255, 255, 255));
+        btnexport.setText("Export");
+        btnexport.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        panelTransparan1.add(btnexport, new org.netbeans.lib.awtextra.AbsoluteConstraints(1230, 10, 100, 30));
 
         panelBackground1.add(panelTransparan1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 1340, 50));
 
@@ -152,8 +167,10 @@ public class pMaster extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.devproject.component.Tombol_Master btnback;
-    private com.devproject.component.Tombol_Master btnimport;
+    private com.devproject.component.Tombol_Master btnexport;
+    private com.devproject.component.Tombol_Master btnimport1;
     private com.devproject.component.Tombol_Master btnnew;
+    private com.devproject.component.Tombol_Master btnrefresh;
     private com.devproject.component.Tombol_Master btnsearch;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextField1;

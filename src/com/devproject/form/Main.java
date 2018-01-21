@@ -56,7 +56,11 @@ public class Main extends javax.swing.JFrame {
         //pMaster Action
         pMaster.addActionListenerMasterImport(new Aksi_masterimport());
         pMaster.addActionListenerMasterback(new Aksi_masterback());
-        pMaster.addActionListenerMasterTabel(new Aksi_mastetabel());
+        pMaster.addActionListenerMasterTabel(new Aksi_mastertabel());
+        pMaster.addActionListenerMastersearch(new Aksi_mastersearch());
+        
+        //pMdetail Action
+        pMdetail.addActionListenerMdetailback(new Aksi_mdetailback());
         
     }
     
@@ -90,7 +94,7 @@ public class Main extends javax.swing.JFrame {
         }
     }
     
-    class Aksi_mastetabel implements MouseListener {
+    class Aksi_mastertabel implements MouseListener {
 
         @Override
         public void mouseClicked(MouseEvent e) {
@@ -123,6 +127,23 @@ public class Main extends javax.swing.JFrame {
             
         }
 
+    }
+    
+    class Aksi_mdetailback implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            CardLayout c1 = (CardLayout) pCard.getLayout();
+            c1.show(pCard, "panelmaster");
+        }
+    }
+    
+    class Aksi_mastersearch implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            
+        }
     }
        
     public static void readXLSXFile() throws IOException {
@@ -166,12 +187,11 @@ public class Main extends javax.swing.JFrame {
         String pricelist = (String) pMaster.getTabelMaster().getValueAt(xrow, 5);
         
         pMdetail.setTxtpartnumber(partnumber);
-        //txtnopart.setText(nopart);
-        //txtnamapart.setText(namapart);
-        //cmbType.setSelectedItem(type);
-        //txtstock.setText(stock);
-        //txthargabeli.setText(hargabeli);
-        //txthargajual.setText(hargajual);
+        pMdetail.setTxtpartname(partname);
+        pMdetail.setTxtlocation(location);
+        pMdetail.setTxtoh(onhand);
+        pMdetail.setTxtlandedcost(landedcost);
+        pMdetail.setTxtpricelist(pricelist);
     }
 
     /**

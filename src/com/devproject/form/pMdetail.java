@@ -5,6 +5,7 @@
  */
 package com.devproject.form;
 
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import javax.swing.JTextField;
 
@@ -24,13 +25,34 @@ public class pMdetail extends javax.swing.JPanel {
     }
 
     public void setTxtpartnumber(String partnumber) {
-        this.txtpartnumber = txtpartnumber;
+        txtpartnumber.setText(partnumber);
     }
 
-    
-    
-    
+    public void setTxtlandedcost(String landedcost) {
+        txtlandedcost.setText(landedcost);
+    }
 
+    public void setTxtlocation(String location) {
+        txtlocation.setText(location);
+    }
+
+    public void setTxtoh(String oh) {
+        txtoh.setText(oh);
+    }
+
+    public void setTxtpartname(String partname) {
+        txtpartname.setText(partname);
+    }
+
+    public void setTxtpricelist(String pricelist) {
+        txtpricelist.setText(pricelist);
+    }
+    
+     public void addActionListenerMdetailback (ActionListener l) {
+        btncancel.addActionListener(l);
+    }
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -54,6 +76,7 @@ public class pMdetail extends javax.swing.JPanel {
         txtlocation = new javax.swing.JTextField();
         txtoh = new javax.swing.JTextField();
         txtlandedcost = new javax.swing.JTextField();
+        btncancel = new com.devproject.component.Tombol_Master();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -90,18 +113,34 @@ public class pMdetail extends javax.swing.JPanel {
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Landed Cost");
         panelTransparan1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, -1, -1));
+
+        txtpricelist.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         panelTransparan1.add(txtpricelist, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 290, 1210, 30));
+
+        txtpartnumber.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         panelTransparan1.add(txtpartnumber, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 30, 1210, 30));
+
+        txtpartname.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         panelTransparan1.add(txtpartname, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 80, 1210, 30));
+
+        txtlocation.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         panelTransparan1.add(txtlocation, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 130, 1210, 30));
 
+        txtoh.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         txtoh.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtohActionPerformed(evt);
             }
         });
         panelTransparan1.add(txtoh, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 180, 1210, 30));
+
+        txtlandedcost.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         panelTransparan1.add(txtlandedcost, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 240, 1210, 30));
+
+        btncancel.setForeground(new java.awt.Color(255, 255, 255));
+        btncancel.setText("Cancel");
+        btncancel.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        panelTransparan1.add(btncancel, new org.netbeans.lib.awtextra.AbsoluteConstraints(1230, 340, 90, 30));
 
         panelBackground1.add(panelTransparan1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 1340, 590));
 
@@ -114,6 +153,7 @@ public class pMdetail extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private com.devproject.component.Tombol_Master btncancel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -129,4 +169,6 @@ public class pMdetail extends javax.swing.JPanel {
     private javax.swing.JTextField txtpartnumber;
     private javax.swing.JTextField txtpricelist;
     // End of variables declaration//GEN-END:variables
+
+   
 }
