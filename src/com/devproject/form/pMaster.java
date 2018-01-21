@@ -7,6 +7,7 @@ package com.devproject.form;
 
 import com.devproject.conn.Koneksi;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -25,15 +26,14 @@ public class pMaster extends javax.swing.JPanel {
      * Creates new form pMaster
      */
     Connection connection;
-    DefaultTableModel dm;
     
     public pMaster() {
         initComponents();
-        isitabel();
+       
     }
     
     public void addActionListenerMasterImport (ActionListener l) {
-        btnrefresh.addActionListener(l);
+        btnimport.addActionListener(l);
     }
     
     public void addActionListenerMasterback (ActionListener l) {
@@ -47,6 +47,19 @@ public class pMaster extends javax.swing.JPanel {
     public void addActionListenerMastersearch (ActionListener l) {
          btnsearch.addActionListener(l);
     }
+    
+    public void addKeyListenerMasterSearch (KeyListener l) {
+        txtsearch.addKeyListener(l);
+    }
+    
+    public void addActionListenerMasterrefresh (ActionListener l) {
+         btnrefresh.addActionListener(l);
+    }
+    
+    public void addActionListenerMasternew (ActionListener l) {
+         btnnew.addActionListener(l);
+    }
+    
     public JTable getTabelMaster() {
         return tabelMaster;
     }
@@ -54,39 +67,9 @@ public class pMaster extends javax.swing.JPanel {
     public JTextField getTxtsearch() {
         return txtsearch;
     }
-    
-    public void isitabel () {
-        Object header [] = {"Part Number", "Part Name", "Location", "On Hand",
-                            "Landed Cost", "Price List"};
-   
-        DefaultTableModel model = new DefaultTableModel(null, header) {
-            public boolean isCellEditable(int row, int column) {
-            return false;
-            }
-        };
-        tabelMaster.setModel(model);
-        
-        String sql = "SELECT * FROM part ORDER BY partnumber";
-        
-        try {
-            connection = Koneksi.sambung();
-            Statement stm = connection.createStatement();
-            ResultSet rs = stm.executeQuery(sql);
-            while (rs.next()) {
-                String kolom1 = rs.getString(2);
-                String kolom2 = rs.getString(3);
-                String kolom3 = rs.getString(4);
-                String kolom4 = rs.getString(5);
-                String kolom5 = rs.getString(6);
-                String kolom6 = rs.getString(7);
-                
-                String kolom [] = {kolom1, kolom2, kolom3, kolom4,
-                                    kolom5, kolom6};  
-                model.addRow(kolom);
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }    
+
+    public void setTxtsearch(String search) {
+        txtsearch.setText(search);
     }
     
        /**
@@ -107,7 +90,7 @@ public class pMaster extends javax.swing.JPanel {
         btnback = new com.devproject.component.Tombol_Master();
         btnsearch = new com.devproject.component.Tombol_Master();
         btnnew = new com.devproject.component.Tombol_Master();
-        btnimport1 = new com.devproject.component.Tombol_Master();
+        btnimport = new com.devproject.component.Tombol_Master();
         btnexport = new com.devproject.component.Tombol_Master();
 
         setLayout(new java.awt.BorderLayout());
@@ -168,10 +151,10 @@ public class pMaster extends javax.swing.JPanel {
         btnnew.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         panelTransparan1.add(btnnew, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 10, 100, 30));
 
-        btnimport1.setForeground(new java.awt.Color(255, 255, 255));
-        btnimport1.setText("Import");
-        btnimport1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        panelTransparan1.add(btnimport1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1120, 10, 100, 30));
+        btnimport.setForeground(new java.awt.Color(255, 255, 255));
+        btnimport.setText("Import");
+        btnimport.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        panelTransparan1.add(btnimport, new org.netbeans.lib.awtextra.AbsoluteConstraints(1120, 10, 100, 30));
 
         btnexport.setForeground(new java.awt.Color(255, 255, 255));
         btnexport.setText("Export");
@@ -195,7 +178,7 @@ public class pMaster extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.devproject.component.Tombol_Master btnback;
     private com.devproject.component.Tombol_Master btnexport;
-    private com.devproject.component.Tombol_Master btnimport1;
+    private com.devproject.component.Tombol_Master btnimport;
     private com.devproject.component.Tombol_Master btnnew;
     private com.devproject.component.Tombol_Master btnrefresh;
     private com.devproject.component.Tombol_Master btnsearch;

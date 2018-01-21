@@ -6,20 +6,25 @@
 package com.devproject.form;
 
 import com.devproject.conn.Koneksi;
+import com.devproject.validation.ValidasiMaster;
 import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -62,9 +67,13 @@ public class Main extends javax.swing.JFrame {
         pMaster.addActionListenerMasterback(new Aksi_masterback());
         pMaster.addActionListenerMasterTabel(new Aksi_mastertabel());
         pMaster.addActionListenerMastersearch(new Aksi_mastersearch());
+        pMaster.addKeyListenerMasterSearch(new Aksi_mastersearchkey());
+        pMaster.addActionListenerMasterrefresh(new Aksi_masterrefresh());
+        pMaster.addActionListenerMasternew(new Aksi_masternew());
         
         //pMdetail Action
         pMdetail.addActionListenerMdetailback(new Aksi_mdetailback());
+        pMdetail.addActionListenerMdetailsave(new Aksi_mdetailsave());
         
     }
     
@@ -74,6 +83,7 @@ public class Main extends javax.swing.JFrame {
         public void actionPerformed(ActionEvent ae) {
             CardLayout c1 = (CardLayout) pCard.getLayout();
             c1.show(pCard, "panelmaster");
+            isitabel();
         }
     }
     
@@ -95,6 +105,7 @@ public class Main extends javax.swing.JFrame {
         public void actionPerformed(ActionEvent ae) {
             CardLayout c1 = (CardLayout) pCard.getLayout();
             c1.show(pCard, "panelutama");
+            pMaster.setTxtsearch("");
         }
     }
     
@@ -139,6 +150,7 @@ public class Main extends javax.swing.JFrame {
         public void actionPerformed(ActionEvent ae) {
             CardLayout c1 = (CardLayout) pCard.getLayout();
             c1.show(pCard, "panelmaster");
+            isitabel();
         }
     }
     
@@ -149,7 +161,64 @@ public class Main extends javax.swing.JFrame {
             searchresult();
         }
     }
+    
+    class Aksi_mastersearchkey implements KeyListener {
+
+        @Override
+        public void keyTyped(KeyEvent e) {
+
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+           if( e.getKeyCode() == KeyEvent.VK_ENTER ) {
+               searchresult();
+           } else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+               isitabel();
+           } else if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+               isitabel();
+               pMaster.setTxtsearch("");
+           }
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+            
+        }
+        
+    }
+    
+    class Aksi_masterrefresh implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            isitabel();
+            pMaster.setTxtsearch("");
+        }
+        
+    }
+    
+    class Aksi_masternew implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            CardLayout c1 = (CardLayout) pCard.getLayout();
+            c1.show(pCard, "panelmdetail");
+        }
+        
+    }
+    
+    class Aksi_mdetailsave implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            insert();
+        }
+        
+    }
        
+    // Method
+    
     public static void readXLSXFile() throws IOException {
         InputStream ExcelFileToRead = new FileInputStream("D:/Test.xlsx");
         XSSFWorkbook wb = new XSSFWorkbook(ExcelFileToRead);
@@ -231,6 +300,108 @@ public class Main extends javax.swing.JFrame {
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
+        }
+    }
+    
+    public void isitabel () {
+        Object header [] = {"Part Number", "Part Name", "Location", "On Hand",
+                            "Landed Cost", "Price List"};
+   
+        DefaultTableModel model = new DefaultTableModel(null, header) {
+            public boolean isCellEditable(int row, int column) {
+            return false;
+            }
+        };
+        pMaster.getTabelMaster().setModel(model);
+        
+        String sql = "SELECT * FROM part ORDER BY partnumber";
+        
+        try {
+            connection = Koneksi.sambung();
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery(sql);
+            while (rs.next()) {
+                String kolom1 = rs.getString(2);
+                String kolom2 = rs.getString(3);
+                String kolom3 = rs.getString(4);
+                String kolom4 = rs.getString(5);
+                String kolom5 = rs.getString(6);
+                String kolom6 = rs.getString(7);
+                
+                String kolom [] = {kolom1, kolom2, kolom3, kolom4,
+                                    kolom5, kolom6};  
+                model.addRow(kolom);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }    
+    }
+    
+    public void insert () {
+        String partnumber = pMdetail.getTxtpartnumber().getText();
+        String partname = pMdetail.getTxtpartname().getText();
+        String location = pMdetail.getTxtlocation().getText();
+        String oh = pMdetail.getTxtoh().getText();
+        String landedcost = pMdetail.getTxtlandedcost().getText();
+        String price  = pMdetail.getTxtpricelist().getText();
+        
+        String insert = "INSERT INTO part (partnumber,partname,location,oh,"
+            + "landedcost, price) VALUES (?,?,?,?,?,?);" ;
+        
+        ValidasiMaster valid = new ValidasiMaster();
+        valid.validasi_part(partnumber);
+        
+        if (valid.xpart == "") {
+            if (partnumber.equals("")) {
+                JOptionPane.showMessageDialog(null, "Part Number masih Kosong !", "Informasi",
+                    JOptionPane.INFORMATION_MESSAGE);
+            pMdetail.getTxtpartnumber().requestFocus();
+            } else if (partname.equals("")) {
+                JOptionPane.showMessageDialog(null, "Part Name masih Kosong !", "Informasi",
+                    JOptionPane.INFORMATION_MESSAGE);
+            pMdetail.getTxtpartname().requestFocus();
+            } else if (location.equals("")) {
+                JOptionPane.showMessageDialog(null, "Location masih Kosong !", "Informasi",
+                    JOptionPane.INFORMATION_MESSAGE);
+            pMdetail.getTxtlocation().requestFocus();
+            } else if (oh.equals("")) {
+                JOptionPane.showMessageDialog(null, "On Hand masih Kosong !", "Informasi",
+                    JOptionPane.INFORMATION_MESSAGE);
+            pMdetail.getTxtoh().requestFocus();
+            } else if (landedcost.equals("")) {
+                JOptionPane.showMessageDialog(null, "Landed Cost masih Kosong !", "Informasi",
+                    JOptionPane.INFORMATION_MESSAGE);
+            pMdetail.getTxtlandedcost().requestFocus();
+            } else if (price.equals("")) {
+                JOptionPane.showMessageDialog(null, "Price List masih Kosong !", "Informasi",
+                    JOptionPane.INFORMATION_MESSAGE);
+            pMdetail.getTxtpricelist().requestFocus();
+            } else {
+                try {
+                    connection = Koneksi.sambung();
+                    PreparedStatement statement = null;
+                    statement = connection.prepareStatement(insert);
+                    statement.setString(1, partnumber);
+                    statement.setString(2, partname);
+                    statement.setString(3, location);
+                    statement.setInt(4, Integer.valueOf(oh));
+                    statement.setInt(5, Integer.valueOf(landedcost));
+                    statement.setInt(6, Integer.valueOf(price));
+                    statement.executeUpdate();
+                    statement.close();
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+                    JOptionPane.showMessageDialog(null,"Data berhasil Disimpan",
+                        "Informasi",JOptionPane.INFORMATION_MESSAGE);
+                 //clear();
+                 //isitabel();
+            }    
+        } else {
+            JOptionPane.showMessageDialog(null,"Data Sudah Ada",
+                 "Informasi",JOptionPane.WARNING_MESSAGE);
+            pMdetail.setTxtpartnumber("");
+            pMdetail.getTxtpartnumber().requestFocus();
         }
     }
 

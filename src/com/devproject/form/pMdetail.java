@@ -51,7 +51,34 @@ public class pMdetail extends javax.swing.JPanel {
      public void addActionListenerMdetailback (ActionListener l) {
         btncancel.addActionListener(l);
     }
+
+    public JTextField getTxtlandedcost() {
+        return txtlandedcost;
+    }
+
+    public JTextField getTxtlocation() {
+        return txtlocation;
+    }
+
+    public JTextField getTxtoh() {
+        return txtoh;
+    }
+
+    public JTextField getTxtpartname() {
+        return txtpartname;
+    }
+
+    public JTextField getTxtpartnumber() {
+        return txtpartnumber;
+    }
+
+    public JTextField getTxtpricelist() {
+        return txtpricelist;
+    }
     
+     public void addActionListenerMdetailsave (ActionListener l) {
+         btnsave.addActionListener(l);
+    }
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -77,6 +104,8 @@ public class pMdetail extends javax.swing.JPanel {
         txtoh = new javax.swing.JTextField();
         txtlandedcost = new javax.swing.JTextField();
         btncancel = new com.devproject.component.Tombol_Master();
+        btnsave = new com.devproject.component.Tombol_Master();
+        btndelete = new com.devproject.component.Tombol_Master();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -142,7 +171,17 @@ public class pMdetail extends javax.swing.JPanel {
         btncancel.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         panelTransparan1.add(btncancel, new org.netbeans.lib.awtextra.AbsoluteConstraints(1230, 340, 90, 30));
 
-        panelBackground1.add(panelTransparan1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 1340, 590));
+        btnsave.setForeground(new java.awt.Color(255, 255, 255));
+        btnsave.setText("Save");
+        btnsave.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        panelTransparan1.add(btnsave, new org.netbeans.lib.awtextra.AbsoluteConstraints(1030, 340, 90, 30));
+
+        btndelete.setForeground(new java.awt.Color(255, 255, 255));
+        btndelete.setText("Delete");
+        btndelete.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        panelTransparan1.add(btndelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(1130, 340, 90, 30));
+
+        panelBackground1.add(panelTransparan1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 1340, 660));
 
         add(panelBackground1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
@@ -154,6 +193,8 @@ public class pMdetail extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.devproject.component.Tombol_Master btncancel;
+    private com.devproject.component.Tombol_Master btndelete;
+    private com.devproject.component.Tombol_Master btnsave;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
