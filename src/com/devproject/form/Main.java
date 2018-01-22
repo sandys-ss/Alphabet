@@ -20,6 +20,7 @@ import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Iterator;
 import java.util.logging.Level;
@@ -52,6 +53,7 @@ public class Main extends javax.swing.JFrame {
         pCard.add(pMain, "panelutama");
         pCard.add(pMaster, "panelmaster");
         pCard.add(pMdetail, "panelmdetail");
+        pCard.add(pMdetailnew, "panelmdetailnew");
         
         CardLayout c1 = (CardLayout)pCard.getLayout();
         c1.show(pCard, "panelutama");        
@@ -73,7 +75,12 @@ public class Main extends javax.swing.JFrame {
         
         //pMdetail Action
         pMdetail.addActionListenerMdetailback(new Aksi_mdetailback());
-        pMdetail.addActionListenerMdetailsave(new Aksi_mdetailsave());
+        pMdetail.addActionListenerMdetailupdate(new Aksi_mdetailupdate());
+        pMdetail.addActionListenerMdetaildelete(new Aksi_mdetaildelete());
+        
+        //pMdetailnew
+        pMdetailnew.addActionListenerMdetailsave(new Aksi_mdetailsave());
+        pMdetailnew.addActionListenerMdetailback(new Aksi_mdetailnewback());
         
     }
     
@@ -83,7 +90,7 @@ public class Main extends javax.swing.JFrame {
         public void actionPerformed(ActionEvent ae) {
             CardLayout c1 = (CardLayout) pCard.getLayout();
             c1.show(pCard, "panelmaster");
-            isitabel();
+            isitabelpart();
         }
     }
     
@@ -150,7 +157,7 @@ public class Main extends javax.swing.JFrame {
         public void actionPerformed(ActionEvent ae) {
             CardLayout c1 = (CardLayout) pCard.getLayout();
             c1.show(pCard, "panelmaster");
-            isitabel();
+            isitabelpart();
         }
     }
     
@@ -158,7 +165,7 @@ public class Main extends javax.swing.JFrame {
 
         @Override
         public void actionPerformed(ActionEvent ae) {
-            searchresult();
+            searchresultpart();
         }
     }
     
@@ -172,11 +179,11 @@ public class Main extends javax.swing.JFrame {
         @Override
         public void keyPressed(KeyEvent e) {
            if( e.getKeyCode() == KeyEvent.VK_ENTER ) {
-               searchresult();
+               searchresultpart();
            } else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
-               isitabel();
+               isitabelpart();
            } else if (e.getKeyCode() == KeyEvent.VK_DELETE) {
-               isitabel();
+               isitabelpart();
                pMaster.setTxtsearch("");
            }
         }
@@ -192,7 +199,7 @@ public class Main extends javax.swing.JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            isitabel();
+            isitabelpart();
             pMaster.setTxtsearch("");
         }
         
@@ -203,7 +210,7 @@ public class Main extends javax.swing.JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             CardLayout c1 = (CardLayout) pCard.getLayout();
-            c1.show(pCard, "panelmdetail");
+            c1.show(pCard, "panelmdetailnew");
         }
         
     }
@@ -212,14 +219,41 @@ public class Main extends javax.swing.JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            insert();
+            insertpart();
+        }
+    }
+    
+    class Aksi_mdetailnewback implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            clear_mdetailnew();
+            CardLayout c1 = (CardLayout) pCard.getLayout();
+            c1.show(pCard, "panelmaster");
+        }
+    }
+    
+    class Aksi_mdetailupdate implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            updatepart();
+        }
+        
+    }
+    
+    class Aksi_mdetaildelete implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            deletepart();
         }
         
     }
        
     // Method
     
-    public static void readXLSXFile() throws IOException {
+    private static void readXLSXFile() throws IOException {
         InputStream ExcelFileToRead = new FileInputStream("D:/Test.xlsx");
         XSSFWorkbook wb = new XSSFWorkbook(ExcelFileToRead);
 
@@ -267,7 +301,7 @@ public class Main extends javax.swing.JFrame {
         pMdetail.setTxtpricelist(pricelist);
     }
     
-    public void searchresult() {
+    private void searchresultpart () {
         Object header [] = {"No Part", "Nama Part", "Type", "Stock",
                             "Harga Beli", "Harga Jual"};
    
@@ -303,7 +337,7 @@ public class Main extends javax.swing.JFrame {
         }
     }
     
-    public void isitabel () {
+    private void isitabelpart () {
         Object header [] = {"Part Number", "Part Name", "Location", "On Hand",
                             "Landed Cost", "Price List"};
    
@@ -337,13 +371,13 @@ public class Main extends javax.swing.JFrame {
         }    
     }
     
-    public void insert () {
-        String partnumber = pMdetail.getTxtpartnumber().getText();
-        String partname = pMdetail.getTxtpartname().getText();
-        String location = pMdetail.getTxtlocation().getText();
-        String oh = pMdetail.getTxtoh().getText();
-        String landedcost = pMdetail.getTxtlandedcost().getText();
-        String price  = pMdetail.getTxtpricelist().getText();
+    private void insertpart () {
+        String partnumber = pMdetailnew.getTxtpartnumber().getText();
+        String partname = pMdetailnew.getTxtpartname().getText();
+        String location = pMdetailnew.getTxtlocation().getText();
+        String oh = pMdetailnew.getTxtoh().getText();
+        String landedcost = pMdetailnew.getTxtlandedcost().getText();
+        String price  = pMdetailnew.getTxtpricelist().getText();
         
         String insert = "INSERT INTO part (partnumber,partname,location,oh,"
             + "landedcost, price) VALUES (?,?,?,?,?,?);" ;
@@ -353,6 +387,84 @@ public class Main extends javax.swing.JFrame {
         
         if (valid.xpart == "") {
             if (partnumber.equals("")) {
+                JOptionPane.showMessageDialog(null, "Part Number masih Kosong !", "Informasi",
+                    JOptionPane.INFORMATION_MESSAGE);
+            pMdetailnew.getTxtpartnumber().requestFocus();
+            } else if (partname.equals("")) {
+                JOptionPane.showMessageDialog(null, "Part Name masih Kosong !", "Informasi",
+                    JOptionPane.INFORMATION_MESSAGE);
+            pMdetailnew.getTxtpartname().requestFocus();
+            } else if (location.equals("")) {
+                JOptionPane.showMessageDialog(null, "Location masih Kosong !", "Informasi",
+                    JOptionPane.INFORMATION_MESSAGE);
+            pMdetailnew.getTxtlocation().requestFocus();
+            } else if (oh.equals("")) {
+                JOptionPane.showMessageDialog(null, "On Hand masih Kosong !", "Informasi",
+                    JOptionPane.INFORMATION_MESSAGE);
+            pMdetailnew.getTxtoh().requestFocus();
+            } else if (landedcost.equals("")) {
+                JOptionPane.showMessageDialog(null, "Landed Cost masih Kosong !", "Informasi",
+                    JOptionPane.INFORMATION_MESSAGE);
+            pMdetailnew.getTxtlandedcost().requestFocus();
+            } else if (price.equals("")) {
+                JOptionPane.showMessageDialog(null, "Price List masih Kosong !", "Informasi",
+                    JOptionPane.INFORMATION_MESSAGE);
+            pMdetailnew.getTxtpricelist().requestFocus();
+            } else {
+                try {
+                    connection = Koneksi.sambung();
+                    PreparedStatement statement = null;
+                    statement = connection.prepareStatement(insert);
+                    statement.setString(1, partnumber);
+                    statement.setString(2, partname);
+                    statement.setString(3, location);
+                    statement.setInt(4, Integer.valueOf(oh));
+                    statement.setInt(5, Integer.valueOf(landedcost));
+                    statement.setInt(6, Integer.valueOf(price));
+                    statement.executeUpdate();
+                    statement.close();
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+                    JOptionPane.showMessageDialog(null,"Data berhasil Disimpan",
+                        "Informasi",JOptionPane.INFORMATION_MESSAGE);
+                clear_mdetailnew();
+                
+                CardLayout c1 = (CardLayout) pCard.getLayout();
+                c1.show(pCard, "panelmaster");
+                isitabelpart();
+            }    
+        } else {
+            JOptionPane.showMessageDialog(null,"Data Sudah Ada",
+                 "Informasi",JOptionPane.WARNING_MESSAGE);
+            pMdetailnew.setTxtpartnumber("");
+            pMdetailnew.getTxtpartnumber().requestFocus();
+        }
+    }
+    
+    private void clear_mdetailnew () {
+        pMdetailnew.setTxtpartnumber("");
+        pMdetailnew.setTxtpartname("");
+        pMdetailnew.setTxtlocation("");
+        pMdetailnew.setTxtoh("");
+        pMdetailnew.setTxtlandedcost("");
+        pMdetailnew.setTxtpricelist("");
+    }
+    
+    private void updatepart () {  
+        String partnumber = pMdetail.getTxtpartnumber().getText();
+        String partname = pMdetail.getTxtpartname().getText();
+        String location = pMdetail.getTxtlocation().getText();
+        String oh = pMdetail.getTxtoh().getText();
+        String landedcost = pMdetail.getTxtlandedcost().getText();
+        String price  = pMdetail.getTxtpricelist().getText();
+        
+        String sql = "UPDATE part SET partname = '"+partname+"',"
+                + "location= '"+location+"', oh = '"+oh+"',"
+                + "landedcost = '"+landedcost+"', price = '"+price+"' "
+                + "WHERE partnumber = '"+partnumber+"' ";
+        
+        if (partnumber.equals("")) {
                 JOptionPane.showMessageDialog(null, "Part Number masih Kosong !", "Informasi",
                     JOptionPane.INFORMATION_MESSAGE);
             pMdetail.getTxtpartnumber().requestFocus();
@@ -380,28 +492,61 @@ public class Main extends javax.swing.JFrame {
                 try {
                     connection = Koneksi.sambung();
                     PreparedStatement statement = null;
-                    statement = connection.prepareStatement(insert);
-                    statement.setString(1, partnumber);
-                    statement.setString(2, partname);
-                    statement.setString(3, location);
-                    statement.setInt(4, Integer.valueOf(oh));
-                    statement.setInt(5, Integer.valueOf(landedcost));
-                    statement.setInt(6, Integer.valueOf(price));
-                    statement.executeUpdate();
-                    statement.close();
-                } catch (Exception e) {
+                    statement = connection.prepareStatement(sql);
+                    Statement stm = connection.createStatement();
+                    stm.executeUpdate(sql);
+                    stm.close();
+                } catch (SQLException e) {
                     System.out.println(e.getMessage());
                 }
-                    JOptionPane.showMessageDialog(null,"Data berhasil Disimpan",
+                    JOptionPane.showMessageDialog(null,"Data berhasil Di Update",
                         "Informasi",JOptionPane.INFORMATION_MESSAGE);
-                 //clear();
-                 //isitabel();
-            }    
-        } else {
-            JOptionPane.showMessageDialog(null,"Data Sudah Ada",
-                 "Informasi",JOptionPane.WARNING_MESSAGE);
-            pMdetail.setTxtpartnumber("");
+                    clear_mdetail();
+                    
+                    CardLayout c1 = (CardLayout) pCard.getLayout();
+                    c1.show(pCard, "panelmaster");
+                    isitabelpart();
+            }
+    }
+    
+    private void clear_mdetail () {
+        pMdetail.setTxtpartnumber("");
+        pMdetail.setTxtpartname("");
+        pMdetail.setTxtoh("");
+        pMdetail.setTxtlocation("");
+        pMdetail.setTxtlandedcost("");
+        pMdetail.setTxtpricelist("");
+    }
+    
+    private void deletepart () {
+        String partnumber = pMdetail.getTxtpartnumber().getText();
+        String sql = "DELETE FROM part WHERE partnumber = '"+partnumber+"' ";
+        
+        if (partnumber.equals("")) {
+            JOptionPane.showMessageDialog(null, "Part Number masih kosong", "Informasi",
+                    JOptionPane.WARNING_MESSAGE);
             pMdetail.getTxtpartnumber().requestFocus();
+        } else {
+            int pilih = JOptionPane.showConfirmDialog(null, "Yakin Mau Hapus Data ini ?",
+                "Warning", JOptionPane.YES_NO_OPTION);
+        
+        if (pilih == JOptionPane.YES_OPTION) {
+           try {
+               connection = Koneksi.sambung();
+               PreparedStatement statement = null;
+               statement = connection.prepareStatement(sql);
+               Statement stm = connection.createStatement();
+               stm.execute(sql);
+               stm.close();
+           } catch (Exception e) {
+               System.out.println(e.getMessage());
+           }
+           clear_mdetail();
+            
+            CardLayout c1 = (CardLayout) pCard.getLayout();
+            c1.show(pCard, "panelmaster");
+            isitabelpart();
+        }
         }
     }
 
@@ -418,6 +563,7 @@ public class Main extends javax.swing.JFrame {
         pMaster = new com.devproject.form.pMaster();
         pMain = new com.devproject.form.pMain();
         pMdetail = new com.devproject.form.pMdetail();
+        pMdetailnew = new com.devproject.form.pMdetailnew();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -426,6 +572,7 @@ public class Main extends javax.swing.JFrame {
         pCard.add(pMaster, "card3");
         pCard.add(pMain, "card2");
         pCard.add(pMdetail, "card4");
+        pCard.add(pMdetailnew, "card5");
 
         getContentPane().add(pCard, java.awt.BorderLayout.CENTER);
 
@@ -474,5 +621,6 @@ public class Main extends javax.swing.JFrame {
     private com.devproject.form.pMain pMain;
     private com.devproject.form.pMaster pMaster;
     private com.devproject.form.pMdetail pMdetail;
+    private com.devproject.form.pMdetailnew pMdetailnew;
     // End of variables declaration//GEN-END:variables
 }

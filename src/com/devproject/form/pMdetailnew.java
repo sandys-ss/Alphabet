@@ -13,14 +13,14 @@ import javax.swing.JTextField;
  *
  * @author LC01
  */
-public class pMdetail extends javax.swing.JPanel {
+public class pMdetailnew extends javax.swing.JPanel {
 
     /**
      * Creates new form pMaster
      */
     Connection connection;
     
-    public pMdetail() {
+    public pMdetailnew() {
         initComponents();
     }
 
@@ -76,12 +76,8 @@ public class pMdetail extends javax.swing.JPanel {
         return txtpricelist;
     }
     
-    public void addActionListenerMdetailupdate (ActionListener l) {
-         btnupdate.addActionListener(l);
-    }
-    
-    public void addActionListenerMdetaildelete (ActionListener l) {
-         btndelete.addActionListener(l);
+     public void addActionListenerMdetailsave (ActionListener l) {
+         btnsave.addActionListener(l);
     }
     
     /**
@@ -108,8 +104,7 @@ public class pMdetail extends javax.swing.JPanel {
         txtoh = new javax.swing.JTextField();
         txtlandedcost = new javax.swing.JTextField();
         btncancel = new com.devproject.component.Tombol_Master();
-        btnupdate = new com.devproject.component.Tombol_Master();
-        btndelete = new com.devproject.component.Tombol_Master();
+        btnsave = new com.devproject.component.Tombol_Master();
         panelTransparan2 = new com.devproject.component.PanelTransparan();
         jLabel7 = new javax.swing.JLabel();
 
@@ -152,7 +147,6 @@ public class pMdetail extends javax.swing.JPanel {
         txtpricelist.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         panelTransparan1.add(txtpricelist, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 290, 1210, 30));
 
-        txtpartnumber.setEditable(false);
         txtpartnumber.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         panelTransparan1.add(txtpartnumber, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 30, 1210, 30));
 
@@ -178,15 +172,10 @@ public class pMdetail extends javax.swing.JPanel {
         btncancel.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         panelTransparan1.add(btncancel, new org.netbeans.lib.awtextra.AbsoluteConstraints(1230, 340, 90, 30));
 
-        btnupdate.setForeground(new java.awt.Color(255, 255, 255));
-        btnupdate.setText("Update");
-        btnupdate.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        panelTransparan1.add(btnupdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(1030, 340, 90, 30));
-
-        btndelete.setForeground(new java.awt.Color(255, 255, 255));
-        btndelete.setText("Delete");
-        btndelete.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        panelTransparan1.add(btndelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(1130, 340, 90, 30));
+        btnsave.setForeground(new java.awt.Color(255, 255, 255));
+        btnsave.setText("Save");
+        btnsave.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        panelTransparan1.add(btnsave, new org.netbeans.lib.awtextra.AbsoluteConstraints(1130, 340, 90, 30));
 
         panelBackground1.add(panelTransparan1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 1340, 610));
 
@@ -194,10 +183,10 @@ public class pMdetail extends javax.swing.JPanel {
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel7.setText("Update Detail Part");
-        panelTransparan2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 10, 130, 20));
+        jLabel7.setText("Add New Part");
+        panelTransparan2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 10, 90, 20));
 
-        panelBackground1.add(panelTransparan2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 140, 40));
+        panelBackground1.add(panelTransparan2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 120, 40));
 
         add(panelBackground1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
@@ -209,8 +198,7 @@ public class pMdetail extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.devproject.component.Tombol_Master btncancel;
-    private com.devproject.component.Tombol_Master btndelete;
-    private com.devproject.component.Tombol_Master btnupdate;
+    private com.devproject.component.Tombol_Master btnsave;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
