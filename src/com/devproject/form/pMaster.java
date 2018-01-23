@@ -94,7 +94,7 @@ public class pMaster extends javax.swing.JPanel {
         panelBackground1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         tabelMaster.setAutoCreateRowSorter(true);
-        tabelMaster.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        tabelMaster.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         tabelMaster.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {},

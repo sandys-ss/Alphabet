@@ -14,6 +14,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,10 +23,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JProgressBar;
 import javax.swing.table.DefaultTableModel;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -98,11 +102,12 @@ public class Main extends javax.swing.JFrame {
 
         @Override
         public void actionPerformed(ActionEvent ae) {
-            try {
-                readXLSXFile();
-            } catch (IOException ex) {
-                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            //try {
+            //    readXLSXFile();
+            //} catch (IOException ex) {
+            //    Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            //}
+            importexcelpart();
         }
     }
     
@@ -282,6 +287,92 @@ public class Main extends javax.swing.JFrame {
             System.out.println();
         }
 
+    }
+    
+    private static ArrayList readExcelFilePart(String fileName) {
+        ArrayList cellArrayLisstHolder = new ArrayList();
+        try {
+            /**
+             * Creating Input Stream*
+             */
+            FileInputStream myInput = new FileInputStream(fileName);
+
+            /**
+             * Create a workbook using the File System*
+             */
+            XSSFWorkbook myWorkBook = new XSSFWorkbook(myInput);
+
+            /**
+             * Get the first sheet from workbook*
+             */
+            XSSFSheet mySheet = myWorkBook.getSheetAt(0);
+
+            /**
+             * We now need something to iterate through the cells.*
+             */
+            Iterator rowIter = mySheet.rowIterator();
+            while (rowIter.hasNext()) {
+                XSSFRow myRow = (XSSFRow) rowIter.next();
+                Iterator cellIter = myRow.cellIterator();
+                ArrayList cellStoreArrayList = new ArrayList();
+                while (cellIter.hasNext()) {
+                    XSSFCell myCell = (XSSFCell) cellIter.next();
+                    cellStoreArrayList.add(myCell);
+                }
+                cellArrayLisstHolder.add(cellStoreArrayList);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return cellArrayLisstHolder;
+    }
+    
+    private void importexcelpart() {
+        JFileChooser fileChooser = new JFileChooser();
+        int returnValue = fileChooser.showOpenDialog(null);
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            System.out.println(selectedFile.getName());
+            String fileName = selectedFile.getAbsolutePath();
+
+            ArrayList dataHolder = readExcelFilePart(fileName);
+
+            try {
+                String query = "insert into part (partnumber, partname, location, oh,"
+                        + "landedcost, price) values (?, ?, ?, ?, ?, ?)";
+                connection = Koneksi.sambung();
+                PreparedStatement statement = null;
+                statement = connection.prepareStatement(query);
+                int count = 0;
+
+                ArrayList cellStoreArrayList = null;
+
+                //insert into database
+                for (int i = 1; i < dataHolder.size(); i++) {
+                    cellStoreArrayList = (ArrayList) dataHolder.get(i);
+                    try {
+                        statement.setString(1, ((XSSFCell) cellStoreArrayList.get(0)).toString());
+                        statement.setString(2, ((XSSFCell) cellStoreArrayList.get(1)).toString());
+                        statement.setString(3, ((XSSFCell) cellStoreArrayList.get(2)).toString());
+                        statement.setString(4, ((XSSFCell) cellStoreArrayList.get(3)).toString());
+                        statement.setString(5, ((XSSFCell) cellStoreArrayList.get(4)).toString());
+                        statement.setString(6, ((XSSFCell) cellStoreArrayList.get(5)).toString());
+
+                        statement.executeUpdate();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                //System.out.print("Import Sukses !");
+                JOptionPane.showMessageDialog(null, "Data berhasil Disimpan",
+                        "Informasi", JOptionPane.INFORMATION_MESSAGE);
+                isitabelpart();
+            } catch (SQLException ex) {
+                //System.out.print("Export gagal");
+                JOptionPane.showMessageDialog(null, ex.getErrorCode(),
+                        "Informasi", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
     }
     
     private void isipartdetail () {
