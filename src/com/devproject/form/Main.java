@@ -17,7 +17,6 @@ import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,11 +24,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.JProgressBar;
 import javax.swing.table.DefaultTableModel;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -60,7 +56,9 @@ public class Main extends javax.swing.JFrame {
         pCard.add(pMdetailnew, "panelmdetailnew");
         
         CardLayout c1 = (CardLayout)pCard.getLayout();
-        c1.show(pCard, "panelutama");        
+        c1.show(pCard, "panelutama"); 
+        
+        setGlassPane(pGlass);
         
     }
     
@@ -102,12 +100,9 @@ public class Main extends javax.swing.JFrame {
 
         @Override
         public void actionPerformed(ActionEvent ae) {
-            //try {
-            //    readXLSXFile();
-            //} catch (IOException ex) {
-            //    Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-            //}
+            getGlassPane().setVisible(true);
             importexcelpart();
+            getGlassPane().setVisible(false);
         }
     }
     
@@ -257,38 +252,6 @@ public class Main extends javax.swing.JFrame {
     }
        
     // Method
-    
-    private static void readXLSXFile() throws IOException {
-        InputStream ExcelFileToRead = new FileInputStream("D:/Test.xlsx");
-        XSSFWorkbook wb = new XSSFWorkbook(ExcelFileToRead);
-
-        XSSFWorkbook test = new XSSFWorkbook();
-
-        XSSFSheet sheet = wb.getSheetAt(0);
-        XSSFRow row;
-        XSSFCell cell;
-
-        Iterator rows = sheet.rowIterator();
-
-        while (rows.hasNext()) {
-            row = (XSSFRow) rows.next();
-            Iterator cells = row.cellIterator();
-            while (cells.hasNext()) {
-                cell = (XSSFCell) cells.next();
-
-                if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING) {
-                    System.out.print(cell.getStringCellValue() + " ");
-                } else if (cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC) {
-                    System.out.print(cell.getNumericCellValue() + " ");
-                } else {
-                    //U Can Handel Boolean, Formula, Errors
-                }
-            }
-            System.out.println();
-        }
-
-    }
-    
     private static ArrayList readExcelFilePart(String fileName) {
         ArrayList cellArrayLisstHolder = new ArrayList();
         try {
@@ -655,6 +618,7 @@ public class Main extends javax.swing.JFrame {
         pMain = new com.devproject.form.pMain();
         pMdetail = new com.devproject.form.pMdetail();
         pMdetailnew = new com.devproject.form.pMdetailnew();
+        pGlass = new com.devproject.form.pGlass();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -664,6 +628,7 @@ public class Main extends javax.swing.JFrame {
         pCard.add(pMain, "card2");
         pCard.add(pMdetail, "card4");
         pCard.add(pMdetailnew, "card5");
+        pCard.add(pGlass, "card6");
 
         getContentPane().add(pCard, java.awt.BorderLayout.CENTER);
 
@@ -709,6 +674,7 @@ public class Main extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel pCard;
+    private com.devproject.form.pGlass pGlass;
     private com.devproject.form.pMain pMain;
     private com.devproject.form.pMaster pMaster;
     private com.devproject.form.pMdetail pMdetail;
