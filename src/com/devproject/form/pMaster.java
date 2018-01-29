@@ -56,6 +56,10 @@ public class pMaster extends javax.swing.JPanel {
          btnnew.addActionListener(l);
     }
     
+    public void addActionListenerMasterexport (ActionListener l) {
+         btnexport.addActionListener(l);
+    }
+    
     public JTable getTabelMaster() {
         return tabelMaster;
     }

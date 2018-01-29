@@ -8,6 +8,7 @@ package com.devproject.form;
 import com.devproject.conn.Koneksi;
 import com.devproject.validation.ValidasiMaster;
 import java.awt.CardLayout;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -16,6 +17,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -24,10 +27,24 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFColor;
+import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -74,6 +91,7 @@ public class Main extends javax.swing.JFrame {
         pMaster.addKeyListenerMasterSearch(new Aksi_mastersearchkey());
         pMaster.addActionListenerMasterrefresh(new Aksi_masterrefresh());
         pMaster.addActionListenerMasternew(new Aksi_masternew());
+        pMaster.addActionListenerMasternew(new Aksi_masterexport());
         
         //pMdetail Action
         pMdetail.addActionListenerMdetailback(new Aksi_mdetailback());
@@ -103,6 +121,14 @@ public class Main extends javax.swing.JFrame {
             getGlassPane().setVisible(true);
             importexcelpart();
             getGlassPane().setVisible(false);
+        }
+    }
+    
+     class Aksi_masterexport implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            exportpart();
         }
     }
     
@@ -335,6 +361,83 @@ public class Main extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, ex.getErrorCode(),
                         "Informasi", JOptionPane.INFORMATION_MESSAGE);
             }
+        }
+    }
+    
+    private void exportpart () {
+        final String sql = "SELECT * FROM part ORDER BY partnumber;";
+
+        PreparedStatement statement = null;
+        try {
+            XSSFWorkbook workbook = new XSSFWorkbook();
+            XSSFSheet sheet = workbook.createSheet("Part");
+            XSSFRow rowhead = sheet.createRow((short) 0);
+
+            XSSFCellStyle myStyle = workbook.createCellStyle();
+            myStyle.setFillForegroundColor(new XSSFColor(Color.BLACK));
+            myStyle.setFillBackgroundColor(new XSSFColor(Color.WHITE));
+
+            XSSFFont font = workbook.createFont();
+            font.setColor(IndexedColors.BLACK.getIndex());
+            myStyle.setFont(font);
+
+            Cell c0 = rowhead.createCell(0);
+            c0.setCellValue("Part Number");
+            c0.setCellStyle(myStyle);
+
+            Cell c1 = rowhead.createCell(1);
+            c1.setCellValue("Part Name");
+            c1.setCellStyle(myStyle);
+
+            Cell c2 = rowhead.createCell(2);
+            c2.setCellValue("Location");
+            c2.setCellStyle(myStyle);
+
+            Cell c3 = rowhead.createCell(3);
+            c3.setCellValue("On Hand");
+            c3.setCellStyle(myStyle);
+
+            Cell c4 = rowhead.createCell(4);
+            c4.setCellValue("Landend Cost");
+            c4.setCellStyle(myStyle);
+
+            Cell c5 = rowhead.createCell(5);
+            c5.setCellValue("Price list");
+            c5.setCellStyle(myStyle);
+
+            statement = connection.prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                int i = rs.getRow();
+                XSSFRow row = sheet.createRow((short) i);
+                row.createCell(1).setCellValue(rs.getString("partnumber"));
+                row.createCell(2).setCellValue(rs.getString("partname"));
+                row.createCell(3).setCellValue(rs.getString("location"));
+                row.createCell(4).setCellValue(rs.getString("oh"));
+                row.createCell(5).setCellValue(rs.getString("landedcost"));
+                row.createCell(6).setCellValue(rs.getString("price"));
+                i++;
+            }
+            JFileChooser pilih = new JFileChooser();
+            FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                    "Excel File", "xlsx");
+            pilih.setFileFilter(filter);
+            int value = pilih.showSaveDialog(null);
+            if (value == JFileChooser.APPROVE_OPTION) {
+                File file = new File(pilih.getSelectedFile() + ".xlsx");
+                String yemi = file.getPath();
+                FileOutputStream fileOut = new FileOutputStream(yemi);
+                workbook.write(fileOut);
+                fileOut.close();
+                JOptionPane.showMessageDialog(null, "Data Berhasil Di Export",
+                        "Informasi", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(pMaster.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(pMaster.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
