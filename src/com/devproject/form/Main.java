@@ -33,12 +33,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFFont;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -91,7 +85,7 @@ public class Main extends javax.swing.JFrame {
         pMaster.addKeyListenerMasterSearch(new Aksi_mastersearchkey());
         pMaster.addActionListenerMasterrefresh(new Aksi_masterrefresh());
         pMaster.addActionListenerMasternew(new Aksi_masternew());
-        pMaster.addActionListenerMasternew(new Aksi_masterexport());
+        pMaster.addActionListenerMasterexport(new Aksi_masterexport());
         
         //pMdetail Action
         pMdetail.addActionListenerMdetailback(new Aksi_mdetailback());
@@ -128,7 +122,9 @@ public class Main extends javax.swing.JFrame {
 
         @Override
         public void actionPerformed(ActionEvent ae) {
+            getGlassPane().setVisible(true);
             exportpart();
+            getGlassPane().setVisible(false);
         }
     }
     
@@ -410,12 +406,12 @@ public class Main extends javax.swing.JFrame {
             while (rs.next()) {
                 int i = rs.getRow();
                 XSSFRow row = sheet.createRow((short) i);
-                row.createCell(1).setCellValue(rs.getString("partnumber"));
-                row.createCell(2).setCellValue(rs.getString("partname"));
-                row.createCell(3).setCellValue(rs.getString("location"));
-                row.createCell(4).setCellValue(rs.getString("oh"));
-                row.createCell(5).setCellValue(rs.getString("landedcost"));
-                row.createCell(6).setCellValue(rs.getString("price"));
+                row.createCell(0).setCellValue(rs.getString("partnumber"));
+                row.createCell(1).setCellValue(rs.getString("partname"));
+                row.createCell(2).setCellValue(rs.getString("location"));
+                row.createCell(3).setCellValue(rs.getString("oh"));
+                row.createCell(4).setCellValue(rs.getString("landedcost"));
+                row.createCell(5).setCellValue(rs.getString("price"));
                 i++;
             }
             JFileChooser pilih = new JFileChooser();
