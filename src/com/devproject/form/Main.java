@@ -323,8 +323,8 @@ public class Main extends javax.swing.JFrame {
             ArrayList dataHolder = readExcelFilePart(fileName);
 
             try {
-                String query = "insert into part (partnumber, partname, location, oh,"
-                        + "landedcost, price) values (?, ?, ?, ?, ?, ?)";
+                String query = "insert into part (partnumber, partname, zone, location, oh,"
+                        + "landedcost, price) values (?, ?, ?, ?, ?, ?, ?)";
                 connection = Koneksi.sambung();
                 PreparedStatement statement = null;
                 statement = connection.prepareStatement(query);
@@ -342,7 +342,7 @@ public class Main extends javax.swing.JFrame {
                         statement.setString(4, ((XSSFCell) cellStoreArrayList.get(3)).toString());
                         statement.setString(5, ((XSSFCell) cellStoreArrayList.get(4)).toString());
                         statement.setString(6, ((XSSFCell) cellStoreArrayList.get(5)).toString());
-
+                        statement.setString(7, ((XSSFCell) cellStoreArrayList.get(6)).toString());
                         statement.executeUpdate();
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -384,22 +384,26 @@ public class Main extends javax.swing.JFrame {
             Cell c1 = rowhead.createCell(1);
             c1.setCellValue("Part Name");
             c1.setCellStyle(myStyle);
-
+            
             Cell c2 = rowhead.createCell(2);
-            c2.setCellValue("Location");
+            c2.setCellValue("Zone");
             c2.setCellStyle(myStyle);
 
             Cell c3 = rowhead.createCell(3);
-            c3.setCellValue("On Hand");
+            c3.setCellValue("Location");
             c3.setCellStyle(myStyle);
 
             Cell c4 = rowhead.createCell(4);
-            c4.setCellValue("Landend Cost");
+            c4.setCellValue("On Hand");
             c4.setCellStyle(myStyle);
 
             Cell c5 = rowhead.createCell(5);
-            c5.setCellValue("Price list");
+            c5.setCellValue("Landend Cost");
             c5.setCellStyle(myStyle);
+
+            Cell c6 = rowhead.createCell(6);
+            c6.setCellValue("Price list");
+            c6.setCellStyle(myStyle);
 
             statement = connection.prepareStatement(sql);
             ResultSet rs = statement.executeQuery();
@@ -408,10 +412,11 @@ public class Main extends javax.swing.JFrame {
                 XSSFRow row = sheet.createRow((short) i);
                 row.createCell(0).setCellValue(rs.getString("partnumber"));
                 row.createCell(1).setCellValue(rs.getString("partname"));
-                row.createCell(2).setCellValue(rs.getString("location"));
-                row.createCell(3).setCellValue(rs.getString("oh"));
-                row.createCell(4).setCellValue(rs.getString("landedcost"));
-                row.createCell(5).setCellValue(rs.getString("price"));
+                row.createCell(2).setCellValue(rs.getString("zone"));
+                row.createCell(3).setCellValue(rs.getString("location"));
+                row.createCell(4).setCellValue(rs.getString("oh"));
+                row.createCell(5).setCellValue(rs.getString("landedcost"));
+                row.createCell(6).setCellValue(rs.getString("price"));
                 i++;
             }
             JFileChooser pilih = new JFileChooser();
@@ -441,13 +446,15 @@ public class Main extends javax.swing.JFrame {
         int xrow = pMaster.getTabelMaster().getSelectedRow();
         String partnumber = (String) pMaster.getTabelMaster().getValueAt(xrow, 0);
         String partname = (String) pMaster.getTabelMaster().getValueAt(xrow, 1);
-        String location = (String) pMaster.getTabelMaster().getValueAt(xrow, 2);
-        String onhand = (String) pMaster.getTabelMaster().getValueAt(xrow, 3);
-        String landedcost = (String) pMaster.getTabelMaster().getValueAt(xrow, 4);
-        String pricelist = (String) pMaster.getTabelMaster().getValueAt(xrow, 5);
+        String zone = (String) pMaster.getTabelMaster().getValueAt(xrow, 2);
+        String location = (String) pMaster.getTabelMaster().getValueAt(xrow, 3);
+        String onhand = (String) pMaster.getTabelMaster().getValueAt(xrow, 4);
+        String landedcost = (String) pMaster.getTabelMaster().getValueAt(xrow, 5);
+        String pricelist = (String) pMaster.getTabelMaster().getValueAt(xrow, 6);
         
         pMdetail.setTxtpartnumber(partnumber);
         pMdetail.setTxtpartname(partname);
+        pMdetail.setTxtzone(zone);
         pMdetail.setTxtlocation(location);
         pMdetail.setTxtoh(onhand);
         pMdetail.setTxtlandedcost(landedcost);
@@ -465,7 +472,7 @@ public class Main extends javax.swing.JFrame {
         };
         pMaster.getTabelMaster().setModel(model);
         
-        String sql = "SELECT * From part WHERE CONCAT (id, partnumber, partname, location,"
+        String sql = "SELECT * From part WHERE CONCAT (id, partnumber, partname, zone, location,"
                     + "oh, landedcost, price) LIKE '%"+pMaster.getTxtsearch().getText()+"%' ";
         
         try {
@@ -479,9 +486,10 @@ public class Main extends javax.swing.JFrame {
                 String kolom4 = rs.getString(5);
                 String kolom5 = rs.getString(6);
                 String kolom6 = rs.getString(7);
+                String kolom7 = rs.getString(8);
                 
                 String kolom [] = {kolom1, kolom2, kolom3, kolom4,
-                                    kolom5, kolom6};
+                                    kolom5, kolom6, kolom7};
                 
                 model.addRow(kolom);
             }
@@ -491,7 +499,7 @@ public class Main extends javax.swing.JFrame {
     }
     
     private void isitabelpart () {
-        Object header [] = {"Part Number", "Part Name", "Location", "On Hand",
+        Object header [] = {"Part Number", "Part Name", "Zone", "Location", "On Hand",
                             "Landed Cost", "Price List"};
    
         DefaultTableModel model = new DefaultTableModel(null, header) {
@@ -514,9 +522,10 @@ public class Main extends javax.swing.JFrame {
                 String kolom4 = rs.getString(5);
                 String kolom5 = rs.getString(6);
                 String kolom6 = rs.getString(7);
+                String kolom7 = rs.getString(8);
                 
                 String kolom [] = {kolom1, kolom2, kolom3, kolom4,
-                                    kolom5, kolom6};  
+                                    kolom5, kolom6, kolom7};  
                 model.addRow(kolom);
             }
         } catch (Exception e) {
@@ -527,13 +536,14 @@ public class Main extends javax.swing.JFrame {
     private void insertpart () {
         String partnumber = pMdetailnew.getTxtpartnumber().getText();
         String partname = pMdetailnew.getTxtpartname().getText();
+        String zone = pMdetailnew.getTxtzone().getText();
         String location = pMdetailnew.getTxtlocation().getText();
         String oh = pMdetailnew.getTxtoh().getText();
         String landedcost = pMdetailnew.getTxtlandedcost().getText();
         String price  = pMdetailnew.getTxtpricelist().getText();
         
-        String insert = "INSERT INTO part (partnumber,partname,location,oh,"
-            + "landedcost, price) VALUES (?,?,?,?,?,?);" ;
+        String insert = "INSERT INTO part (partnumber,partname,zone,location,oh,"
+            + "landedcost, price) VALUES (?,?,?,?,?,?,?);" ;
         
         ValidasiMaster valid = new ValidasiMaster();
         valid.validasi_part(partnumber);
@@ -547,6 +557,10 @@ public class Main extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Part Name masih Kosong !", "Informasi",
                     JOptionPane.INFORMATION_MESSAGE);
             pMdetailnew.getTxtpartname().requestFocus();
+            } else if (zone.equals("")) {
+                JOptionPane.showMessageDialog(null, "Zone masih Kosong !", "Informasi",
+                    JOptionPane.INFORMATION_MESSAGE);
+            pMdetailnew.getTxtzone().requestFocus();
             } else if (location.equals("")) {
                 JOptionPane.showMessageDialog(null, "Location masih Kosong !", "Informasi",
                     JOptionPane.INFORMATION_MESSAGE);
@@ -570,10 +584,11 @@ public class Main extends javax.swing.JFrame {
                     statement = connection.prepareStatement(insert);
                     statement.setString(1, partnumber);
                     statement.setString(2, partname);
-                    statement.setString(3, location);
-                    statement.setInt(4, Integer.valueOf(oh));
-                    statement.setInt(5, Integer.valueOf(landedcost));
-                    statement.setInt(6, Integer.valueOf(price));
+                    statement.setString(3, zone);
+                    statement.setString(4, location);
+                    statement.setInt(5, Integer.valueOf(oh));
+                    statement.setInt(6, Integer.valueOf(landedcost));
+                    statement.setInt(7, Integer.valueOf(price));
                     statement.executeUpdate();
                     statement.close();
                 } catch (Exception e) {
@@ -598,6 +613,7 @@ public class Main extends javax.swing.JFrame {
     private void clear_mdetailnew () {
         pMdetailnew.setTxtpartnumber("");
         pMdetailnew.setTxtpartname("");
+        pMdetailnew.setTxtzone("");
         pMdetailnew.setTxtlocation("");
         pMdetailnew.setTxtoh("");
         pMdetailnew.setTxtlandedcost("");
@@ -607,12 +623,13 @@ public class Main extends javax.swing.JFrame {
     private void updatepart () {  
         String partnumber = pMdetail.getTxtpartnumber().getText();
         String partname = pMdetail.getTxtpartname().getText();
+        String zone = pMdetail.getTxtzone().getText();
         String location = pMdetail.getTxtlocation().getText();
         String oh = pMdetail.getTxtoh().getText();
         String landedcost = pMdetail.getTxtlandedcost().getText();
         String price  = pMdetail.getTxtpricelist().getText();
         
-        String sql = "UPDATE part SET partname = '"+partname+"',"
+        String sql = "UPDATE part SET partname = '"+partname+"', zone = '"+zone+"', "
                 + "location= '"+location+"', oh = '"+oh+"',"
                 + "landedcost = '"+landedcost+"', price = '"+price+"' "
                 + "WHERE partnumber = '"+partnumber+"' ";
@@ -625,6 +642,10 @@ public class Main extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Part Name masih Kosong !", "Informasi",
                     JOptionPane.INFORMATION_MESSAGE);
             pMdetail.getTxtpartname().requestFocus();
+            } else if (zone.equals("")) {
+                JOptionPane.showMessageDialog(null, "Zone masih Kosong !", "Informasi",
+                    JOptionPane.INFORMATION_MESSAGE);
+            pMdetail.getTxtzone().requestFocus();
             } else if (location.equals("")) {
                 JOptionPane.showMessageDialog(null, "Location masih Kosong !", "Informasi",
                     JOptionPane.INFORMATION_MESSAGE);
@@ -666,6 +687,7 @@ public class Main extends javax.swing.JFrame {
         pMdetail.setTxtpartnumber("");
         pMdetail.setTxtpartname("");
         pMdetail.setTxtoh("");
+        pMdetail.setTxtzone("");
         pMdetail.setTxtlocation("");
         pMdetail.setTxtlandedcost("");
         pMdetail.setTxtpricelist("");

@@ -47,6 +47,10 @@ public class pMdetailnew extends javax.swing.JPanel {
     public void setTxtpricelist(String pricelist) {
         txtpricelist.setText(pricelist);
     }
+
+    public void setTxtzone(String zone) {
+        txtzone.setText(zone);
+    }
     
      public void addActionListenerMdetailback (ActionListener l) {
         btncancel.addActionListener(l);
@@ -74,6 +78,10 @@ public class pMdetailnew extends javax.swing.JPanel {
 
     public JTextField getTxtpricelist() {
         return txtpricelist;
+    }
+
+    public JTextField getTxtzone() {
+        return txtzone;
     }
     
      public void addActionListenerMdetailsave (ActionListener l) {
@@ -105,6 +113,8 @@ public class pMdetailnew extends javax.swing.JPanel {
         txtlandedcost = new javax.swing.JTextField();
         btncancel = new com.devproject.component.Tombol_Master();
         btnsave = new com.devproject.component.Tombol_Master();
+        jLabel8 = new javax.swing.JLabel();
+        txtzone = new javax.swing.JTextField();
         panelTransparan2 = new com.devproject.component.PanelTransparan();
         jLabel7 = new javax.swing.JLabel();
 
@@ -117,7 +127,7 @@ public class pMdetailnew extends javax.swing.JPanel {
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Price List");
-        panelTransparan1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 290, -1, -1));
+        panelTransparan1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 330, -1, -1));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
@@ -131,21 +141,21 @@ public class pMdetailnew extends javax.swing.JPanel {
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("Location");
+        jLabel4.setText("Zone");
         panelTransparan1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, -1, -1));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("On Hand");
-        panelTransparan1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 180, -1, -1));
+        panelTransparan1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 230, -1, -1));
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Landed Cost");
-        panelTransparan1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, -1, -1));
+        panelTransparan1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 280, -1, -1));
 
         txtpricelist.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        panelTransparan1.add(txtpricelist, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 290, 1210, 30));
+        panelTransparan1.add(txtpricelist, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 330, 1210, 30));
 
         txtpartnumber.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         panelTransparan1.add(txtpartnumber, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 30, 1210, 30));
@@ -154,7 +164,7 @@ public class pMdetailnew extends javax.swing.JPanel {
         panelTransparan1.add(txtpartname, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 80, 1210, 30));
 
         txtlocation.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        panelTransparan1.add(txtlocation, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 130, 1210, 30));
+        panelTransparan1.add(txtlocation, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 180, 1210, 30));
 
         txtoh.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         txtoh.addActionListener(new java.awt.event.ActionListener() {
@@ -162,22 +172,30 @@ public class pMdetailnew extends javax.swing.JPanel {
                 txtohActionPerformed(evt);
             }
         });
-        panelTransparan1.add(txtoh, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 180, 1210, 30));
+        panelTransparan1.add(txtoh, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 230, 1210, 30));
 
         txtlandedcost.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        panelTransparan1.add(txtlandedcost, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 240, 1210, 30));
+        panelTransparan1.add(txtlandedcost, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 280, 1210, 30));
 
         btncancel.setForeground(new java.awt.Color(255, 255, 255));
         btncancel.setText("Cancel");
         btncancel.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        panelTransparan1.add(btncancel, new org.netbeans.lib.awtextra.AbsoluteConstraints(1230, 340, 90, 30));
+        panelTransparan1.add(btncancel, new org.netbeans.lib.awtextra.AbsoluteConstraints(1230, 380, 90, 30));
 
         btnsave.setForeground(new java.awt.Color(255, 255, 255));
         btnsave.setText("Save");
         btnsave.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        panelTransparan1.add(btnsave, new org.netbeans.lib.awtextra.AbsoluteConstraints(1130, 340, 90, 30));
+        panelTransparan1.add(btnsave, new org.netbeans.lib.awtextra.AbsoluteConstraints(1130, 380, 90, 30));
 
-        panelBackground1.add(panelTransparan1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 1340, 610));
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel8.setText("Location");
+        panelTransparan1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 180, -1, -1));
+
+        txtzone.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        panelTransparan1.add(txtzone, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 130, 1210, 30));
+
+        panelBackground1.add(panelTransparan1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 60, 1340, 610));
 
         panelTransparan2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -206,6 +224,7 @@ public class pMdetailnew extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private com.devproject.component.PanelBackground panelBackground1;
     private com.devproject.component.PanelTransparan panelTransparan1;
     private com.devproject.component.PanelTransparan panelTransparan2;
@@ -215,6 +234,7 @@ public class pMdetailnew extends javax.swing.JPanel {
     private javax.swing.JTextField txtpartname;
     private javax.swing.JTextField txtpartnumber;
     private javax.swing.JTextField txtpricelist;
+    private javax.swing.JTextField txtzone;
     // End of variables declaration//GEN-END:variables
 
    
