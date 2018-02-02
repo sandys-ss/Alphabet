@@ -73,6 +73,13 @@
             <Property name="useNullLayout" type="boolean" value="false"/>
           </Layout>
         </Container>
+        <Component class="com.devproject.form.pLocation" name="pLocation">
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignCardLayout" value="org.netbeans.modules.form.compat2.layouts.DesignCardLayout$CardConstraintsDescription">
+              <CardConstraints cardName="card7"/>
+            </Constraint>
+          </Constraints>
+        </Component>
       </SubComponents>
     </Container>
   </SubComponents>

@@ -23,6 +23,10 @@ public class pMain extends javax.swing.JPanel {
     public void addActionListenerMaster (ActionListener l) {
         btnmaster.addActionListener(l);
     }
+    
+    public void addActionListenerLocation (ActionListener l) {
+        btnlocation.addActionListener(l);
+    }
    
     /**
      * This method is called from within the constructor to initialize the form.

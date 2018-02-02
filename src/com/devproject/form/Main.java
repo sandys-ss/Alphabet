@@ -7,6 +7,7 @@ package com.devproject.form;
 
 import com.devproject.conn.Koneksi;
 import com.devproject.validation.ValidasiMaster;
+import com.devproject.validation.ValidasiZone;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -65,6 +66,7 @@ public class Main extends javax.swing.JFrame {
         pCard.add(pMaster, "panelmaster");
         pCard.add(pMdetail, "panelmdetail");
         pCard.add(pMdetailnew, "panelmdetailnew");
+        pCard.add(pLocation, "panellocation");
         
         CardLayout c1 = (CardLayout)pCard.getLayout();
         c1.show(pCard, "panelutama"); 
@@ -76,6 +78,7 @@ public class Main extends javax.swing.JFrame {
     private void aksi_tombol () {
         //pMain Action
         pMain.addActionListenerMaster(new Aksi_menuUtama_master());
+        pMain.addActionListenerLocation(new Aksi_menuUtama_location());
         
         //pMaster Action
         pMaster.addActionListenerMasterImport(new Aksi_masterimport());
@@ -96,6 +99,10 @@ public class Main extends javax.swing.JFrame {
         pMdetailnew.addActionListenerMdetailsave(new Aksi_mdetailsave());
         pMdetailnew.addActionListenerMdetailback(new Aksi_mdetailnewback());
         
+        //pLocation
+        pLocation.addActionListenerLocationback(new Aksi_locationback());
+        pLocation.addActionListenerLocationinsert(new Aksi_locationinsert());
+        
     }
     
     class Aksi_menuUtama_master implements ActionListener {
@@ -105,6 +112,17 @@ public class Main extends javax.swing.JFrame {
             CardLayout c1 = (CardLayout) pCard.getLayout();
             c1.show(pCard, "panelmaster");
             isitabelpart();
+        }
+    }
+    
+    class Aksi_menuUtama_location implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            CardLayout c1 = (CardLayout) pCard.getLayout();
+            c1.show(pCard, "panellocation");
+            isitabelzone();
+            isitabellocation();
         }
     }
     
@@ -269,6 +287,25 @@ public class Main extends javax.swing.JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             deletepart();
+        }
+        
+    }
+    
+    class Aksi_locationback implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            CardLayout c1 = (CardLayout) pCard.getLayout();
+            c1.show(pCard, "panelutama");
+        }
+        
+    }
+    
+    class Aksi_locationinsert implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+           insertzone();
         }
         
     }
@@ -724,6 +761,108 @@ public class Main extends javax.swing.JFrame {
         }
         }
     }
+    
+    private void isitabelzone () {
+        Object header [] = {"Zone", "Description"};
+   
+        DefaultTableModel model = new DefaultTableModel(null, header) {
+            public boolean isCellEditable(int row, int column) {
+            return false;
+            }
+        };
+        pLocation.getTabelzone().setModel(model);
+        
+        String sql = "SELECT * FROM zone ORDER BY description";
+        
+        try {
+            connection = Koneksi.sambung();
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery(sql);
+            while (rs.next()) {
+                String kolom1 = rs.getString(2);
+                String kolom2 = rs.getString(3);
+                
+                String kolom [] = {kolom1, kolom2};  
+                model.addRow(kolom);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }    
+    }
+    
+    private void isitabellocation () {
+        Object header [] = {"Zone", "Location"};
+   
+        DefaultTableModel model = new DefaultTableModel(null, header) {
+            public boolean isCellEditable(int row, int column) {
+            return false;
+            }
+        };
+        pLocation.getTabellocation().setModel(model);
+        
+        String sql = "SELECT * FROM location ORDER BY location";
+        
+        try {
+            connection = Koneksi.sambung();
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery(sql);
+            while (rs.next()) {
+                String kolom1 = rs.getString(2);
+                String kolom2 = rs.getString(3);
+                
+                String kolom [] = {kolom1, kolom2};  
+                model.addRow(kolom);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }    
+    }
+    
+     private void insertzone () {
+        String zone = pLocation.getTxtzone().getText();
+        String description = pLocation.getTxtdescription().getText();
+        
+        String insert = "INSERT INTO zone (zone, description) VALUES (?,?);" ;
+        
+        ValidasiZone valid = new ValidasiZone();
+        valid.validasi_zone(zone);
+        
+        if (valid.xzone == "") {
+            if (zone.equals("")) {
+                JOptionPane.showMessageDialog(null, "Zone masih Kosong !", "Informasi",
+                    JOptionPane.INFORMATION_MESSAGE);
+            pMdetailnew.getTxtpartnumber().requestFocus();
+            } else if (description.equals("")) {
+                JOptionPane.showMessageDialog(null, "Description masih Kosong !", "Informasi",
+                    JOptionPane.INFORMATION_MESSAGE);
+            pMdetailnew.getTxtpartname().requestFocus();
+            } else {
+                try {
+                    connection = Koneksi.sambung();
+                    PreparedStatement statement = null;
+                    statement = connection.prepareStatement(insert);
+                    statement.setString(1, zone);
+                    statement.setString(2, description);
+                    statement.executeUpdate();
+                    statement.close();
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+                    JOptionPane.showMessageDialog(null,"Data berhasil Disimpan",
+                        "Informasi",JOptionPane.INFORMATION_MESSAGE);
+                clear_mdetailnew();
+                
+                pLocation.setTxtzone("");
+                pLocation.setTxtdescription("");
+                isitabelzone();
+            }    
+        } else {
+            JOptionPane.showMessageDialog(null,"Data Sudah Ada",
+                 "Informasi",JOptionPane.WARNING_MESSAGE);
+            pLocation.setTxtzone("");
+            pLocation.getTxtzone().requestFocus();
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -740,6 +879,7 @@ public class Main extends javax.swing.JFrame {
         pMdetail = new com.devproject.form.pMdetail();
         pMdetailnew = new com.devproject.form.pMdetailnew();
         pGlass = new com.devproject.form.pGlass();
+        pLocation = new com.devproject.form.pLocation();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -750,6 +890,7 @@ public class Main extends javax.swing.JFrame {
         pCard.add(pMdetail, "card4");
         pCard.add(pMdetailnew, "card5");
         pCard.add(pGlass, "card6");
+        pCard.add(pLocation, "card7");
 
         getContentPane().add(pCard, java.awt.BorderLayout.CENTER);
 
@@ -796,6 +937,7 @@ public class Main extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel pCard;
     private com.devproject.form.pGlass pGlass;
+    private com.devproject.form.pLocation pLocation;
     private com.devproject.form.pMain pMain;
     private com.devproject.form.pMaster pMaster;
     private com.devproject.form.pMdetail pMdetail;
