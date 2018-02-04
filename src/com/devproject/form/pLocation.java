@@ -6,6 +6,8 @@
 package com.devproject.form;
 
 import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseListener;
 import java.sql.Connection;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -32,6 +34,42 @@ public class pLocation extends javax.swing.JPanel {
     
     public void addActionListenerLocationinsert (ActionListener l) {
         btninsert.addActionListener(l);
+    }
+    
+    public void addActionListenerZoneTabel (MouseListener l) {
+         tabelzone.addMouseListener(l);
+    }
+    
+    public void addActionListenerLocationdelete (ActionListener l) {
+        btndelete.addActionListener(l);
+    }
+    
+    public void addActionListenerLocationsearch (ActionListener l) {
+        btnsearch.addActionListener(l);
+    }
+    
+    public void addKeyListenerLocationSearch (KeyListener l) {
+        txtsearch.addKeyListener(l);
+    }
+    
+    public void addActionListenerLocationinsert2 (ActionListener l) {
+        btninsert.addActionListener(l);
+    }
+    
+    public void addActionListenerZoneTabel2 (MouseListener l) {
+         tabelzone.addMouseListener(l);
+    }
+    
+    public void addActionListenerLocationdelete2 (ActionListener l) {
+        btndelete.addActionListener(l);
+    }
+    
+    public void addActionListenerLocationsearch2 (ActionListener l) {
+        btnsearch.addActionListener(l);
+    }
+    
+    public void addKeyListenerLocationSearch2 (KeyListener l) {
+        txtsearch.addKeyListener(l);
     }
 
     public JTable getTabellocation() {
@@ -61,6 +99,34 @@ public class pLocation extends javax.swing.JPanel {
     public void setTxtzone(String zone) {
         txtzone.setText(zone);
     }
+
+    public void setTxtsearch(String search) {
+        txtsearch.setText(search);
+    }
+
+    public JTextField getTxtdescription2() {
+        return txtdescription2;
+    }
+
+    public JTextField getTxtsearch2() {
+        return txtsearch2;
+    }
+
+    public JTextField getTxtzone2() {
+        return txtzone2;
+    }
+
+    public void setTxtdescription2(String description2) {
+        txtdescription2.setText("");
+    }
+
+    public void setTxtsearch2(String search2) {
+        txtsearch2.setText(search2);
+    }
+
+    public void setTxtzone2(String zone2) {
+        txtzone2.setText(zone2);
+    }
     
     
     
@@ -77,6 +143,14 @@ public class pLocation extends javax.swing.JPanel {
         panelTransparan4 = new com.devproject.component.PanelTransparan();
         jScrollPane2 = new javax.swing.JScrollPane();
         tabellocation = new javax.swing.JTable();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        txtzone2 = new javax.swing.JTextField();
+        txtdescription2 = new javax.swing.JTextField();
+        btninsert2 = new com.devproject.component.Tombol_Master();
+        btndelete2 = new com.devproject.component.Tombol_Master();
+        btnsearch2 = new com.devproject.component.Tombol_Master();
+        txtsearch2 = new javax.swing.JTextField();
         panelTransparan5 = new com.devproject.component.PanelTransparan();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabelzone = new javax.swing.JTable();
@@ -84,7 +158,6 @@ public class pLocation extends javax.swing.JPanel {
         txtsearch = new javax.swing.JTextField();
         txtzone = new javax.swing.JTextField();
         btnsearch = new com.devproject.component.Tombol_Master();
-        btnupdate = new com.devproject.component.Tombol_Master();
         btndelete = new com.devproject.component.Tombol_Master();
         txtdescription = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
@@ -113,6 +186,40 @@ public class pLocation extends javax.swing.JPanel {
         jScrollPane2.setViewportView(tabellocation);
 
         panelTransparan4.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 170, 640, 450));
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("Zone");
+        panelTransparan4.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, -1));
+
+        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setText("Description");
+        panelTransparan4.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, -1, -1));
+
+        txtzone2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        panelTransparan4.add(txtzone2, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 10, 540, 30));
+
+        txtdescription2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        panelTransparan4.add(txtdescription2, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 50, 540, 30));
+
+        btninsert2.setForeground(new java.awt.Color(255, 255, 255));
+        btninsert2.setText("Insert");
+        btninsert2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        panelTransparan4.add(btninsert2, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 90, 80, 30));
+
+        btndelete2.setForeground(new java.awt.Color(255, 255, 255));
+        btndelete2.setText("Delete");
+        btndelete2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        panelTransparan4.add(btndelete2, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 90, 80, 30));
+
+        btnsearch2.setForeground(new java.awt.Color(255, 255, 255));
+        btnsearch2.setText("Search");
+        btnsearch2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        panelTransparan4.add(btnsearch2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, 80, 30));
+
+        txtsearch2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        panelTransparan4.add(txtsearch2, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 130, 540, 30));
 
         panelBackground1.add(panelTransparan4, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 50, 660, 630));
 
@@ -151,11 +258,6 @@ public class pLocation extends javax.swing.JPanel {
         btnsearch.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         panelTransparan5.add(btnsearch, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, 80, 30));
 
-        btnupdate.setForeground(new java.awt.Color(255, 255, 255));
-        btnupdate.setText("Update");
-        btnupdate.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        panelTransparan5.add(btnupdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 90, 80, 30));
-
         btndelete.setForeground(new java.awt.Color(255, 255, 255));
         btndelete.setText("Delete");
         btndelete.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -172,7 +274,7 @@ public class pLocation extends javax.swing.JPanel {
         btninsert.setForeground(new java.awt.Color(255, 255, 255));
         btninsert.setText("Insert");
         btninsert.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        panelTransparan5.add(btninsert, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 90, 80, 30));
+        panelTransparan5.add(btninsert, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 90, 80, 30));
 
         panelBackground1.add(panelTransparan5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, 660, 630));
 
@@ -193,12 +295,16 @@ public class pLocation extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.devproject.component.Tombol_Master btnback;
     private com.devproject.component.Tombol_Master btndelete;
+    private com.devproject.component.Tombol_Master btndelete2;
     private com.devproject.component.Tombol_Master btninsert;
+    private com.devproject.component.Tombol_Master btninsert2;
     private com.devproject.component.Tombol_Master btnsearch;
-    private com.devproject.component.Tombol_Master btnupdate;
+    private com.devproject.component.Tombol_Master btnsearch2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private com.devproject.component.PanelBackground panelBackground1;
@@ -207,7 +313,10 @@ public class pLocation extends javax.swing.JPanel {
     private javax.swing.JTable tabellocation;
     private javax.swing.JTable tabelzone;
     private javax.swing.JTextField txtdescription;
+    private javax.swing.JTextField txtdescription2;
     private javax.swing.JTextField txtsearch;
+    private javax.swing.JTextField txtsearch2;
     private javax.swing.JTextField txtzone;
+    private javax.swing.JTextField txtzone2;
     // End of variables declaration//GEN-END:variables
 }

@@ -102,6 +102,16 @@ public class Main extends javax.swing.JFrame {
         //pLocation
         pLocation.addActionListenerLocationback(new Aksi_locationback());
         pLocation.addActionListenerLocationinsert(new Aksi_locationinsert());
+        pLocation.addActionListenerZoneTabel(new Aksi_zonetabel());
+        pLocation.addActionListenerLocationdelete(new Aksi_locationdelete());
+        pLocation.addActionListenerLocationsearch(new Aksi_locationsearch());
+        pLocation.addKeyListenerLocationSearch(new Aksi_locationsearchkey());
+        
+        pLocation.addActionListenerLocationinsert2(new Aksi_locationinsert2());
+        pLocation.addActionListenerZoneTabel2(new Aksi_zonetabel2());
+        pLocation.addActionListenerLocationdelete2(new Aksi_locationdelete2());
+        pLocation.addActionListenerLocationsearch2(new Aksi_locationsearch2());
+        pLocation.addKeyListenerLocationSearch2(new Aksi_locationsearchkey2());
         
     }
     
@@ -309,7 +319,178 @@ public class Main extends javax.swing.JFrame {
         }
         
     }
-       
+    
+    class Aksi_zonetabel implements MouseListener {
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            int x = e.getClickCount();
+            if (x == 2) {
+               int xrow = pLocation.getTabelzone().getSelectedRow();
+               String zone = (String) pLocation.getTabelzone().getValueAt(xrow, 0);
+               String description = (String) pLocation.getTabelzone().getValueAt(xrow, 1);
+               
+               pLocation.setTxtzone(zone);
+               pLocation.setTxtdescription(description);
+            }
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+            
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+            
+        }
+
+    }
+    
+    class Aksi_locationdelete implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+           deletelocation();
+        }
+        
+    }
+    
+    class Aksi_locationsearchkey implements KeyListener {
+
+        @Override
+        public void keyTyped(KeyEvent e) {
+
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+           if( e.getKeyCode() == KeyEvent.VK_ENTER ) {
+               searchresultzone();
+           } else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+               isitabelzone();
+           } else if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+               isitabelzone();
+               pLocation.setTxtsearch("");
+           }
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+            
+        }
+        
+    }
+    
+    class Aksi_locationsearch implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+           searchresultzone();
+        }
+        
+    }
+    
+    class Aksi_locationinsert2 implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+           insertzone();
+        }
+        
+    }
+    
+    class Aksi_zonetabel2 implements MouseListener {
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            int x = e.getClickCount();
+            if (x == 2) {
+               int xrow = pLocation.getTabelzone().getSelectedRow();
+               String zone = (String) pLocation.getTabelzone().getValueAt(xrow, 0);
+               String description = (String) pLocation.getTabelzone().getValueAt(xrow, 1);
+               
+               pLocation.setTxtzone(zone);
+               pLocation.setTxtdescription(description);
+            }
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+            
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+            
+        }
+
+    }
+    
+    class Aksi_locationdelete2 implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+           deletelocation();
+        }
+        
+    }
+    
+    class Aksi_locationsearchkey2 implements KeyListener {
+
+        @Override
+        public void keyTyped(KeyEvent e) {
+
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+           if( e.getKeyCode() == KeyEvent.VK_ENTER ) {
+               searchresultzone();
+           } else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+               isitabelzone();
+           } else if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+               isitabelzone();
+               pLocation.setTxtsearch("");
+           }
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+            
+        }
+        
+    }
+    
+    class Aksi_locationsearch2 implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+           searchresultzone();
+        }
+        
+    }
+      
     // Method
     private static ArrayList readExcelFilePart(String fileName) {
         ArrayList cellArrayLisstHolder = new ArrayList();
@@ -825,17 +1006,17 @@ public class Main extends javax.swing.JFrame {
         String insert = "INSERT INTO zone (zone, description) VALUES (?,?);" ;
         
         ValidasiZone valid = new ValidasiZone();
-        valid.validasi_zone(zone);
+        valid.validasi_zone(description);
         
-        if (valid.xzone == "") {
+        if (valid.xdescription == "") {
             if (zone.equals("")) {
                 JOptionPane.showMessageDialog(null, "Zone masih Kosong !", "Informasi",
                     JOptionPane.INFORMATION_MESSAGE);
-            pMdetailnew.getTxtpartnumber().requestFocus();
+            pLocation.getTxtzone().requestFocus();
             } else if (description.equals("")) {
                 JOptionPane.showMessageDialog(null, "Description masih Kosong !", "Informasi",
                     JOptionPane.INFORMATION_MESSAGE);
-            pMdetailnew.getTxtpartname().requestFocus();
+            pLocation.getTxtdescription().requestFocus();
             } else {
                 try {
                     connection = Koneksi.sambung();
@@ -860,9 +1041,185 @@ public class Main extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null,"Data Sudah Ada",
                  "Informasi",JOptionPane.WARNING_MESSAGE);
             pLocation.setTxtzone("");
+            pLocation.setTxtdescription("");
             pLocation.getTxtzone().requestFocus();
         }
     }
+     
+    private void insertzone2 () {
+        String zone = pLocation.getTxtzone().getText();
+        String description = pLocation.getTxtdescription().getText();
+        
+        String insert = "INSERT INTO zone (zone, description) VALUES (?,?);" ;
+        
+        ValidasiZone valid = new ValidasiZone();
+        valid.validasi_zone(description);
+        
+        if (valid.xdescription == "") {
+            if (zone.equals("")) {
+                JOptionPane.showMessageDialog(null, "Zone masih Kosong !", "Informasi",
+                    JOptionPane.INFORMATION_MESSAGE);
+            pLocation.getTxtzone().requestFocus();
+            } else if (description.equals("")) {
+                JOptionPane.showMessageDialog(null, "Description masih Kosong !", "Informasi",
+                    JOptionPane.INFORMATION_MESSAGE);
+            pLocation.getTxtdescription().requestFocus();
+            } else {
+                try {
+                    connection = Koneksi.sambung();
+                    PreparedStatement statement = null;
+                    statement = connection.prepareStatement(insert);
+                    statement.setString(1, zone);
+                    statement.setString(2, description);
+                    statement.executeUpdate();
+                    statement.close();
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+                    JOptionPane.showMessageDialog(null,"Data berhasil Disimpan",
+                        "Informasi",JOptionPane.INFORMATION_MESSAGE);
+                clear_mdetailnew();
+                
+                pLocation.setTxtzone("");
+                pLocation.setTxtdescription("");
+                isitabelzone();
+            }    
+        } else {
+            JOptionPane.showMessageDialog(null,"Data Sudah Ada",
+                 "Informasi",JOptionPane.WARNING_MESSAGE);
+            pLocation.setTxtzone("");
+            pLocation.setTxtdescription("");
+            pLocation.getTxtzone().requestFocus();
+        }
+    }
+     
+    private void deletelocation () {
+        String zone = pLocation.getTxtzone().getText();
+        String description = pLocation.getTxtdescription().getText();
+        String sql = "DELETE FROM zone WHERE zone = '"+zone+"' AND "
+                + "description = '"+description+"' ";
+        
+        if (zone.equals("")|| description.equals("")) {
+            JOptionPane.showMessageDialog(null, "Zone atau Description masih kosong", "Informasi",
+                    JOptionPane.WARNING_MESSAGE);
+            pLocation.getTxtzone().requestFocus();
+        } else {
+            int pilih = JOptionPane.showConfirmDialog(null, "Yakin Mau Hapus Data ini ?",
+                "Warning", JOptionPane.YES_NO_OPTION);
+        
+        if (pilih == JOptionPane.YES_OPTION) {
+           try {
+               connection = Koneksi.sambung();
+               PreparedStatement statement = null;
+               statement = connection.prepareStatement(sql);
+               Statement stm = connection.createStatement();
+               stm.execute(sql);
+               stm.close();
+           } catch (Exception e) {
+               System.out.println(e.getMessage());
+           }
+            pLocation.setTxtzone("");
+            pLocation.setTxtdescription("");
+            pLocation.getTxtzone().requestFocus();
+            isitabelzone();
+        }
+        }
+    } 
+    
+    private void deletelocation2 () {
+        String zone = pLocation.getTxtzone().getText();
+        String description = pLocation.getTxtdescription().getText();
+        String sql = "DELETE FROM zone WHERE zone = '"+zone+"' AND "
+                + "description = '"+description+"' ";
+        
+        if (zone.equals("")|| description.equals("")) {
+            JOptionPane.showMessageDialog(null, "Zone atau Description masih kosong", "Informasi",
+                    JOptionPane.WARNING_MESSAGE);
+            pLocation.getTxtzone().requestFocus();
+        } else {
+            int pilih = JOptionPane.showConfirmDialog(null, "Yakin Mau Hapus Data ini ?",
+                "Warning", JOptionPane.YES_NO_OPTION);
+        
+        if (pilih == JOptionPane.YES_OPTION) {
+           try {
+               connection = Koneksi.sambung();
+               PreparedStatement statement = null;
+               statement = connection.prepareStatement(sql);
+               Statement stm = connection.createStatement();
+               stm.execute(sql);
+               stm.close();
+           } catch (Exception e) {
+               System.out.println(e.getMessage());
+           }
+            pLocation.setTxtzone("");
+            pLocation.setTxtdescription("");
+            pLocation.getTxtzone().requestFocus();
+            isitabelzone();
+        }
+        }
+    } 
+    
+    private void searchresultzone () {
+        Object header [] = {"Zone", "Description"};
+   
+        DefaultTableModel model = new DefaultTableModel(null, header) {
+            public boolean isCellEditable(int row, int column) {
+            return false;
+            }
+        };
+        pLocation.getTabelzone().setModel(model);
+        
+        String sql = "SELECT * From zone WHERE CONCAT (id, zone, description)"
+                    + "LIKE '%"+pLocation.getTxtsearch().getText()+"%' ";
+        
+        try {
+            connection = Koneksi.sambung();
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery(sql);
+            while (rs.next()) {
+                String kolom1 = rs.getString(2);
+                String kolom2 = rs.getString(3);
+                
+                String kolom [] = {kolom1, kolom2};
+                
+                model.addRow(kolom);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    private void searchresultzone2 () {
+        Object header [] = {"Zone", "Description"};
+   
+        DefaultTableModel model = new DefaultTableModel(null, header) {
+            public boolean isCellEditable(int row, int column) {
+            return false;
+            }
+        };
+        pLocation.getTabelzone().setModel(model);
+        
+        String sql = "SELECT * From zone WHERE CONCAT (id, zone, description)"
+                    + "LIKE '%"+pLocation.getTxtsearch().getText()+"%' ";
+        
+        try {
+            connection = Koneksi.sambung();
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery(sql);
+            while (rs.next()) {
+                String kolom1 = rs.getString(2);
+                String kolom2 = rs.getString(3);
+                
+                String kolom [] = {kolom1, kolom2};
+                
+                model.addRow(kolom);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.

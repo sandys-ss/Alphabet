@@ -27,10 +27,10 @@ public class ValidasiZone {
         
     }
     
-    public void validasi_zone (String xzones) {
+    public void validasi_zone (String xdescript) {
         
         try {
-            String cari = "SELECT * From zone WHERE zone = '" +xzones+"' ";
+            String cari = "SELECT * From zone WHERE description = '" +xdescript+"' ";
             Statement stm = connection.createStatement();
             ResultSet rs = stm.executeQuery(cari);
             
