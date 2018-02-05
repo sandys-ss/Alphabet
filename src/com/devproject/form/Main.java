@@ -269,6 +269,7 @@ public class Main extends javax.swing.JFrame {
         public void actionPerformed(ActionEvent e) {
             CardLayout c1 = (CardLayout) pCard.getLayout();
             c1.show(pCard, "panelmdetailnew");
+            isicombomdetailnew();
         }
         
     }
@@ -566,6 +567,7 @@ public class Main extends javax.swing.JFrame {
         }
         
     }
+
       
     // Method
     private static ArrayList readExcelFilePart(String fileName) {
@@ -947,7 +949,7 @@ public class Main extends javax.swing.JFrame {
         pMdetail.setTxtpartnumber(partnumber);
         pMdetail.setTxtpartname(partname);
         pMdetail.setCmbzone(zone,zone);
-        pMdetail.setTxtlocation(location);
+        pMdetail.setCmblocation(location,location);
         pMdetail.setTxtoh(onhand);
         pMdetail.setTxtlandedcost(landedcost);
         pMdetail.setTxtpricelist(pricelist);
@@ -960,6 +962,20 @@ public class Main extends javax.swing.JFrame {
             ResultSet rs = stm.executeQuery(sql);
             while (rs.next()) {
                 pMdetail.setCmbzone(rs.getString("description"), zone);
+            }
+               rs.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        
+        String sql2 = "SELECT location FROM location ORDER BY location";
+        
+        try {
+            connection = Koneksi.sambung();
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery(sql2);
+            while (rs.next()) {
+                pMdetail.setCmblocation(rs.getString("location"), location);
             }
                rs.close();
         } catch (Exception e) {
@@ -1131,7 +1147,7 @@ public class Main extends javax.swing.JFrame {
         String partnumber = pMdetail.getTxtpartnumber().getText();
         String partname = pMdetail.getTxtpartname().getText();
         String zone = pMdetail.getCmbzone().getSelectedItem().toString();
-        String location = pMdetail.getTxtlocation().getText();
+        String location = pMdetail.getCmblocation().getSelectedItem().toString();
         String oh = pMdetail.getTxtoh().getText();
         String landedcost = pMdetail.getTxtlandedcost().getText();
         String price  = pMdetail.getTxtpricelist().getText();
@@ -1156,7 +1172,7 @@ public class Main extends javax.swing.JFrame {
             } else if (location.equals("")) {
                 JOptionPane.showMessageDialog(null, "Location masih Kosong !", "Informasi",
                     JOptionPane.INFORMATION_MESSAGE);
-            pMdetail.getTxtlocation().requestFocus();
+            pMdetail.getCmblocation().requestFocus();
             } else if (oh.equals("")) {
                 JOptionPane.showMessageDialog(null, "On Hand masih Kosong !", "Informasi",
                     JOptionPane.INFORMATION_MESSAGE);
@@ -1195,7 +1211,7 @@ public class Main extends javax.swing.JFrame {
         pMdetail.setTxtpartname("");
         pMdetail.setTxtoh("");
         pMdetail.setCmbzone("", "");
-        pMdetail.setTxtlocation("");
+        pMdetail.setCmblocation("", "");
         pMdetail.setTxtlandedcost("");
         pMdetail.setTxtpricelist("");
     }
@@ -1522,21 +1538,34 @@ public class Main extends javax.swing.JFrame {
         isitabellocation();
     }
     
-    public void isicombozone () {
-        String sql = "SELECT description FROM zone ORDER BY description";
-        
-        try {
-            connection = Koneksi.sambung();
-            Statement stm = connection.createStatement();
-            ResultSet rs = stm.executeQuery(sql);
-            while (rs.next()) {
-                pMdetail.setCmbzone(rs.getString("description"), "A2");
+    public void isicombomdetailnew () {
+         String sql = "SELECT description FROM zone ORDER BY description";
+
+            try {
+                connection = Koneksi.sambung();
+                Statement stm = connection.createStatement();
+                ResultSet rs = stm.executeQuery(sql);
+                while (rs.next()) {
+                    pMdetailnew.setCmbzone(rs.getString("description"));
+                }
+                rs.close();
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
             }
-               rs.close();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-            //cmbkodecust.setSelectedIndex(-1);
+
+            String sql2 = "SELECT location FROM location ORDER BY location";
+
+            try {
+                connection = Koneksi.sambung();
+                Statement stm = connection.createStatement();
+                ResultSet rs = stm.executeQuery(sql2);
+                while (rs.next()) {
+                    pMdetailnew.setCmblocation(rs.getString("location"));
+                }
+                rs.close();
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
     }
 
     /**

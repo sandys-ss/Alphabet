@@ -33,10 +33,6 @@ public class pMdetail extends javax.swing.JPanel {
         txtlandedcost.setText(landedcost);
     }
 
-    public void setTxtlocation(String location) {
-        txtlocation.setText(location);
-    }
-
     public void setTxtoh(String oh) {
         txtoh.setText(oh);
     }
@@ -55,10 +51,6 @@ public class pMdetail extends javax.swing.JPanel {
 
     public JTextField getTxtlandedcost() {
         return txtlandedcost;
-    }
-
-    public JTextField getTxtlocation() {
-        return txtlocation;
     }
 
     public JTextField getTxtoh() {
@@ -93,6 +85,15 @@ public class pMdetail extends javax.swing.JPanel {
         cmbzone.addItem(zone);
         cmbzone.setSelectedItem(select);
     }
+
+    public JComboBox<String> getCmblocation() {
+        return cmblocation;
+    }
+    
+    public void setCmblocation(String location, String select) {
+        cmblocation.addItem(location);
+        cmblocation.setSelectedItem(select);
+    }
    
 
     
@@ -115,7 +116,6 @@ public class pMdetail extends javax.swing.JPanel {
         jLabel6 = new javax.swing.JLabel();
         txtpricelist = new javax.swing.JTextField();
         txtpartnumber = new javax.swing.JTextField();
-        txtlocation = new javax.swing.JTextField();
         txtoh = new javax.swing.JTextField();
         txtlandedcost = new javax.swing.JTextField();
         btncancel = new com.devproject.component.Tombol_Master();
@@ -124,6 +124,7 @@ public class pMdetail extends javax.swing.JPanel {
         jLabel8 = new javax.swing.JLabel();
         txtpartname = new javax.swing.JTextField();
         cmbzone = new javax.swing.JComboBox<>();
+        cmblocation = new javax.swing.JComboBox<>();
         panelTransparan2 = new com.devproject.component.PanelTransparan();
         jLabel7 = new javax.swing.JLabel();
 
@@ -170,9 +171,6 @@ public class pMdetail extends javax.swing.JPanel {
         txtpartnumber.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         panelTransparan1.add(txtpartnumber, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 30, 1210, 30));
 
-        txtlocation.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        panelTransparan1.add(txtlocation, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 180, 1210, 30));
-
         txtoh.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         txtoh.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -210,6 +208,9 @@ public class pMdetail extends javax.swing.JPanel {
         cmbzone.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         panelTransparan1.add(cmbzone, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 130, 1210, 30));
 
+        cmblocation.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        panelTransparan1.add(cmblocation, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 180, 1210, 30));
+
         panelBackground1.add(panelTransparan1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 1340, 610));
 
         panelTransparan2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -233,6 +234,7 @@ public class pMdetail extends javax.swing.JPanel {
     private com.devproject.component.Tombol_Master btncancel;
     private com.devproject.component.Tombol_Master btndelete;
     private com.devproject.component.Tombol_Master btnupdate;
+    private javax.swing.JComboBox<String> cmblocation;
     private javax.swing.JComboBox<String> cmbzone;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -246,7 +248,6 @@ public class pMdetail extends javax.swing.JPanel {
     private com.devproject.component.PanelTransparan panelTransparan1;
     private com.devproject.component.PanelTransparan panelTransparan2;
     private javax.swing.JTextField txtlandedcost;
-    private javax.swing.JTextField txtlocation;
     private javax.swing.JTextField txtoh;
     private javax.swing.JTextField txtpartname;
     private javax.swing.JTextField txtpartnumber;
