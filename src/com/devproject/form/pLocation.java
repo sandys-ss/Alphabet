@@ -53,23 +53,47 @@ public class pLocation extends javax.swing.JPanel {
     }
     
     public void addActionListenerLocationinsert2 (ActionListener l) {
-        btninsert.addActionListener(l);
+        btninsert2.addActionListener(l);
     }
     
     public void addActionListenerZoneTabel2 (MouseListener l) {
-         tabelzone.addMouseListener(l);
+         tabellocation.addMouseListener(l);
     }
     
     public void addActionListenerLocationdelete2 (ActionListener l) {
-        btndelete.addActionListener(l);
+        btndelete2.addActionListener(l);
     }
     
     public void addActionListenerLocationsearch2 (ActionListener l) {
-        btnsearch.addActionListener(l);
+        btnsearch2.addActionListener(l);
     }
     
     public void addKeyListenerLocationSearch2 (KeyListener l) {
-        txtsearch.addKeyListener(l);
+        txtsearch2.addKeyListener(l);
+    }
+    
+    public void addActionListenerLocationimport (ActionListener l) {
+        btnimport.addActionListener(l);
+    }
+    
+    public void addActionListenerLocationclear (ActionListener l) {
+        btnClear.addActionListener(l);
+    }
+    
+    public void addActionListenerLocationimport2 (ActionListener l) {
+        btnimport2.addActionListener(l);
+    }
+    
+    public void addActionListenerLocationclear2 (ActionListener l) {
+        btnclear2.addActionListener(l);
+    }
+    
+    public void addActionListenerLocationexport (ActionListener l) {
+        btnexport.addActionListener(l);
+    }
+     
+    public void addActionListenerLocationexport2 (ActionListener l) {
+        btnexport2.addActionListener(l);
     }
 
     public JTable getTabellocation() {
@@ -117,7 +141,7 @@ public class pLocation extends javax.swing.JPanel {
     }
 
     public void setTxtdescription2(String description2) {
-        txtdescription2.setText("");
+        txtdescription2.setText(description2);
     }
 
     public void setTxtsearch2(String search2) {
@@ -151,6 +175,9 @@ public class pLocation extends javax.swing.JPanel {
         btndelete2 = new com.devproject.component.Tombol_Master();
         btnsearch2 = new com.devproject.component.Tombol_Master();
         txtsearch2 = new javax.swing.JTextField();
+        btnimport2 = new com.devproject.component.Tombol_Master();
+        btnclear2 = new com.devproject.component.Tombol_Master();
+        btnexport2 = new com.devproject.component.Tombol_Master();
         panelTransparan5 = new com.devproject.component.PanelTransparan();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabelzone = new javax.swing.JTable();
@@ -162,6 +189,9 @@ public class pLocation extends javax.swing.JPanel {
         txtdescription = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         btninsert = new com.devproject.component.Tombol_Master();
+        btnimport = new com.devproject.component.Tombol_Master();
+        btnClear = new com.devproject.component.Tombol_Master();
+        btnexport = new com.devproject.component.Tombol_Master();
         btnback = new com.devproject.component.Tombol_Master();
         jLabel1 = new javax.swing.JLabel();
 
@@ -206,12 +236,12 @@ public class pLocation extends javax.swing.JPanel {
         btninsert2.setForeground(new java.awt.Color(255, 255, 255));
         btninsert2.setText("Insert");
         btninsert2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        panelTransparan4.add(btninsert2, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 90, 80, 30));
+        panelTransparan4.add(btninsert2, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 90, 80, 30));
 
         btndelete2.setForeground(new java.awt.Color(255, 255, 255));
         btndelete2.setText("Delete");
         btndelete2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        panelTransparan4.add(btndelete2, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 90, 80, 30));
+        panelTransparan4.add(btndelete2, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 90, 80, 30));
 
         btnsearch2.setForeground(new java.awt.Color(255, 255, 255));
         btnsearch2.setText("Search");
@@ -220,6 +250,21 @@ public class pLocation extends javax.swing.JPanel {
 
         txtsearch2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         panelTransparan4.add(txtsearch2, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 130, 540, 30));
+
+        btnimport2.setForeground(new java.awt.Color(255, 255, 255));
+        btnimport2.setText("Import");
+        btnimport2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        panelTransparan4.add(btnimport2, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 90, 80, 30));
+
+        btnclear2.setForeground(new java.awt.Color(255, 255, 255));
+        btnclear2.setText("Clear");
+        btnclear2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        panelTransparan4.add(btnclear2, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 90, 80, 30));
+
+        btnexport2.setForeground(new java.awt.Color(255, 255, 255));
+        btnexport2.setText("Export");
+        btnexport2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        panelTransparan4.add(btnexport2, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 90, 80, 30));
 
         panelBackground1.add(panelTransparan4, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 50, 660, 630));
 
@@ -261,7 +306,7 @@ public class pLocation extends javax.swing.JPanel {
         btndelete.setForeground(new java.awt.Color(255, 255, 255));
         btndelete.setText("Delete");
         btndelete.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        panelTransparan5.add(btndelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 90, 80, 30));
+        panelTransparan5.add(btndelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 90, 80, 30));
 
         txtdescription.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         panelTransparan5.add(txtdescription, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 50, 540, 30));
@@ -274,7 +319,22 @@ public class pLocation extends javax.swing.JPanel {
         btninsert.setForeground(new java.awt.Color(255, 255, 255));
         btninsert.setText("Insert");
         btninsert.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        panelTransparan5.add(btninsert, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 90, 80, 30));
+        panelTransparan5.add(btninsert, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 90, 80, 30));
+
+        btnimport.setForeground(new java.awt.Color(255, 255, 255));
+        btnimport.setText("Import");
+        btnimport.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        panelTransparan5.add(btnimport, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 90, 80, 30));
+
+        btnClear.setForeground(new java.awt.Color(255, 255, 255));
+        btnClear.setText("Clear");
+        btnClear.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        panelTransparan5.add(btnClear, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 90, 80, 30));
+
+        btnexport.setForeground(new java.awt.Color(255, 255, 255));
+        btnexport.setText("Export");
+        btnexport.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        panelTransparan5.add(btnexport, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 90, 80, 30));
 
         panelBackground1.add(panelTransparan5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, 660, 630));
 
@@ -293,9 +353,15 @@ public class pLocation extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private com.devproject.component.Tombol_Master btnClear;
     private com.devproject.component.Tombol_Master btnback;
+    private com.devproject.component.Tombol_Master btnclear2;
     private com.devproject.component.Tombol_Master btndelete;
     private com.devproject.component.Tombol_Master btndelete2;
+    private com.devproject.component.Tombol_Master btnexport;
+    private com.devproject.component.Tombol_Master btnexport2;
+    private com.devproject.component.Tombol_Master btnimport;
+    private com.devproject.component.Tombol_Master btnimport2;
     private com.devproject.component.Tombol_Master btninsert;
     private com.devproject.component.Tombol_Master btninsert2;
     private com.devproject.component.Tombol_Master btnsearch;

@@ -6,6 +6,7 @@
 package com.devproject.form;
 
 import com.devproject.conn.Koneksi;
+import com.devproject.validation.ValidasiLocation;
 import com.devproject.validation.ValidasiMaster;
 import com.devproject.validation.ValidasiZone;
 import java.awt.CardLayout;
@@ -106,12 +107,19 @@ public class Main extends javax.swing.JFrame {
         pLocation.addActionListenerLocationdelete(new Aksi_locationdelete());
         pLocation.addActionListenerLocationsearch(new Aksi_locationsearch());
         pLocation.addKeyListenerLocationSearch(new Aksi_locationsearchkey());
+        pLocation.addActionListenerLocationimport(new Aksi_locationimport());
+        pLocation.addActionListenerLocationclear(new Aksi_locationclear());
+        pLocation.addActionListenerLocationexport(new Aksi_locationexport());
         
         pLocation.addActionListenerLocationinsert2(new Aksi_locationinsert2());
         pLocation.addActionListenerZoneTabel2(new Aksi_zonetabel2());
         pLocation.addActionListenerLocationdelete2(new Aksi_locationdelete2());
         pLocation.addActionListenerLocationsearch2(new Aksi_locationsearch2());
         pLocation.addKeyListenerLocationSearch2(new Aksi_locationsearchkey2());
+        pLocation.addActionListenerLocationimport2(new Aksi_locationimport2());
+        pLocation.addActionListenerLocationclear2(new Aksi_locationclear2());
+        pLocation.addActionListenerLocationimport(new Aksi_locationimport());
+        pLocation.addActionListenerLocationexport2(new Aksi_locationexport2());
         
     }
     
@@ -307,6 +315,8 @@ public class Main extends javax.swing.JFrame {
         public void actionPerformed(ActionEvent e) {
             CardLayout c1 = (CardLayout) pCard.getLayout();
             c1.show(pCard, "panelutama");
+            clearzone();
+            clearzone2();
         }
         
     }
@@ -405,7 +415,7 @@ public class Main extends javax.swing.JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-           insertzone();
+           insertzone2();
         }
         
     }
@@ -416,12 +426,12 @@ public class Main extends javax.swing.JFrame {
         public void mouseClicked(MouseEvent e) {
             int x = e.getClickCount();
             if (x == 2) {
-               int xrow = pLocation.getTabelzone().getSelectedRow();
-               String zone = (String) pLocation.getTabelzone().getValueAt(xrow, 0);
-               String description = (String) pLocation.getTabelzone().getValueAt(xrow, 1);
+               int xrow = pLocation.getTabellocation().getSelectedRow();
+               String zone = (String) pLocation.getTabellocation().getValueAt(xrow, 0);
+               String description = (String) pLocation.getTabellocation().getValueAt(xrow, 1);
                
-               pLocation.setTxtzone(zone);
-               pLocation.setTxtdescription(description);
+               pLocation.setTxtzone2(zone);
+               pLocation.setTxtdescription2(description);
             }
         }
 
@@ -451,7 +461,7 @@ public class Main extends javax.swing.JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-           deletelocation();
+           deletelocation2();
         }
         
     }
@@ -466,12 +476,12 @@ public class Main extends javax.swing.JFrame {
         @Override
         public void keyPressed(KeyEvent e) {
            if( e.getKeyCode() == KeyEvent.VK_ENTER ) {
-               searchresultzone();
+               searchresultzone2();
            } else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
-               isitabelzone();
+               isitabellocation();
            } else if (e.getKeyCode() == KeyEvent.VK_DELETE) {
-               isitabelzone();
-               pLocation.setTxtsearch("");
+               isitabellocation();
+               pLocation.setTxtsearch2("");
            }
         }
 
@@ -486,7 +496,73 @@ public class Main extends javax.swing.JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-           searchresultzone();
+           searchresultzone2();
+        }
+        
+    }
+    
+    class Aksi_locationimport implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            getGlassPane().setVisible(true);
+            importexcelzone();
+            getGlassPane().setVisible(false);
+            isitabelzone();
+        }
+        
+    }
+    
+    class Aksi_locationclear implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            clearzone();
+        }
+        
+    }
+    
+    class Aksi_locationimport2 implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            getGlassPane().setVisible(true);
+            importexcelzone2();
+            getGlassPane().setVisible(false);
+            isitabellocation();
+        }
+        
+    }
+    
+    class Aksi_locationclear2 implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            clearzone2();
+        }
+        
+    }
+    
+    class Aksi_locationexport implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            getGlassPane().setVisible(true);
+            exportzone();
+            getGlassPane().setVisible(false);
+            isitabelzone();
+        }
+        
+    }
+    
+    class Aksi_locationexport2 implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            getGlassPane().setVisible(true);
+            exportzone2();
+            getGlassPane().setVisible(false);
+            isitabellocation();
         }
         
     }
@@ -561,6 +637,90 @@ public class Main extends javax.swing.JFrame {
                         statement.setString(5, ((XSSFCell) cellStoreArrayList.get(4)).toString());
                         statement.setString(6, ((XSSFCell) cellStoreArrayList.get(5)).toString());
                         statement.setString(7, ((XSSFCell) cellStoreArrayList.get(6)).toString());
+                        statement.executeUpdate();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                //System.out.print("Import Sukses !");
+                JOptionPane.showMessageDialog(null, "Data berhasil Disimpan",
+                        "Informasi", JOptionPane.INFORMATION_MESSAGE);
+                isitabelpart();
+            } catch (SQLException ex) {
+                //System.out.print("Export gagal");
+                JOptionPane.showMessageDialog(null, ex.getErrorCode(),
+                        "Informasi", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+    }
+    
+    private void importexcelzone() {
+        JFileChooser fileChooser = new JFileChooser();
+        int returnValue = fileChooser.showOpenDialog(null);
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            System.out.println(selectedFile.getName());
+            String fileName = selectedFile.getAbsolutePath();
+
+            ArrayList dataHolder = readExcelFilePart(fileName);
+
+            try {
+                String query = "insert into zone (zone, description) values (?, ?)";
+                connection = Koneksi.sambung();
+                PreparedStatement statement = null;
+                statement = connection.prepareStatement(query);
+                int count = 0;
+
+                ArrayList cellStoreArrayList = null;
+
+                //insert into database
+                for (int i = 1; i < dataHolder.size(); i++) {
+                    cellStoreArrayList = (ArrayList) dataHolder.get(i);
+                    try {
+                        statement.setString(1, ((XSSFCell) cellStoreArrayList.get(0)).toString());
+                        statement.setString(2, ((XSSFCell) cellStoreArrayList.get(1)).toString());
+                        statement.executeUpdate();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                //System.out.print("Import Sukses !");
+                JOptionPane.showMessageDialog(null, "Data berhasil Disimpan",
+                        "Informasi", JOptionPane.INFORMATION_MESSAGE);
+                isitabelpart();
+            } catch (SQLException ex) {
+                //System.out.print("Export gagal");
+                JOptionPane.showMessageDialog(null, ex.getErrorCode(),
+                        "Informasi", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+    }
+    
+    private void importexcelzone2() {
+        JFileChooser fileChooser = new JFileChooser();
+        int returnValue = fileChooser.showOpenDialog(null);
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            System.out.println(selectedFile.getName());
+            String fileName = selectedFile.getAbsolutePath();
+
+            ArrayList dataHolder = readExcelFilePart(fileName);
+
+            try {
+                String query = "insert into location (zone, location) values (?, ?)";
+                connection = Koneksi.sambung();
+                PreparedStatement statement = null;
+                statement = connection.prepareStatement(query);
+                int count = 0;
+
+                ArrayList cellStoreArrayList = null;
+
+                //insert into database
+                for (int i = 1; i < dataHolder.size(); i++) {
+                    cellStoreArrayList = (ArrayList) dataHolder.get(i);
+                    try {
+                        statement.setString(1, ((XSSFCell) cellStoreArrayList.get(0)).toString());
+                        statement.setString(2, ((XSSFCell) cellStoreArrayList.get(1)).toString());
                         statement.executeUpdate();
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -660,6 +820,120 @@ public class Main extends javax.swing.JFrame {
         }
     }
     
+    private void exportzone () {
+        final String sql = "SELECT * FROM zone ORDER BY zone;";
+
+        PreparedStatement statement = null;
+        try {
+            XSSFWorkbook workbook = new XSSFWorkbook();
+            XSSFSheet sheet = workbook.createSheet("Warehouse Zone");
+            XSSFRow rowhead = sheet.createRow((short) 0);
+
+            XSSFCellStyle myStyle = workbook.createCellStyle();
+            myStyle.setFillForegroundColor(new XSSFColor(Color.BLACK));
+            myStyle.setFillBackgroundColor(new XSSFColor(Color.WHITE));
+
+            XSSFFont font = workbook.createFont();
+            font.setColor(IndexedColors.BLACK.getIndex());
+            myStyle.setFont(font);
+
+            Cell c0 = rowhead.createCell(0);
+            c0.setCellValue("Zone");
+            c0.setCellStyle(myStyle);
+
+            Cell c1 = rowhead.createCell(1);
+            c1.setCellValue("Description");
+            c1.setCellStyle(myStyle);
+
+            statement = connection.prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                int i = rs.getRow();
+                XSSFRow row = sheet.createRow((short) i);
+                row.createCell(0).setCellValue(rs.getString("zone"));
+                row.createCell(1).setCellValue(rs.getString("description"));
+                i++;
+            }
+            JFileChooser pilih = new JFileChooser();
+            FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                    "Excel File", "xlsx");
+            pilih.setFileFilter(filter);
+            int value = pilih.showSaveDialog(null);
+            if (value == JFileChooser.APPROVE_OPTION) {
+                File file = new File(pilih.getSelectedFile() + ".xlsx");
+                String yemi = file.getPath();
+                FileOutputStream fileOut = new FileOutputStream(yemi);
+                workbook.write(fileOut);
+                fileOut.close();
+                JOptionPane.showMessageDialog(null, "Data Berhasil Di Export",
+                        "Informasi", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(pMaster.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(pMaster.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void exportzone2 () {
+        final String sql = "SELECT * FROM location ORDER BY zone;";
+
+        PreparedStatement statement = null;
+        try {
+            XSSFWorkbook workbook = new XSSFWorkbook();
+            XSSFSheet sheet = workbook.createSheet("Warehouse Location");
+            XSSFRow rowhead = sheet.createRow((short) 0);
+
+            XSSFCellStyle myStyle = workbook.createCellStyle();
+            myStyle.setFillForegroundColor(new XSSFColor(Color.BLACK));
+            myStyle.setFillBackgroundColor(new XSSFColor(Color.WHITE));
+
+            XSSFFont font = workbook.createFont();
+            font.setColor(IndexedColors.BLACK.getIndex());
+            myStyle.setFont(font);
+
+            Cell c0 = rowhead.createCell(0);
+            c0.setCellValue("Zone");
+            c0.setCellStyle(myStyle);
+
+            Cell c1 = rowhead.createCell(1);
+            c1.setCellValue("Location");
+            c1.setCellStyle(myStyle);
+
+            statement = connection.prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                int i = rs.getRow();
+                XSSFRow row = sheet.createRow((short) i);
+                row.createCell(0).setCellValue(rs.getString("zone"));
+                row.createCell(1).setCellValue(rs.getString("location"));
+                i++;
+            }
+            JFileChooser pilih = new JFileChooser();
+            FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                    "Excel File", "xlsx");
+            pilih.setFileFilter(filter);
+            int value = pilih.showSaveDialog(null);
+            if (value == JFileChooser.APPROVE_OPTION) {
+                File file = new File(pilih.getSelectedFile() + ".xlsx");
+                String yemi = file.getPath();
+                FileOutputStream fileOut = new FileOutputStream(yemi);
+                workbook.write(fileOut);
+                fileOut.close();
+                JOptionPane.showMessageDialog(null, "Data Berhasil Di Export",
+                        "Informasi", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(pMaster.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(pMaster.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     private void isipartdetail () {
         int xrow = pMaster.getTabelMaster().getSelectedRow();
         String partnumber = (String) pMaster.getTabelMaster().getValueAt(xrow, 0);
@@ -672,11 +946,26 @@ public class Main extends javax.swing.JFrame {
         
         pMdetail.setTxtpartnumber(partnumber);
         pMdetail.setTxtpartname(partname);
-        pMdetail.setTxtzone(zone);
+        pMdetail.setCmbzone(zone,zone);
         pMdetail.setTxtlocation(location);
         pMdetail.setTxtoh(onhand);
         pMdetail.setTxtlandedcost(landedcost);
         pMdetail.setTxtpricelist(pricelist);
+        
+        String sql = "SELECT description FROM zone ORDER BY description";
+        
+        try {
+            connection = Koneksi.sambung();
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery(sql);
+            while (rs.next()) {
+                pMdetail.setCmbzone(rs.getString("description"), zone);
+            }
+               rs.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        
     }
     
     private void searchresultpart () {
@@ -841,7 +1130,7 @@ public class Main extends javax.swing.JFrame {
     private void updatepart () {  
         String partnumber = pMdetail.getTxtpartnumber().getText();
         String partname = pMdetail.getTxtpartname().getText();
-        String zone = pMdetail.getTxtzone().getText();
+        String zone = pMdetail.getCmbzone().getSelectedItem().toString();
         String location = pMdetail.getTxtlocation().getText();
         String oh = pMdetail.getTxtoh().getText();
         String landedcost = pMdetail.getTxtlandedcost().getText();
@@ -863,7 +1152,7 @@ public class Main extends javax.swing.JFrame {
             } else if (zone.equals("")) {
                 JOptionPane.showMessageDialog(null, "Zone masih Kosong !", "Informasi",
                     JOptionPane.INFORMATION_MESSAGE);
-            pMdetail.getTxtzone().requestFocus();
+            pMdetail.getCmbzone().requestFocus();
             } else if (location.equals("")) {
                 JOptionPane.showMessageDialog(null, "Location masih Kosong !", "Informasi",
                     JOptionPane.INFORMATION_MESSAGE);
@@ -905,7 +1194,7 @@ public class Main extends javax.swing.JFrame {
         pMdetail.setTxtpartnumber("");
         pMdetail.setTxtpartname("");
         pMdetail.setTxtoh("");
-        pMdetail.setTxtzone("");
+        pMdetail.setCmbzone("", "");
         pMdetail.setTxtlocation("");
         pMdetail.setTxtlandedcost("");
         pMdetail.setTxtpricelist("");
@@ -1047,23 +1336,23 @@ public class Main extends javax.swing.JFrame {
     }
      
     private void insertzone2 () {
-        String zone = pLocation.getTxtzone().getText();
-        String description = pLocation.getTxtdescription().getText();
+        String zone = pLocation.getTxtzone2().getText();
+        String description = pLocation.getTxtdescription2().getText();
         
-        String insert = "INSERT INTO zone (zone, description) VALUES (?,?);" ;
+        String insert = "INSERT INTO location (zone, location) VALUES (?,?);" ;
         
-        ValidasiZone valid = new ValidasiZone();
+        ValidasiLocation valid = new ValidasiLocation();
         valid.validasi_zone(description);
         
         if (valid.xdescription == "") {
             if (zone.equals("")) {
                 JOptionPane.showMessageDialog(null, "Zone masih Kosong !", "Informasi",
                     JOptionPane.INFORMATION_MESSAGE);
-            pLocation.getTxtzone().requestFocus();
+            pLocation.getTxtzone2().requestFocus();
             } else if (description.equals("")) {
-                JOptionPane.showMessageDialog(null, "Description masih Kosong !", "Informasi",
+                JOptionPane.showMessageDialog(null, "Location masih Kosong !", "Informasi",
                     JOptionPane.INFORMATION_MESSAGE);
-            pLocation.getTxtdescription().requestFocus();
+            pLocation.getTxtdescription2().requestFocus();
             } else {
                 try {
                     connection = Koneksi.sambung();
@@ -1080,16 +1369,16 @@ public class Main extends javax.swing.JFrame {
                         "Informasi",JOptionPane.INFORMATION_MESSAGE);
                 clear_mdetailnew();
                 
-                pLocation.setTxtzone("");
-                pLocation.setTxtdescription("");
-                isitabelzone();
+                pLocation.setTxtzone2("");
+                pLocation.setTxtdescription2("");
+                isitabellocation();
             }    
         } else {
             JOptionPane.showMessageDialog(null,"Data Sudah Ada",
                  "Informasi",JOptionPane.WARNING_MESSAGE);
-            pLocation.setTxtzone("");
-            pLocation.setTxtdescription("");
-            pLocation.getTxtzone().requestFocus();
+            pLocation.setTxtzone2("");
+            pLocation.setTxtdescription2("");
+            pLocation.getTxtzone2().requestFocus();
         }
     }
      
@@ -1127,15 +1416,15 @@ public class Main extends javax.swing.JFrame {
     } 
     
     private void deletelocation2 () {
-        String zone = pLocation.getTxtzone().getText();
-        String description = pLocation.getTxtdescription().getText();
-        String sql = "DELETE FROM zone WHERE zone = '"+zone+"' AND "
-                + "description = '"+description+"' ";
+        String zone = pLocation.getTxtzone2().getText();
+        String description = pLocation.getTxtdescription2().getText();
+        String sql = "DELETE FROM location WHERE zone = '"+zone+"' AND "
+                + "location = '"+description+"' ";
         
         if (zone.equals("")|| description.equals("")) {
-            JOptionPane.showMessageDialog(null, "Zone atau Description masih kosong", "Informasi",
+            JOptionPane.showMessageDialog(null, "Zone atau Location masih kosong", "Informasi",
                     JOptionPane.WARNING_MESSAGE);
-            pLocation.getTxtzone().requestFocus();
+            pLocation.getTxtzone2().requestFocus();
         } else {
             int pilih = JOptionPane.showConfirmDialog(null, "Yakin Mau Hapus Data ini ?",
                 "Warning", JOptionPane.YES_NO_OPTION);
@@ -1151,10 +1440,10 @@ public class Main extends javax.swing.JFrame {
            } catch (Exception e) {
                System.out.println(e.getMessage());
            }
-            pLocation.setTxtzone("");
-            pLocation.setTxtdescription("");
-            pLocation.getTxtzone().requestFocus();
-            isitabelzone();
+            pLocation.setTxtzone2("");
+            pLocation.setTxtdescription2("");
+            pLocation.getTxtzone2().requestFocus();
+            isitabellocation();
         }
         }
     } 
@@ -1190,17 +1479,17 @@ public class Main extends javax.swing.JFrame {
     }
     
     private void searchresultzone2 () {
-        Object header [] = {"Zone", "Description"};
+        Object header [] = {"Zone", "Location"};
    
         DefaultTableModel model = new DefaultTableModel(null, header) {
             public boolean isCellEditable(int row, int column) {
             return false;
             }
         };
-        pLocation.getTabelzone().setModel(model);
+        pLocation.getTabellocation().setModel(model);
         
-        String sql = "SELECT * From zone WHERE CONCAT (id, zone, description)"
-                    + "LIKE '%"+pLocation.getTxtsearch().getText()+"%' ";
+        String sql = "SELECT * From location WHERE CONCAT (id, zone, location)"
+                    + "LIKE '%"+pLocation.getTxtsearch2().getText()+"%' ";
         
         try {
             connection = Koneksi.sambung();
@@ -1219,7 +1508,36 @@ public class Main extends javax.swing.JFrame {
         }
     }
     
+    private void clearzone () {
+        pLocation.setTxtzone("");
+        pLocation.setTxtdescription("");
+        pLocation.setTxtsearch("");
+        isitabelzone();
+    }
     
+    private void clearzone2 () {
+        pLocation.setTxtzone2("");
+        pLocation.setTxtdescription2("");
+        pLocation.setTxtsearch2("");
+        isitabellocation();
+    }
+    
+    public void isicombozone () {
+        String sql = "SELECT description FROM zone ORDER BY description";
+        
+        try {
+            connection = Koneksi.sambung();
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery(sql);
+            while (rs.next()) {
+                pMdetail.setCmbzone(rs.getString("description"), "A2");
+            }
+               rs.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+            //cmbkodecust.setSelectedIndex(-1);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.

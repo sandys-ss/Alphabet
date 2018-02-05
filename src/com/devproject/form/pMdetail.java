@@ -7,6 +7,7 @@ package com.devproject.form;
 
 import java.awt.event.ActionListener;
 import java.sql.Connection;
+import javax.swing.JComboBox;
 import javax.swing.JTextField;
 
 /**
@@ -48,11 +49,7 @@ public class pMdetail extends javax.swing.JPanel {
         txtpricelist.setText(pricelist);
     }
 
-    public void setTxtzone(String zone) {
-        txtzone.setText(zone);
-    }
-    
-     public void addActionListenerMdetailback (ActionListener l) {
+    public void addActionListenerMdetailback (ActionListener l) {
         btncancel.addActionListener(l);
     }
 
@@ -69,7 +66,7 @@ public class pMdetail extends javax.swing.JPanel {
     }
 
     public JTextField getTxtpartname() {
-        return txtzone;
+        return txtpartname;
     }
 
     public JTextField getTxtpartnumber() {
@@ -79,11 +76,7 @@ public class pMdetail extends javax.swing.JPanel {
     public JTextField getTxtpricelist() {
         return txtpricelist;
     }
-    
-    public JTextField getTxtzone() {
-        return txtzone;
-    }
-    
+      
     public void addActionListenerMdetailupdate (ActionListener l) {
          btnupdate.addActionListener(l);
     }
@@ -91,6 +84,17 @@ public class pMdetail extends javax.swing.JPanel {
     public void addActionListenerMdetaildelete (ActionListener l) {
          btndelete.addActionListener(l);
     }
+
+    public JComboBox<String> getCmbzone() {
+        return cmbzone;
+    }
+
+    public void setCmbzone(String zone, String select) {
+        cmbzone.addItem(zone);
+        cmbzone.setSelectedItem(select);
+    }
+   
+
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -111,7 +115,6 @@ public class pMdetail extends javax.swing.JPanel {
         jLabel6 = new javax.swing.JLabel();
         txtpricelist = new javax.swing.JTextField();
         txtpartnumber = new javax.swing.JTextField();
-        txtzone = new javax.swing.JTextField();
         txtlocation = new javax.swing.JTextField();
         txtoh = new javax.swing.JTextField();
         txtlandedcost = new javax.swing.JTextField();
@@ -120,6 +123,7 @@ public class pMdetail extends javax.swing.JPanel {
         btndelete = new com.devproject.component.Tombol_Master();
         jLabel8 = new javax.swing.JLabel();
         txtpartname = new javax.swing.JTextField();
+        cmbzone = new javax.swing.JComboBox<>();
         panelTransparan2 = new com.devproject.component.PanelTransparan();
         jLabel7 = new javax.swing.JLabel();
 
@@ -166,9 +170,6 @@ public class pMdetail extends javax.swing.JPanel {
         txtpartnumber.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         panelTransparan1.add(txtpartnumber, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 30, 1210, 30));
 
-        txtzone.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        panelTransparan1.add(txtzone, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 130, 1210, 30));
-
         txtlocation.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         panelTransparan1.add(txtlocation, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 180, 1210, 30));
 
@@ -206,6 +207,9 @@ public class pMdetail extends javax.swing.JPanel {
         txtpartname.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         panelTransparan1.add(txtpartname, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 80, 1210, 30));
 
+        cmbzone.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        panelTransparan1.add(cmbzone, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 130, 1210, 30));
+
         panelBackground1.add(panelTransparan1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 1340, 610));
 
         panelTransparan2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -229,6 +233,7 @@ public class pMdetail extends javax.swing.JPanel {
     private com.devproject.component.Tombol_Master btncancel;
     private com.devproject.component.Tombol_Master btndelete;
     private com.devproject.component.Tombol_Master btnupdate;
+    private javax.swing.JComboBox<String> cmbzone;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -246,7 +251,6 @@ public class pMdetail extends javax.swing.JPanel {
     private javax.swing.JTextField txtpartname;
     private javax.swing.JTextField txtpartnumber;
     private javax.swing.JTextField txtpricelist;
-    private javax.swing.JTextField txtzone;
     // End of variables declaration//GEN-END:variables
 
    

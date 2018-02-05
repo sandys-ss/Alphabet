@@ -22,8 +22,8 @@ public class Koneksi {
             MysqlDataSource data = new MysqlDataSource();
             data.setDatabaseName("alphabet");
             data.setUser("root");
-            //data.setPassword("SANDYS");
-            data.setPassword("sandys");
+            data.setPassword("SANDYS");
+            //data.setPassword("sandys");
             try {
                 koneksi = (Connection) data.getConnection();
             } catch (SQLException e) {
