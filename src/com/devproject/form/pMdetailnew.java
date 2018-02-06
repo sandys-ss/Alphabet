@@ -33,10 +33,6 @@ public class pMdetailnew extends javax.swing.JPanel {
         txtlandedcost.setText(landedcost);
     }
 
-    public void setTxtlocation(String location) {
-        txtlocation.setText(location);
-    }
-
     public void setTxtoh(String oh) {
         txtoh.setText(oh);
     }
@@ -48,10 +44,6 @@ public class pMdetailnew extends javax.swing.JPanel {
     public void setTxtpricelist(String pricelist) {
         txtpricelist.setText(pricelist);
     }
-
-    public void setTxtzone(String zone) {
-        txtzone.setText(zone);
-    }
     
      public void addActionListenerMdetailback (ActionListener l) {
         btncancel.addActionListener(l);
@@ -59,10 +51,6 @@ public class pMdetailnew extends javax.swing.JPanel {
 
     public JTextField getTxtlandedcost() {
         return txtlandedcost;
-    }
-
-    public JTextField getTxtlocation() {
-        return txtlocation;
     }
 
     public JTextField getTxtoh() {
@@ -81,10 +69,6 @@ public class pMdetailnew extends javax.swing.JPanel {
         return txtpricelist;
     }
 
-    public JTextField getTxtzone() {
-        return txtzone;
-    }
-    
      public void addActionListenerMdetailsave (ActionListener l) {
          btnsave.addActionListener(l);
     }
@@ -126,13 +110,11 @@ public class pMdetailnew extends javax.swing.JPanel {
         txtpricelist = new javax.swing.JTextField();
         txtpartnumber = new javax.swing.JTextField();
         txtpartname = new javax.swing.JTextField();
-        txtlocation = new javax.swing.JTextField();
         txtoh = new javax.swing.JTextField();
         txtlandedcost = new javax.swing.JTextField();
         btncancel = new com.devproject.component.Tombol_Master();
         btnsave = new com.devproject.component.Tombol_Master();
         jLabel8 = new javax.swing.JLabel();
-        txtzone = new javax.swing.JTextField();
         cmbzone = new javax.swing.JComboBox<>();
         cmblocation = new javax.swing.JComboBox<>();
         panelTransparan2 = new com.devproject.component.PanelTransparan();
@@ -183,9 +165,6 @@ public class pMdetailnew extends javax.swing.JPanel {
         txtpartname.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         panelTransparan1.add(txtpartname, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 80, 1210, 30));
 
-        txtlocation.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        panelTransparan1.add(txtlocation, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 180, 1210, 30));
-
         txtoh.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         txtoh.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -212,14 +191,11 @@ public class pMdetailnew extends javax.swing.JPanel {
         jLabel8.setText("Location");
         panelTransparan1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 180, -1, -1));
 
-        txtzone.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        panelTransparan1.add(txtzone, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 130, 1210, 30));
-
         cmbzone.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        panelTransparan1.add(cmbzone, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 430, 1220, 30));
+        panelTransparan1.add(cmbzone, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 130, 1210, 30));
 
         cmblocation.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        panelTransparan1.add(cmblocation, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 480, 1220, 30));
+        panelTransparan1.add(cmblocation, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 180, 1210, 30));
 
         panelBackground1.add(panelTransparan1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 60, 1340, 610));
 
@@ -257,12 +233,10 @@ public class pMdetailnew extends javax.swing.JPanel {
     private com.devproject.component.PanelTransparan panelTransparan1;
     private com.devproject.component.PanelTransparan panelTransparan2;
     private javax.swing.JTextField txtlandedcost;
-    private javax.swing.JTextField txtlocation;
     private javax.swing.JTextField txtoh;
     private javax.swing.JTextField txtpartname;
     private javax.swing.JTextField txtpartnumber;
     private javax.swing.JTextField txtpricelist;
-    private javax.swing.JTextField txtzone;
     // End of variables declaration//GEN-END:variables
 
    

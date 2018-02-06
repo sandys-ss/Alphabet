@@ -270,6 +270,7 @@ public class Main extends javax.swing.JFrame {
             CardLayout c1 = (CardLayout) pCard.getLayout();
             c1.show(pCard, "panelmdetailnew");
             isicombomdetailnew();
+            
         }
         
     }
@@ -948,8 +949,6 @@ public class Main extends javax.swing.JFrame {
         
         pMdetail.setTxtpartnumber(partnumber);
         pMdetail.setTxtpartname(partname);
-        pMdetail.setCmbzone(zone,zone);
-        pMdetail.setCmblocation(location,location);
         pMdetail.setTxtoh(onhand);
         pMdetail.setTxtlandedcost(landedcost);
         pMdetail.setTxtpricelist(pricelist);
@@ -985,8 +984,8 @@ public class Main extends javax.swing.JFrame {
     }
     
     private void searchresultpart () {
-        Object header [] = {"No Part", "Nama Part", "Type", "Stock",
-                            "Harga Beli", "Harga Jual"};
+        Object header [] = {"Part Number", "Part Name", "Zone", "Location",
+                            "On Hand", "Landed Cost", "Price List"};
    
         DefaultTableModel model = new DefaultTableModel(null, header) {
             public boolean isCellEditable(int row, int column) {
@@ -1059,8 +1058,8 @@ public class Main extends javax.swing.JFrame {
     private void insertpart () {
         String partnumber = pMdetailnew.getTxtpartnumber().getText();
         String partname = pMdetailnew.getTxtpartname().getText();
-        String zone = pMdetailnew.getTxtzone().getText();
-        String location = pMdetailnew.getTxtlocation().getText();
+        String zone = pMdetailnew.getCmbzone().getSelectedItem().toString();
+        String location = pMdetailnew.getCmblocation().getSelectedItem().toString();
         String oh = pMdetailnew.getTxtoh().getText();
         String landedcost = pMdetailnew.getTxtlandedcost().getText();
         String price  = pMdetailnew.getTxtpricelist().getText();
@@ -1083,11 +1082,11 @@ public class Main extends javax.swing.JFrame {
             } else if (zone.equals("")) {
                 JOptionPane.showMessageDialog(null, "Zone masih Kosong !", "Informasi",
                     JOptionPane.INFORMATION_MESSAGE);
-            pMdetailnew.getTxtzone().requestFocus();
+            pMdetailnew.getCmbzone().requestFocus();
             } else if (location.equals("")) {
                 JOptionPane.showMessageDialog(null, "Location masih Kosong !", "Informasi",
                     JOptionPane.INFORMATION_MESSAGE);
-            pMdetailnew.getTxtlocation().requestFocus();
+            pMdetailnew.getCmblocation().requestFocus();
             } else if (oh.equals("")) {
                 JOptionPane.showMessageDialog(null, "On Hand masih Kosong !", "Informasi",
                     JOptionPane.INFORMATION_MESSAGE);
@@ -1136,8 +1135,8 @@ public class Main extends javax.swing.JFrame {
     private void clear_mdetailnew () {
         pMdetailnew.setTxtpartnumber("");
         pMdetailnew.setTxtpartname("");
-        pMdetailnew.setTxtzone("");
-        pMdetailnew.setTxtlocation("");
+        pMdetailnew.setCmbzone("");
+        pMdetailnew.setCmblocation("");
         pMdetailnew.setTxtoh("");
         pMdetailnew.setTxtlandedcost("");
         pMdetailnew.setTxtpricelist("");
