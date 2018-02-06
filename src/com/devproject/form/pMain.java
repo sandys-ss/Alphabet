@@ -27,6 +27,30 @@ public class pMain extends javax.swing.JPanel {
     public void addActionListenerLocation (ActionListener l) {
         btnlocation.addActionListener(l);
     }
+    
+    public void addActionListenerSupplier(ActionListener l) {
+        btnsupplier.addActionListener(l);
+    }
+    
+    public void addActionListenerReceiving(ActionListener l) {
+        btnreceiving.addActionListener(l);
+    }
+    
+    public void addActionListenerIssuing(ActionListener l) {
+        btnissuing.addActionListener(l);
+    }
+    
+    public void addActionListenerInventory(ActionListener l) {
+        btninventory.addActionListener(l);
+    }
+    
+    public void addActionListeneReport(ActionListener l) {
+        btnreport.addActionListener(l);
+    }
+    
+    public void addActionListenerSetting(ActionListener l) {
+        btnsetting.addActionListener(l);
+    }
    
     /**
      * This method is called from within the constructor to initialize the form.

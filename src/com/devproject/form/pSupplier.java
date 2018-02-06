@@ -48,6 +48,70 @@ public class pSupplier extends javax.swing.JPanel {
         btnrefresh.addActionListener(l);
     }
     
+    public void addActionListenerSuppliersearch (ActionListener l) {
+        btnsearch.addActionListener(l);
+    }
+    
+    public void addActionListenerSuppliertabel (MouseListener l) {
+         tabelsupplier.addMouseListener(l);
+    }
+    
+    public void addActionListenerSupplierclear (ActionListener l) {
+        btnclear.addActionListener(l);
+    }
+
+    public JTable getTabelsupplier() {
+        return tabelsupplier;
+    }
+
+    public JTextField getTxtaddress() {
+        return txtaddress;
+    }
+
+    public JTextField getTxtcontact1() {
+        return txtcontact1;
+    }
+
+    public JTextField getTxtcontact2() {
+        return txtcontact2;
+    }
+
+    public JTextField getTxtcontact3() {
+        return txtcontact3;
+    }
+
+    public JTextField getTxtsuppliername() {
+        return txtsuppliername;
+    }
+
+    public JTextField getTxtsearch() {
+        return txtsearch;
+    }
+
+    public void setTxtsearch(String search) {
+        txtsearch.setText(search);
+    }
+
+    public void setTxtaddress(String address) {
+        txtaddress.setText(address);
+    }
+
+    public void setTxtcontact1(String contact1) {
+        txtcontact1.setText(contact1);
+    }
+
+    public void setTxtcontact2(String contact2) {
+        txtcontact2.setText(contact2);
+    }
+
+    public void setTxtcontact3(String contact3) {
+        txtcontact3.setText(contact3);
+    }
+
+    public void setTxtsuppliername(String suppliername) {
+        txtsuppliername.setText(suppliername);
+    }
+    
        /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -60,7 +124,6 @@ public class pSupplier extends javax.swing.JPanel {
         panelBackground1 = new com.devproject.component.PanelBackground();
         btnback = new com.devproject.component.Tombol_Master();
         panelTransparan1 = new com.devproject.component.PanelTransparan();
-        jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         txtcontact3 = new javax.swing.JTextField();
@@ -74,6 +137,10 @@ public class pSupplier extends javax.swing.JPanel {
         btnsave = new com.devproject.component.Tombol_Master();
         btnupdate = new com.devproject.component.Tombol_Master();
         btndelete = new com.devproject.component.Tombol_Master();
+        jLabel7 = new javax.swing.JLabel();
+        txtsearch = new javax.swing.JTextField();
+        btnsearch = new com.devproject.component.Tombol_Master();
+        btnclear = new com.devproject.component.Tombol_Master();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabelsupplier = new javax.swing.JTable();
 
@@ -87,11 +154,6 @@ public class pSupplier extends javax.swing.JPanel {
         panelBackground1.add(btnback, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 80, 30));
 
         panelTransparan1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Contact 3");
-        panelTransparan1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 180, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
@@ -148,8 +210,27 @@ public class pSupplier extends javax.swing.JPanel {
         btndelete.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         panelTransparan1.add(btndelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(1230, 220, 80, 30));
 
+        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel7.setText("Contact 3");
+        panelTransparan1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 180, -1, -1));
+
+        txtsearch.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        panelTransparan1.add(txtsearch, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 220, 650, 30));
+
+        btnsearch.setForeground(new java.awt.Color(255, 255, 255));
+        btnsearch.setText("Search");
+        btnsearch.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        panelTransparan1.add(btnsearch, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 220, 80, 30));
+
+        btnclear.setForeground(new java.awt.Color(255, 255, 255));
+        btnclear.setText("Clear");
+        btnclear.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        panelTransparan1.add(btnclear, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 220, 80, 30));
+
         panelBackground1.add(panelTransparan1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, 1330, 260));
 
+        tabelsupplier.setAutoCreateRowSorter(true);
         tabelsupplier.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {},
@@ -171,15 +252,17 @@ public class pSupplier extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.devproject.component.Tombol_Master btnback;
+    private com.devproject.component.Tombol_Master btnclear;
     private com.devproject.component.Tombol_Master btndelete;
     private com.devproject.component.Tombol_Master btnrefresh;
     private com.devproject.component.Tombol_Master btnsave;
+    private com.devproject.component.Tombol_Master btnsearch;
     private com.devproject.component.Tombol_Master btnupdate;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
     private com.devproject.component.PanelBackground panelBackground1;
     private com.devproject.component.PanelTransparan panelTransparan1;
@@ -188,6 +271,7 @@ public class pSupplier extends javax.swing.JPanel {
     private javax.swing.JTextField txtcontact1;
     private javax.swing.JTextField txtcontact2;
     private javax.swing.JTextField txtcontact3;
+    private javax.swing.JTextField txtsearch;
     private javax.swing.JTextField txtsuppliername;
     // End of variables declaration//GEN-END:variables
 }

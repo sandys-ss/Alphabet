@@ -68,6 +68,7 @@ public class Main extends javax.swing.JFrame {
         pCard.add(pMdetail, "panelmdetail");
         pCard.add(pMdetailnew, "panelmdetailnew");
         pCard.add(pLocation, "panellocation");
+        pCard.add(pSupplier, "panelsupplier");
         
         CardLayout c1 = (CardLayout)pCard.getLayout();
         c1.show(pCard, "panelutama"); 
@@ -80,6 +81,7 @@ public class Main extends javax.swing.JFrame {
         //pMain Action
         pMain.addActionListenerMaster(new Aksi_menuUtama_master());
         pMain.addActionListenerLocation(new Aksi_menuUtama_location());
+        pMain.addActionListenerSupplier(new Aksi_menuUtama_supplier());
         
         //pMaster Action
         pMaster.addActionListenerMasterImport(new Aksi_masterimport());
@@ -121,6 +123,12 @@ public class Main extends javax.swing.JFrame {
         pLocation.addActionListenerLocationimport(new Aksi_locationimport());
         pLocation.addActionListenerLocationexport2(new Aksi_locationexport2());
         
+        //pSupplier
+        pSupplier.addActionListenerSupplierback(new Aksi_supplierback());
+        pSupplier.addActionListenerSuppliertabel(new Aksi_suppliertabel());
+        pSupplier.addActionListenerSupplierclear(new Aksi_supplierclear());
+        pSupplier.addActionListenerSupplierrefresh(new Aksi_supplierrefresh());
+        
     }
     
     class Aksi_menuUtama_master implements ActionListener {
@@ -141,6 +149,16 @@ public class Main extends javax.swing.JFrame {
             c1.show(pCard, "panellocation");
             isitabelzone();
             isitabellocation();
+        }
+    }
+    
+    class Aksi_menuUtama_supplier implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            CardLayout c1 = (CardLayout) pCard.getLayout();
+            c1.show(pCard, "panelsupplier");
+            isitabelsupplier();
         }
     }
     
@@ -565,6 +583,66 @@ public class Main extends javax.swing.JFrame {
             exportzone2();
             getGlassPane().setVisible(false);
             isitabellocation();
+        }
+        
+    }
+    
+    class Aksi_supplierback implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            CardLayout c1 = (CardLayout) pCard.getLayout();
+            c1.show(pCard, "panelutama");
+            clearsupplier();
+        }
+        
+    }
+    
+    class Aksi_suppliertabel implements MouseListener {
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            int x = e.getClickCount();
+            if (x == 2) {
+                isifieldsupplier();
+            }
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+            
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+            
+        }
+    }
+    
+    class Aksi_supplierclear implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            clearsupplier();
+        }
+        
+    }
+    
+    class Aksi_supplierrefresh implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            isitabelsupplier();
         }
         
     }
@@ -1537,7 +1615,7 @@ public class Main extends javax.swing.JFrame {
         isitabellocation();
     }
     
-    public void isicombomdetailnew () {
+    private void isicombomdetailnew () {
          String sql = "SELECT description FROM zone ORDER BY description";
 
             try {
@@ -1566,6 +1644,63 @@ public class Main extends javax.swing.JFrame {
                 System.out.println(e.getMessage());
             }
     }
+    
+    private void isitabelsupplier () {
+        Object header [] = {"Supplier Name", "Address", "Contact 1", "Contact 2", 
+                            "Contact 3"};
+   
+        DefaultTableModel model = new DefaultTableModel(null, header) {
+            public boolean isCellEditable(int row, int column) {
+            return false;
+            }
+        };
+        pSupplier.getTabelsupplier().setModel(model);
+        
+        String sql = "SELECT * FROM supplier ORDER BY id";
+        
+        try {
+            connection = Koneksi.sambung();
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery(sql);
+            while (rs.next()) {
+                String kolom1 = rs.getString(2);
+                String kolom2 = rs.getString(3);
+                String kolom3 = rs.getString(4);
+                String kolom4 = rs.getString(5);
+                String kolom5 = rs.getString(6);
+                
+                String kolom [] = {kolom1, kolom2, kolom3, kolom4,
+                                    kolom5};  
+                model.addRow(kolom);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }    
+    }
+    
+    private void isifieldsupplier () {
+        int xrow = pSupplier.getTabelsupplier().getSelectedRow();
+        String suppliername = (String) pSupplier.getTabelsupplier().getValueAt(xrow, 0);
+        String address = (String) pSupplier.getTabelsupplier().getValueAt(xrow, 1);
+        String contact1 = (String) pSupplier.getTabelsupplier().getValueAt(xrow, 2);
+        String contact2 = (String) pSupplier.getTabelsupplier().getValueAt(xrow, 3);
+        String contact3 = (String) pSupplier.getTabelsupplier().getValueAt(xrow, 4);
+        
+        pSupplier.setTxtsuppliername(suppliername);
+        pSupplier.setTxtaddress(address);
+        pSupplier.setTxtcontact1(contact1);
+        pSupplier.setTxtcontact2(contact2);
+        pSupplier.setTxtcontact3(contact3);
+    }
+    
+    private void clearsupplier () {
+        pSupplier.setTxtsuppliername("");
+        pSupplier.setTxtaddress("");
+        pSupplier.setTxtcontact1("");
+        pSupplier.setTxtcontact2("");
+        pSupplier.setTxtcontact3("");
+        pSupplier.setTxtsearch("");
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -1583,6 +1718,7 @@ public class Main extends javax.swing.JFrame {
         pMdetailnew = new com.devproject.form.pMdetailnew();
         pGlass = new com.devproject.form.pGlass();
         pLocation = new com.devproject.form.pLocation();
+        pSupplier = new com.devproject.form.pSupplier();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -1594,6 +1730,7 @@ public class Main extends javax.swing.JFrame {
         pCard.add(pMdetailnew, "card5");
         pCard.add(pGlass, "card6");
         pCard.add(pLocation, "card7");
+        pCard.add(pSupplier, "card8");
 
         getContentPane().add(pCard, java.awt.BorderLayout.CENTER);
 
@@ -1645,5 +1782,6 @@ public class Main extends javax.swing.JFrame {
     private com.devproject.form.pMaster pMaster;
     private com.devproject.form.pMdetail pMdetail;
     private com.devproject.form.pMdetailnew pMdetailnew;
+    private com.devproject.form.pSupplier pSupplier;
     // End of variables declaration//GEN-END:variables
 }
