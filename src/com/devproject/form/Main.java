@@ -8,6 +8,7 @@ package com.devproject.form;
 import com.devproject.conn.Koneksi;
 import com.devproject.validation.ValidasiLocation;
 import com.devproject.validation.ValidasiMaster;
+import com.devproject.validation.ValidasiSupplier;
 import com.devproject.validation.ValidasiZone;
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -69,6 +70,7 @@ public class Main extends javax.swing.JFrame {
         pCard.add(pMdetailnew, "panelmdetailnew");
         pCard.add(pLocation, "panellocation");
         pCard.add(pSupplier, "panelsupplier");
+        pCard.add(pReceiving, "panelreceiving");
         
         CardLayout c1 = (CardLayout)pCard.getLayout();
         c1.show(pCard, "panelutama"); 
@@ -82,6 +84,7 @@ public class Main extends javax.swing.JFrame {
         pMain.addActionListenerMaster(new Aksi_menuUtama_master());
         pMain.addActionListenerLocation(new Aksi_menuUtama_location());
         pMain.addActionListenerSupplier(new Aksi_menuUtama_supplier());
+        pMain.addActionListenerReceiving(new Aksi_menuUtama_receiving());
         
         //pMaster Action
         pMaster.addActionListenerMasterImport(new Aksi_masterimport());
@@ -128,7 +131,11 @@ public class Main extends javax.swing.JFrame {
         pSupplier.addActionListenerSuppliertabel(new Aksi_suppliertabel());
         pSupplier.addActionListenerSupplierclear(new Aksi_supplierclear());
         pSupplier.addActionListenerSupplierrefresh(new Aksi_supplierrefresh());
-        
+        pSupplier.addActionListenerSuppliersave(new Aksi_supplierinsert());
+        pSupplier.addActionListenerSupplierupdate(new Aksi_supplierupdate());
+        pSupplier.addActionListenerSupplierdelete(new Aksi_supplierdelete());
+        pSupplier.addActionListenerSuppliersearch(new Aksi_suppliersearch());
+        pSupplier.addKeyListenerSupplierSearch(new Aksi_suppliersearchkey());
     }
     
     class Aksi_menuUtama_master implements ActionListener {
@@ -149,6 +156,15 @@ public class Main extends javax.swing.JFrame {
             c1.show(pCard, "panellocation");
             isitabelzone();
             isitabellocation();
+        }
+    }
+    
+    class Aksi_menuUtama_receiving implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            CardLayout c1 = (CardLayout) pCard.getLayout();
+            c1.show(pCard, "panelreceiving");
         }
     }
     
@@ -645,6 +661,68 @@ public class Main extends javax.swing.JFrame {
             isitabelsupplier();
         }
         
+    }
+    
+    class Aksi_supplierinsert implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            insertsupplier();
+        }
+        
+    }
+    
+    class Aksi_supplierupdate implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            updatesupplier();
+        }
+        
+    }
+    
+    class Aksi_supplierdelete implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            deletesupplier();
+        }
+        
+    }
+    
+    class Aksi_suppliersearch implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            searchresultsupplier();
+        }
+        
+    }
+    
+    class Aksi_suppliersearchkey implements KeyListener{
+
+        @Override
+        public void keyTyped(KeyEvent e) {
+            
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            if( e.getKeyCode() == KeyEvent.VK_ENTER ) {
+               searchresultsupplier();
+           } else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+               isitabelsupplier();
+           } else if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+               isitabelsupplier();
+               pSupplier.setTxtsearch("");
+           }
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+            
+        }
+
     }
 
       
@@ -1646,8 +1724,8 @@ public class Main extends javax.swing.JFrame {
     }
     
     private void isitabelsupplier () {
-        Object header [] = {"Supplier Name", "Address", "Contact 1", "Contact 2", 
-                            "Contact 3"};
+        Object header [] = {"Supplier No", "Supplier Name", "Address",
+                            "Contact 1", "Contact 2", "Contact 3"};
    
         DefaultTableModel model = new DefaultTableModel(null, header) {
             public boolean isCellEditable(int row, int column) {
@@ -1668,9 +1746,10 @@ public class Main extends javax.swing.JFrame {
                 String kolom3 = rs.getString(4);
                 String kolom4 = rs.getString(5);
                 String kolom5 = rs.getString(6);
+                String kolom6 = rs.getString(7);
                 
-                String kolom [] = {kolom1, kolom2, kolom3, kolom4,
-                                    kolom5};  
+                String kolom [] = {kolom1, kolom2, kolom3, kolom4, 
+                                    kolom5, kolom6};  
                 model.addRow(kolom);
             }
         } catch (Exception e) {
@@ -1680,12 +1759,14 @@ public class Main extends javax.swing.JFrame {
     
     private void isifieldsupplier () {
         int xrow = pSupplier.getTabelsupplier().getSelectedRow();
-        String suppliername = (String) pSupplier.getTabelsupplier().getValueAt(xrow, 0);
-        String address = (String) pSupplier.getTabelsupplier().getValueAt(xrow, 1);
-        String contact1 = (String) pSupplier.getTabelsupplier().getValueAt(xrow, 2);
-        String contact2 = (String) pSupplier.getTabelsupplier().getValueAt(xrow, 3);
-        String contact3 = (String) pSupplier.getTabelsupplier().getValueAt(xrow, 4);
+        String no = (String) pSupplier.getTabelsupplier().getValueAt(xrow, 0);
+        String suppliername = (String) pSupplier.getTabelsupplier().getValueAt(xrow, 1);
+        String address = (String) pSupplier.getTabelsupplier().getValueAt(xrow, 2);
+        String contact1 = (String) pSupplier.getTabelsupplier().getValueAt(xrow, 3);
+        String contact2 = (String) pSupplier.getTabelsupplier().getValueAt(xrow, 4);
+        String contact3 = (String) pSupplier.getTabelsupplier().getValueAt(xrow, 5);
         
+        pSupplier.setTxtno(no);
         pSupplier.setTxtsuppliername(suppliername);
         pSupplier.setTxtaddress(address);
         pSupplier.setTxtcontact1(contact1);
@@ -1694,12 +1775,172 @@ public class Main extends javax.swing.JFrame {
     }
     
     private void clearsupplier () {
+        pSupplier.setTxtno("");
         pSupplier.setTxtsuppliername("");
         pSupplier.setTxtaddress("");
         pSupplier.setTxtcontact1("");
         pSupplier.setTxtcontact2("");
         pSupplier.setTxtcontact3("");
         pSupplier.setTxtsearch("");
+    }
+    
+    private void insertsupplier () {
+        String no= pSupplier.getTxtno().getText();
+        String suppliername = pSupplier.getTxtsuppliername().getText();
+        String address = pSupplier.getTxtaddress().getText();
+        String contact1 = pSupplier.getTxtcontact1().getText();
+        String contact2 = pSupplier.getTxtcontact2().getText();
+        String contact3 = pSupplier.getTxtcontact3().getText();
+        
+        String insert = "INSERT INTO supplier (supplierno, suppliername, address , contact1,"
+            + "contact2, contact3) VALUES (?,?,?,?,?,?);" ;
+        
+        ValidasiSupplier valid = new ValidasiSupplier();
+        valid.validasi_part(no);
+        
+        if (valid.xsupplierno == "") {
+            if (no.equals("")) {
+                JOptionPane.showMessageDialog(null, "Supplier No masih Kosong !", "Informasi",
+                    JOptionPane.INFORMATION_MESSAGE);
+            pSupplier.getTxtno().requestFocus();
+            } else if (suppliername.equals("")) {
+                JOptionPane.showMessageDialog(null, "Supplier Name masih Kosong !", "Informasi",
+                    JOptionPane.INFORMATION_MESSAGE);
+            pSupplier.getTxtsuppliername().requestFocus();
+            } else if (address.equals("")) {
+                JOptionPane.showMessageDialog(null, "Address masih Kosong !", "Informasi",
+                    JOptionPane.INFORMATION_MESSAGE);
+            pSupplier.getTxtaddress().requestFocus();
+            } else {
+                try {
+                    connection = Koneksi.sambung();
+                    PreparedStatement statement = null;
+                    statement = connection.prepareStatement(insert);
+                    statement.setString(1, no);
+                    statement.setString(2, suppliername);
+                    statement.setString(3, address);
+                    statement.setString(4,contact1);
+                    statement.setString(5, contact2);
+                    statement.setString(6, contact3);
+                    statement.executeUpdate();
+                    statement.close();
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+                    JOptionPane.showMessageDialog(null,"Data berhasil Disimpan",
+                        "Informasi",JOptionPane.INFORMATION_MESSAGE);
+                clearsupplier();
+                isitabelsupplier();
+            }    
+        } else {
+            JOptionPane.showMessageDialog(null,"Data Sudah Ada",
+                 "Informasi",JOptionPane.WARNING_MESSAGE);
+            pSupplier.setTxtsuppliername("");
+            pSupplier.setTxtaddress("");
+        }
+    }
+    
+    private void updatesupplier () {
+        String no = pSupplier.getTxtno().getText();
+        String suppliername = pSupplier.getTxtsuppliername().getText();
+        String address = pSupplier.getTxtaddress().getText();
+        String contact1 = pSupplier.getTxtcontact1().getText();
+        String contact2 = pSupplier.getTxtcontact2().getText();
+        String contact3 = pSupplier.getTxtcontact3().getText();
+        
+        String sql = "UPDATE supplier SET suppliername = '"+suppliername+"', address= '"+address+"',"
+                + " contact1= '"+contact1+"', contact2= '"+contact2+"', "
+                + "contact3= '"+contact3+"' WHERE supplierno = '"+no+"' ";
+
+        if (suppliername.equals("")) {
+                JOptionPane.showMessageDialog(null, "Supplier name masih Kosong !", "Informasi",
+                    JOptionPane.INFORMATION_MESSAGE);
+            pSupplier.getTxtsuppliername().requestFocus();
+            } else if (address.equals("")) {
+                JOptionPane.showMessageDialog(null, "Address masih Kosong !", "Informasi",
+                    JOptionPane.INFORMATION_MESSAGE);
+            pSupplier.getTxtaddress().requestFocus();
+            } else {
+                try {
+                    connection = Koneksi.sambung();
+                    PreparedStatement statement = null;
+                    statement = connection.prepareStatement(sql);
+                    Statement stm = connection.createStatement();
+                    stm.executeUpdate(sql);
+                    stm.close();
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
+                }
+                    JOptionPane.showMessageDialog(null,"Data berhasil Di Update",
+                        "Informasi",JOptionPane.INFORMATION_MESSAGE);
+                    clearsupplier();
+                    isitabelsupplier();
+            }
+    }
+    
+    private void deletesupplier () {
+        String no = pSupplier.getTxtno().getText();
+        String sql = "DELETE FROM supplier WHERE supplierno = '"+no+"' ";
+        
+        if (no.equals("ax")) {
+            JOptionPane.showMessageDialog(null, "Supplier No masih kosong", "Informasi",
+                    JOptionPane.WARNING_MESSAGE);
+            pSupplier.getTxtno().requestFocus();
+        } else {
+            int pilih = JOptionPane.showConfirmDialog(null, "Yakin Mau Hapus Data ini ?",
+                "Warning", JOptionPane.YES_NO_OPTION);
+        
+        if (pilih == JOptionPane.YES_OPTION) {
+           try {
+               connection = Koneksi.sambung();
+               PreparedStatement statement = null;
+               statement = connection.prepareStatement(sql);
+               Statement stm = connection.createStatement();
+               stm.execute(sql);
+               stm.close();
+           } catch (Exception e) {
+               System.out.println(e.getMessage());
+           }
+           clearsupplier();
+            isitabelsupplier();
+        }
+        }
+    }
+    
+    private void searchresultsupplier () {
+        Object header [] = {"Supplier No", "Supplier Name", "Address",
+                            "Contact 1", "Contact 2", "Contact 3"};
+   
+        DefaultTableModel model = new DefaultTableModel(null, header) {
+            public boolean isCellEditable(int row, int column) {
+            return false;
+            }
+        };
+        pSupplier.getTabelsupplier().setModel(model);
+        
+        String sql = "SELECT * From supplier WHERE CONCAT (id, supplierno, suppliername, "
+                + "address, contact1, contact2,contact3) "
+                + "LIKE '%"+pSupplier.getTxtsearch().getText()+"%' ";
+        
+        try {
+            connection = Koneksi.sambung();
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery(sql);
+            while (rs.next()) {
+               String kolom1 = rs.getString(2);
+                String kolom2 = rs.getString(3);
+                String kolom3 = rs.getString(4);
+                String kolom4 = rs.getString(5);
+                String kolom5 = rs.getString(6);
+                String kolom6 = rs.getString(7);
+                
+                String kolom [] = {kolom1, kolom2, kolom3, kolom4, 
+                                    kolom5, kolom6};  
+                model.addRow(kolom);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     /**
@@ -1719,6 +1960,8 @@ public class Main extends javax.swing.JFrame {
         pGlass = new com.devproject.form.pGlass();
         pLocation = new com.devproject.form.pLocation();
         pSupplier = new com.devproject.form.pSupplier();
+        pReceiving = new com.devproject.form.pReceiving();
+        pReceivingnew = new com.devproject.form.pReceivingnew();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -1731,6 +1974,8 @@ public class Main extends javax.swing.JFrame {
         pCard.add(pGlass, "card6");
         pCard.add(pLocation, "card7");
         pCard.add(pSupplier, "card8");
+        pCard.add(pReceiving, "card9");
+        pCard.add(pReceivingnew, "card10");
 
         getContentPane().add(pCard, java.awt.BorderLayout.CENTER);
 
@@ -1782,6 +2027,8 @@ public class Main extends javax.swing.JFrame {
     private com.devproject.form.pMaster pMaster;
     private com.devproject.form.pMdetail pMdetail;
     private com.devproject.form.pMdetailnew pMdetailnew;
+    private com.devproject.form.pReceiving pReceiving;
+    private com.devproject.form.pReceivingnew pReceivingnew;
     private com.devproject.form.pSupplier pSupplier;
     // End of variables declaration//GEN-END:variables
 }
