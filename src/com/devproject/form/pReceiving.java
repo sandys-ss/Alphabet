@@ -28,7 +28,17 @@ public class pReceiving extends javax.swing.JPanel {
        
     }
 
+    public void addActionListenerReceivingback (ActionListener l) {
+        btnback.addActionListener(l);
+    }
     
+    public void addActionListenerReceivingnew (ActionListener l) {
+        btnnew.addActionListener(l);
+    }
+
+    public JTable getTabelreceiving() {
+        return tabelreceiving;
+    }
        /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

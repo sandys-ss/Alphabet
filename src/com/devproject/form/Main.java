@@ -71,6 +71,7 @@ public class Main extends javax.swing.JFrame {
         pCard.add(pLocation, "panellocation");
         pCard.add(pSupplier, "panelsupplier");
         pCard.add(pReceiving, "panelreceiving");
+        pCard.add(pReceivingnew, "panelreceivingnew");
         
         CardLayout c1 = (CardLayout)pCard.getLayout();
         c1.show(pCard, "panelutama"); 
@@ -136,6 +137,13 @@ public class Main extends javax.swing.JFrame {
         pSupplier.addActionListenerSupplierdelete(new Aksi_supplierdelete());
         pSupplier.addActionListenerSuppliersearch(new Aksi_suppliersearch());
         pSupplier.addKeyListenerSupplierSearch(new Aksi_suppliersearchkey());
+        
+        //pReceiving
+        pReceiving.addActionListenerReceivingback(new Aksi_receivingback());
+        pReceiving.addActionListenerReceivingnew(new Aksi_receivingnew());
+        
+        //pReceivingnew
+        pReceivingnew.addActionListenerReceivingnewcancel(new Aksi_receivingnewcancel());
     }
     
     class Aksi_menuUtama_master implements ActionListener {
@@ -165,6 +173,7 @@ public class Main extends javax.swing.JFrame {
         public void actionPerformed(ActionEvent ae) {
             CardLayout c1 = (CardLayout) pCard.getLayout();
             c1.show(pCard, "panelreceiving");
+            isitabelreceiving();
         }
     }
     
@@ -723,6 +732,37 @@ public class Main extends javax.swing.JFrame {
             
         }
 
+    }
+    
+    class Aksi_receivingback implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            CardLayout c1 = (CardLayout) pCard.getLayout();
+            c1.show(pCard, "panelutama");
+        }
+        
+    }
+    
+    class Aksi_receivingnew implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            CardLayout c1 = (CardLayout) pCard.getLayout();
+            c1.show(pCard, "panelreceivingnew");
+        }
+        
+    }
+    
+    class Aksi_receivingnewcancel implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            CardLayout c1 = (CardLayout) pCard.getLayout();
+            c1.show(pCard, "panelreceiving");
+            isitabelreceiving();
+        }
+        
     }
 
       
@@ -1942,7 +1982,40 @@ public class Main extends javax.swing.JFrame {
             System.out.println(e.getMessage());
         }
     }
-
+    
+     private void isitabelreceiving () {
+        Object header [] = {"Receiving No", "Transaction Date", "Supplier", 
+                            "Part Number", "Part Name", "Qty Receive"};
+   
+        DefaultTableModel model = new DefaultTableModel(null, header) {
+            public boolean isCellEditable(int row, int column) {
+            return false;
+            }
+        };
+        pReceiving.getTabelreceiving().setModel(model);
+        
+        String sql = "SELECT * FROM receiving ORDER BY receivingno";
+        
+        try {
+            connection = Koneksi.sambung();
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery(sql);
+            while (rs.next()) {
+                String kolom1 = rs.getString(2);
+                String kolom2 = rs.getString(3);
+                String kolom3 = rs.getString(4);
+                String kolom4 = rs.getString(5);
+                String kolom5 = rs.getString(6);
+                String kolom6 = rs.getString(7);
+                
+                String kolom [] = {kolom1, kolom2, kolom3, kolom4,
+                                    kolom5, kolom6};  
+                model.addRow(kolom);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }    
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
