@@ -58,9 +58,10 @@ public class pReceivingnew extends javax.swing.JPanel {
     public JTextField getTxtreceivingno() {
         return txtreceivingno;
     }
-
-    public void setCmbsupplier(JComboBox<String> cmbsupplier) {
-        this.cmbsupplier = cmbsupplier;
+    
+    public void setCmbsupplier (String Supplier) {
+        cmbsupplier.addItem(Supplier);
+        cmbsupplier.setSelectedIndex(-1);
     }
 
     public void setTabelreceiving(JTable tabelreceiving) {
@@ -83,8 +84,8 @@ public class pReceivingnew extends javax.swing.JPanel {
         this.txtqty = txtqty;
     }
 
-    public void setTxtreceivingno(JTextField txtreceivingno) {
-        this.txtreceivingno = txtreceivingno;
+    public void setTxtreceivingno(String receivingno) {
+        txtreceivingno.setText(receivingno);
     }
 
    
@@ -195,6 +196,7 @@ public class pReceivingnew extends javax.swing.JPanel {
         jLabel6.setText("Part Number");
         panelTransparan1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, -1, 10));
 
+        txtreceivingno.setEditable(false);
         txtreceivingno.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         panelTransparan1.add(txtreceivingno, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 20, 580, 30));
 

@@ -71,6 +71,35 @@ INSERT INTO `part` VALUES (1,'044650K100','PAD KIT','D2','D202-0524',1658,565250
 UNLOCK TABLES;
 
 --
+-- Table structure for table `receiving`
+--
+
+DROP TABLE IF EXISTS `receiving`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `receiving` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `receivingno` varchar(45) DEFAULT NULL,
+  `date` date DEFAULT NULL,
+  `supplier` varchar(100) DEFAULT NULL,
+  `partnumber` varchar(20) DEFAULT NULL,
+  `partname` varchar(100) DEFAULT NULL,
+  `qtyreceive` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `receiving`
+--
+
+LOCK TABLES `receiving` WRITE;
+/*!40000 ALTER TABLE `receiving` DISABLE KEYS */;
+INSERT INTO `receiving` VALUES (1,'RC01',NULL,'KAMU','A','AKU',1);
+/*!40000 ALTER TABLE `receiving` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `supplier`
 --
 
@@ -79,6 +108,7 @@ DROP TABLE IF EXISTS `supplier`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `supplier` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `supplierno` varchar(20) DEFAULT NULL,
   `suppliername` varchar(50) DEFAULT NULL,
   `address` varchar(80) DEFAULT NULL,
   `contact1` varchar(20) DEFAULT NULL,
@@ -94,7 +124,7 @@ CREATE TABLE `supplier` (
 
 LOCK TABLES `supplier` WRITE;
 /*!40000 ALTER TABLE `supplier` DISABLE KEYS */;
-INSERT INTO `supplier` VALUES (1,'PT HADJI KALLA TOYOTA','URIP SUMIHARJO','08888888','0777777','0666666');
+INSERT INTO `supplier` VALUES (1,NULL,'PT HADJI KALLA TOYOTA','URIP SUMIHARJO','08888888','0777777','0666666');
 /*!40000 ALTER TABLE `supplier` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -132,4 +162,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-02-07  6:56:50
+-- Dump completed on 2018-02-08  7:00:02

@@ -750,6 +750,8 @@ public class Main extends javax.swing.JFrame {
         public void actionPerformed(ActionEvent e) {
             CardLayout c1 = (CardLayout) pCard.getLayout();
             c1.show(pCard, "panelreceivingnew");
+            receivingno();
+            receivingsupplier();
         }
         
     }
@@ -2016,6 +2018,42 @@ public class Main extends javax.swing.JFrame {
             System.out.println(e.getMessage());
         }    
     }
+     
+    private void receivingno () {
+       try {
+            String sql="select * from receiving order by id desc";
+            connection = Koneksi.sambung();
+           Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery(sql);
+            if (rs.next()) {
+                String id = rs.getString("id");
+                String AN = "" + (Integer.parseInt(id) + 1);
+                String Nol = "00";
+                String no = "RECV" + Nol + AN;
+               pReceivingnew.setTxtreceivingno(no);
+            } 
+
+           }catch(Exception e){
+           JOptionPane.showMessageDialog(null, e);
+           }
+     } 
+    
+    private void receivingsupplier () {
+        String sql = "SELECT suppliername FROM supplier ORDER BY id ASC";
+        
+        try {
+            connection = Koneksi.sambung();
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery(sql);
+            while (rs.next()) {
+                pReceivingnew.setCmbsupplier(rs.getString("suppliername"));
+            }
+               rs.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+     
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
