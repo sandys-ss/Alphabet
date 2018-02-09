@@ -88,6 +88,14 @@ public class pReceivingnew extends javax.swing.JPanel {
         txtreceivingno.setText(receivingno);
     }
 
+    public JTextField getTxtsearch() {
+        return txtsearch;
+    }
+
+    public void setTxtsearch(JTextField txtsearch) {
+        this.txtsearch = txtsearch;
+    }
+
    
     /**
      * This method is called from within the constructor to initialize the form.
@@ -117,6 +125,8 @@ public class pReceivingnew extends javax.swing.JPanel {
         txtpartnumber = new javax.swing.JTextField();
         btnclear = new com.devproject.component.Tombol_Master();
         txtdate = new com.toedter.calendar.JDateChooser();
+        jLabel9 = new javax.swing.JLabel();
+        txtsearch = new javax.swing.JTextField();
         panelTransparan2 = new com.devproject.component.PanelTransparan();
         jLabel7 = new javax.swing.JLabel();
 
@@ -138,13 +148,13 @@ public class pReceivingnew extends javax.swing.JPanel {
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("Supplier");
-        panelTransparan1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, -1, -1));
+        jLabel4.setText("Search");
+        panelTransparan1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, -1, -1));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Qty Receive");
-        panelTransparan1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 220, -1, 10));
+        panelTransparan1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 510, -1, 10));
 
         txtqty.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         txtqty.addActionListener(new java.awt.event.ActionListener() {
@@ -152,22 +162,22 @@ public class pReceivingnew extends javax.swing.JPanel {
                 txtqtyActionPerformed(evt);
             }
         });
-        panelTransparan1.add(txtqty, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 220, 1180, 30));
+        panelTransparan1.add(txtqty, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 510, 1180, 30));
 
         btncancel.setForeground(new java.awt.Color(255, 255, 255));
         btncancel.setText("Cancel");
         btncancel.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        panelTransparan1.add(btncancel, new org.netbeans.lib.awtextra.AbsoluteConstraints(1200, 260, 90, 30));
+        panelTransparan1.add(btncancel, new org.netbeans.lib.awtextra.AbsoluteConstraints(1200, 550, 90, 30));
 
         btnsave.setForeground(new java.awt.Color(255, 255, 255));
         btnsave.setText("Save");
         btnsave.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        panelTransparan1.add(btnsave, new org.netbeans.lib.awtextra.AbsoluteConstraints(1000, 260, 90, 30));
+        panelTransparan1.add(btnsave, new org.netbeans.lib.awtextra.AbsoluteConstraints(1000, 550, 90, 30));
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("Part Name");
-        panelTransparan1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, -1, 10));
+        panelTransparan1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 460, -1, 10));
 
         cmbsupplier.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         panelTransparan1.add(cmbsupplier, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 70, 1180, 30));
@@ -186,28 +196,36 @@ public class pReceivingnew extends javax.swing.JPanel {
         ));
         jScrollPane1.setViewportView(tabelreceiving);
 
-        panelTransparan1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 300, 1270, 300));
+        panelTransparan1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 160, 1180, 230));
 
         txtpartname.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        panelTransparan1.add(txtpartname, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 170, 1180, 30));
+        panelTransparan1.add(txtpartname, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 460, 1180, 30));
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Part Number");
-        panelTransparan1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, -1, 10));
+        panelTransparan1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 410, -1, 10));
 
         txtreceivingno.setEditable(false);
         txtreceivingno.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         panelTransparan1.add(txtreceivingno, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 20, 580, 30));
 
         txtpartnumber.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        panelTransparan1.add(txtpartnumber, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 120, 1180, 30));
+        panelTransparan1.add(txtpartnumber, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 410, 1180, 30));
 
         btnclear.setForeground(new java.awt.Color(255, 255, 255));
         btnclear.setText("Clear");
         btnclear.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        panelTransparan1.add(btnclear, new org.netbeans.lib.awtextra.AbsoluteConstraints(1100, 260, 90, 30));
+        panelTransparan1.add(btnclear, new org.netbeans.lib.awtextra.AbsoluteConstraints(1100, 550, 90, 30));
         panelTransparan1.add(txtdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 20, 460, 30));
+
+        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel9.setText("Supplier");
+        panelTransparan1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, -1, -1));
+
+        txtsearch.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        panelTransparan1.add(txtsearch, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 120, 1180, 30));
 
         panelBackground1.add(panelTransparan1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 60, 1320, 610));
 
@@ -240,6 +258,7 @@ public class pReceivingnew extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private com.devproject.component.PanelBackground panelBackground1;
     private com.devproject.component.PanelTransparan panelTransparan1;
@@ -250,6 +269,7 @@ public class pReceivingnew extends javax.swing.JPanel {
     private javax.swing.JTextField txtpartnumber;
     private javax.swing.JTextField txtqty;
     private javax.swing.JTextField txtreceivingno;
+    private javax.swing.JTextField txtsearch;
     // End of variables declaration//GEN-END:variables
 
    
