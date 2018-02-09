@@ -7,6 +7,8 @@ package com.devproject.form;
 
 import com.toedter.calendar.JDateChooser;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseListener;
 import java.sql.Connection;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
@@ -30,13 +32,29 @@ public class pReceivingnew extends javax.swing.JPanel {
     public void addActionListenerReceivingnewcancel (ActionListener l) {
         btncancel.addActionListener(l);
     }
+    
+    public void addKeyListenerreceivingnewSearch (KeyListener l) {
+        txtsearch.addKeyListener(l);
+    }
+    
+    public void addActionListenerreceivingnewTabel (MouseListener l) {
+         tabelpart.addMouseListener(l);
+    }
+    
+    public void addActionListenerReceivingnewclear(ActionListener l) {
+        btnclear.addActionListener(l);
+    }
+    
+    public void addActionListenerReceivingnewsave(ActionListener l) {
+        btnsave.addActionListener(l);
+    }
 
     public JComboBox<String> getCmbsupplier() {
         return cmbsupplier;
     }
 
-    public JTable getTabelreceiving() {
-        return tabelreceiving;
+    public JTable getTabelpart() {
+        return tabelpart;
     }
 
     public JDateChooser getTxtdate() {
@@ -64,24 +82,24 @@ public class pReceivingnew extends javax.swing.JPanel {
         cmbsupplier.setSelectedIndex(-1);
     }
 
-    public void setTabelreceiving(JTable tabelreceiving) {
-        this.tabelreceiving = tabelreceiving;
+    public void setTabelpart(JTable tabelpart) {
+        this.tabelpart = tabelpart;
     }
 
     public void setTxtdate(JDateChooser txtdate) {
         this.txtdate = txtdate;
     }
 
-    public void setTxtpartname(JTextField txtpartname) {
-        this.txtpartname = txtpartname;
+    public void setTxtpartname(String partname) {
+        txtpartname.setText(partname);
     }
 
-    public void setTxtpartnumber(JTextField txtpartnumber) {
-        this.txtpartnumber = txtpartnumber;
+    public void setTxtpartnumber(String partnumber) {
+        txtpartnumber.setText(partnumber);
     }
 
-    public void setTxtqty(JTextField txtqty) {
-        this.txtqty = txtqty;
+    public void setTxtqty(String qty) {
+        txtqty.setText(qty);
     }
 
     public void setTxtreceivingno(String receivingno) {
@@ -92,8 +110,8 @@ public class pReceivingnew extends javax.swing.JPanel {
         return txtsearch;
     }
 
-    public void setTxtsearch(JTextField txtsearch) {
-        this.txtsearch = txtsearch;
+    public void setTxtsearch(String search) {
+        txtsearch.setText(search);
     }
 
    
@@ -118,7 +136,7 @@ public class pReceivingnew extends javax.swing.JPanel {
         jLabel8 = new javax.swing.JLabel();
         cmbsupplier = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tabelreceiving = new javax.swing.JTable();
+        tabelpart = new javax.swing.JTable();
         txtpartname = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         txtreceivingno = new javax.swing.JTextField();
@@ -182,8 +200,8 @@ public class pReceivingnew extends javax.swing.JPanel {
         cmbsupplier.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         panelTransparan1.add(cmbsupplier, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 70, 1180, 30));
 
-        tabelreceiving.setAutoCreateRowSorter(true);
-        tabelreceiving.setModel(new javax.swing.table.DefaultTableModel(
+        tabelpart.setAutoCreateRowSorter(true);
+        tabelpart.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {},
                 {},
@@ -194,7 +212,7 @@ public class pReceivingnew extends javax.swing.JPanel {
 
             }
         ));
-        jScrollPane1.setViewportView(tabelreceiving);
+        jScrollPane1.setViewportView(tabelpart);
 
         panelTransparan1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 160, 1180, 230));
 
@@ -263,7 +281,7 @@ public class pReceivingnew extends javax.swing.JPanel {
     private com.devproject.component.PanelBackground panelBackground1;
     private com.devproject.component.PanelTransparan panelTransparan1;
     private com.devproject.component.PanelTransparan panelTransparan2;
-    private javax.swing.JTable tabelreceiving;
+    private javax.swing.JTable tabelpart;
     private com.toedter.calendar.JDateChooser txtdate;
     private javax.swing.JTextField txtpartname;
     private javax.swing.JTextField txtpartnumber;

@@ -35,9 +35,37 @@ public class pReceiving extends javax.swing.JPanel {
     public void addActionListenerReceivingnew (ActionListener l) {
         btnnew.addActionListener(l);
     }
+    
+    public void addActionListenerReceivingrefresh (ActionListener l) {
+        btnrefresh.addActionListener(l);
+    }
+    
+    public void addActionListenerReceivingsearch (ActionListener l) {
+        btnsearch.addActionListener(l);
+    }
+    
+    public void addKeyListenerreceivingSearch (KeyListener l) {
+        txtsearch.addKeyListener(l);
+    }
+    
+    public void addActionListenerReceivingexport (ActionListener l) {
+        btnexport.addActionListener(l);
+    }
+    
+    public void addActionListenerReceivingimport (ActionListener l) {
+        btnimport.addActionListener(l);
+    }
 
     public JTable getTabelreceiving() {
         return tabelreceiving;
+    }
+
+    public JTextField getTxtsearch() {
+        return txtsearch;
+    }
+
+    public void setTxtsearch(String search) {
+        txtsearch.setText(search);
     }
        /**
      * This method is called from within the constructor to initialize the form.

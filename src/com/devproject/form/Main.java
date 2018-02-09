@@ -8,6 +8,7 @@ package com.devproject.form;
 import com.devproject.conn.Koneksi;
 import com.devproject.validation.ValidasiLocation;
 import com.devproject.validation.ValidasiMaster;
+import com.devproject.validation.ValidasiReceiving;
 import com.devproject.validation.ValidasiSupplier;
 import com.devproject.validation.ValidasiZone;
 import java.awt.CardLayout;
@@ -28,6 +29,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.logging.Level;
@@ -59,6 +61,7 @@ public class Main extends javax.swing.JFrame {
     
     public Main() {
         initComponents();
+        this.setTitle("e-Parts");
         card();
         aksi_tombol();
     }
@@ -141,9 +144,18 @@ public class Main extends javax.swing.JFrame {
         //pReceiving
         pReceiving.addActionListenerReceivingback(new Aksi_receivingback());
         pReceiving.addActionListenerReceivingnew(new Aksi_receivingnew());
+        pReceiving.addActionListenerReceivingrefresh(new Aksi_receivingrefresh());
+        pReceiving.addActionListenerReceivingsearch(new Aksi_receivingsearch());
+        pReceiving.addKeyListenerreceivingSearch(new Aksi_receivingsearchkey());
+        pReceiving.addActionListenerReceivingexport(new Aksi_receivingexport());
+        pReceiving.addActionListenerReceivingimport(new Aksi_receivingimport());
         
         //pReceivingnew
         pReceivingnew.addActionListenerReceivingnewcancel(new Aksi_receivingnewcancel());
+        pReceivingnew.addKeyListenerreceivingnewSearch(new Aksi_receivingnewsearchkey());
+        pReceivingnew.addActionListenerreceivingnewTabel(new Aksi_receivingnewtabel());
+        pReceivingnew.addActionListenerReceivingnewclear(new Aksi_receivingnewclear());
+        pReceivingnew.addActionListenerReceivingnewsave(new Aksi_receivingnewsave());
     }
     
     class Aksi_menuUtama_master implements ActionListener {
@@ -744,14 +756,84 @@ public class Main extends javax.swing.JFrame {
         
     }
     
+    class Aksi_receivingrefresh implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            isitabelreceiving();
+            pReceiving.setTxtsearch("");
+        }
+        
+    }
+    
+    class Aksi_receivingsearch implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            searchresultReceiving();
+        }
+        
+    }
+    
+     class Aksi_receivingsearchkey implements KeyListener {
+
+        @Override
+        public void keyTyped(KeyEvent e) {
+
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+           if( e.getKeyCode() == KeyEvent.VK_ENTER ) {
+               searchresultReceiving();
+           } else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+               isitabelreceiving();
+           } else if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+               isitabelreceiving();
+               pReceiving.setTxtsearch("");
+           }
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+            
+        }
+        
+    }
+     
+    class Aksi_receivingexport implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            getGlassPane().setVisible(true);
+            exportreceiving();
+            getGlassPane().setVisible(false);
+        }
+        
+    }
+    
+    class Aksi_receivingimport implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            getGlassPane().setVisible(true);
+            importreceiving();
+            getGlassPane().setVisible(false);
+            isitabelreceiving();
+        }
+        
+    }
+    
     class Aksi_receivingnew implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
             CardLayout c1 = (CardLayout) pCard.getLayout();
             c1.show(pCard, "panelreceivingnew");
+            clearreceivingnew();
             receivingno();
             receivingsupplier();
+            isitabelReceivingpart();
         }
         
     }
@@ -763,6 +845,88 @@ public class Main extends javax.swing.JFrame {
             CardLayout c1 = (CardLayout) pCard.getLayout();
             c1.show(pCard, "panelreceiving");
             isitabelreceiving();
+            clearreceivingnew();
+        }
+        
+    }
+    
+    class Aksi_receivingnewsearchkey implements KeyListener {
+
+        @Override
+        public void keyTyped(KeyEvent e) {
+
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+           if( e.getKeyCode() == KeyEvent.VK_ENTER ) {
+               searchresultReceivingpart();
+           } else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+               isitabelReceivingpart();
+           } else if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+               isitabelReceivingpart();
+               pReceivingnew.setTxtsearch("");
+           }
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+            
+        }
+        
+    }
+    
+    class Aksi_receivingnewtabel implements MouseListener {
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            int x = e.getClickCount();
+            if (x == 2) {
+                int xrow = pReceivingnew.getTabelpart().getSelectedRow();
+                String partnumber = (String) pReceivingnew.getTabelpart().getValueAt(xrow, 0);
+                String partname = (String) pReceivingnew.getTabelpart().getValueAt(xrow, 1);
+        
+                pReceivingnew.setTxtpartnumber(partnumber);
+                pReceivingnew.setTxtpartname(partname);
+            }
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+            
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+            
+        }
+
+    }
+    
+    class Aksi_receivingnewclear implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            clearreceivingnew();
+        }
+        
+    }
+    
+    class Aksi_receivingnewsave implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            insertnewreceiving();
         }
         
     }
@@ -923,6 +1087,78 @@ public class Main extends javax.swing.JFrame {
                         statement.setString(1, ((XSSFCell) cellStoreArrayList.get(0)).toString());
                         statement.setString(2, ((XSSFCell) cellStoreArrayList.get(1)).toString());
                         statement.executeUpdate();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                //System.out.print("Import Sukses !");
+                JOptionPane.showMessageDialog(null, "Data berhasil Disimpan",
+                        "Informasi", JOptionPane.INFORMATION_MESSAGE);
+                isitabelpart();
+            } catch (SQLException ex) {
+                //System.out.print("Export gagal");
+                JOptionPane.showMessageDialog(null, ex.getErrorCode(),
+                        "Informasi", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+    }
+    
+    private void importreceiving () {
+        JFileChooser fileChooser = new JFileChooser();
+        int returnValue = fileChooser.showOpenDialog(null);
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            System.out.println(selectedFile.getName());
+            String fileName = selectedFile.getAbsolutePath();
+
+            ArrayList dataHolder = readExcelFilePart(fileName);
+
+            try {
+                String query = "insert into receiving (receivingno, date, supplier, "
+                        + "partnumber, partname, qtyreceive) values (?, ?, ?, ?, ?, ?)";
+                connection = Koneksi.sambung();
+                PreparedStatement statement = null;
+                statement = connection.prepareStatement(query);
+                int count = 0;
+
+                ArrayList cellStoreArrayList = null;
+
+                //insert into database
+                for (int i = 1; i < dataHolder.size(); i++) {
+                    cellStoreArrayList = (ArrayList) dataHolder.get(i);
+                    try {
+                        statement.setString(1, ((XSSFCell) cellStoreArrayList.get(0)).toString());
+                        statement.setString(2, ((XSSFCell) cellStoreArrayList.get(1)).toString());
+                        statement.setString(3, ((XSSFCell) cellStoreArrayList.get(2)).toString());
+                        statement.setString(4, ((XSSFCell) cellStoreArrayList.get(3)).toString());
+                        statement.setString(5, ((XSSFCell) cellStoreArrayList.get(4)).toString());
+                        statement.setString(6, ((XSSFCell) cellStoreArrayList.get(5)).toString());
+                        statement.executeUpdate();
+                        
+                        String partno = ((XSSFCell) cellStoreArrayList.get(3)).toString();
+                        String qty = ((XSSFCell) cellStoreArrayList.get(5)).toString();
+                        String sqlstock = "SELECT oh FROM part WHERE partnumber ='"+partno+"' ";
+                        
+                        try {
+                            connection = Koneksi.sambung();
+                            Statement stm = connection.createStatement();
+                            ResultSet rs = stm.executeQuery(sqlstock);
+                            while (rs.next()) {
+                                String stocklama = rs.getString(1);
+                                int stock = Integer.parseInt(qty) + Integer.parseInt(stocklama);
+                                String sql = "UPDATE part SET oh = '" + stock + "' WHERE partnumber = '" + partno+ "' ";
+                                try {
+                                    connection = Koneksi.sambung();
+                                    Statement stmn = connection.createStatement();
+                                    stmn.executeUpdate(sql);
+                                } catch (Exception e) {
+                                    System.out.println(e.getMessage());
+                                }
+                            }
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                        }
+                        
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -1111,6 +1347,82 @@ public class Main extends javax.swing.JFrame {
                 row.createCell(0).setCellValue(rs.getString("zone"));
                 row.createCell(1).setCellValue(rs.getString("location"));
                 i++;
+            }
+            JFileChooser pilih = new JFileChooser();
+            FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                    "Excel File", "xlsx");
+            pilih.setFileFilter(filter);
+            int value = pilih.showSaveDialog(null);
+            if (value == JFileChooser.APPROVE_OPTION) {
+                File file = new File(pilih.getSelectedFile() + ".xlsx");
+                String yemi = file.getPath();
+                FileOutputStream fileOut = new FileOutputStream(yemi);
+                workbook.write(fileOut);
+                fileOut.close();
+                JOptionPane.showMessageDialog(null, "Data Berhasil Di Export",
+                        "Informasi", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(pMaster.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(pMaster.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void exportreceiving () {
+        final String sql = "SELECT * FROM receiving ORDER BY date;";
+
+        PreparedStatement statement = null;
+        try {
+            XSSFWorkbook workbook = new XSSFWorkbook();
+            XSSFSheet sheet = workbook.createSheet("Receiving");
+            XSSFRow rowhead = sheet.createRow((short) 0);
+
+            XSSFCellStyle myStyle = workbook.createCellStyle();
+            myStyle.setFillForegroundColor(new XSSFColor(Color.BLACK));
+            myStyle.setFillBackgroundColor(new XSSFColor(Color.WHITE));
+
+            XSSFFont font = workbook.createFont();
+            font.setColor(IndexedColors.BLACK.getIndex());
+            myStyle.setFont(font);
+
+            Cell c0 = rowhead.createCell(0);
+            c0.setCellValue("Receiving No");
+            c0.setCellStyle(myStyle);
+
+            Cell c1 = rowhead.createCell(1);
+            c1.setCellValue("Transaction Date");
+            c1.setCellStyle(myStyle);
+            
+            Cell c2 = rowhead.createCell(2);
+            c2.setCellValue("Supplier");
+            c2.setCellStyle(myStyle);
+
+            Cell c3 = rowhead.createCell(3);
+            c3.setCellValue("Part Number");
+            c3.setCellStyle(myStyle);
+
+            Cell c4 = rowhead.createCell(4);
+            c4.setCellValue("Part Name");
+            c4.setCellStyle(myStyle);
+
+            Cell c5 = rowhead.createCell(5);
+            c5.setCellValue("Qty Receive");
+            c5.setCellStyle(myStyle);
+
+            statement = connection.prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                int i = rs.getRow();
+                XSSFRow row = sheet.createRow((short) i);
+                row.createCell(0).setCellValue(rs.getString("receivingno"));
+                row.createCell(1).setCellValue(rs.getString("date"));
+                row.createCell(2).setCellValue(rs.getString("supplier"));
+                row.createCell(3).setCellValue(rs.getString("partnumber"));
+                row.createCell(4).setCellValue(rs.getString("partname"));
+                row.createCell(5).setCellValue(rs.getString("qtyreceive"));
             }
             JFileChooser pilih = new JFileChooser();
             FileNameExtensionFilter filter = new FileNameExtensionFilter(
@@ -2049,6 +2361,209 @@ public class Main extends javax.swing.JFrame {
                 pReceivingnew.setCmbsupplier(rs.getString("suppliername"));
             }
                rs.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    private void isitabelReceivingpart () {
+        Object header [] = {"Part Number", "Part Name"};
+   
+        DefaultTableModel model = new DefaultTableModel(null, header) {
+            public boolean isCellEditable(int row, int column) {
+            return false;
+            }
+        };
+        pReceivingnew.getTabelpart().setModel(model);
+        
+        String sql = "SELECT * FROM part ORDER BY partnumber";
+        
+        try {
+            connection = Koneksi.sambung();
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery(sql);
+            while (rs.next()) {
+                String kolom1 = rs.getString(2);
+                String kolom2 = rs.getString(3);
+                
+                String kolom [] = {kolom1, kolom2};  
+                model.addRow(kolom);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }    
+    }
+    
+    private void searchresultReceivingpart () {
+        Object header [] = {"Part Number", "Part Name"};
+   
+        DefaultTableModel model = new DefaultTableModel(null, header) {
+            public boolean isCellEditable(int row, int column) {
+            return false;
+            }
+        };
+        pReceivingnew.getTabelpart().setModel(model);
+        
+        String sql = "SELECT * From part WHERE CONCAT (id, partnumber, partname) "
+                + "LIKE '%"+pReceivingnew.getTxtsearch().getText()+"%' ";
+        
+        try {
+            connection = Koneksi.sambung();
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery(sql);
+            while (rs.next()) {
+                String kolom1 = rs.getString(2);
+                String kolom2 = rs.getString(3);
+                
+                String kolom [] = {kolom1, kolom2};
+                
+                model.addRow(kolom);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    private void clearreceivingnew () {
+        pReceivingnew.getTabelpart().clearSelection();
+        pReceivingnew.getTxtdate().setDate(null);
+        pReceivingnew.setTxtpartnumber("");
+        pReceivingnew.setTxtpartname("");
+        pReceivingnew.setTxtsearch("");
+        pReceivingnew.setTxtqty("");
+        pReceivingnew.setCmbsupplier("");
+    }
+    
+    private void insertnewreceiving () {
+        String receivingno = pReceivingnew.getTxtreceivingno().getText();
+        SimpleDateFormat t5 = new SimpleDateFormat("yyyy-MM-dd");
+        String date =  (String) t5.format (pReceivingnew.getTxtdate().getDate());
+        String supplier = pReceivingnew.getCmbsupplier().getSelectedItem().toString();
+        String partnumber = pReceivingnew.getTxtpartnumber().getText();
+        String partname = pReceivingnew.getTxtpartname().getText();
+        String qty = pReceivingnew.getTxtqty().getText();
+        
+        String insert = "INSERT INTO receiving (receivingno,date,supplier,partnumber,"
+            + "partname, qtyreceive) VALUES (?,?,?,?,?,?);" ;
+        
+        ValidasiReceiving valid = new ValidasiReceiving();
+        valid.validasi_part(receivingno);
+        
+        if (valid.xreceivingno == "") {
+            if (receivingno.equals("")) {
+                JOptionPane.showMessageDialog(null, "Receiving No masih Kosong !", "Informasi",
+                    JOptionPane.INFORMATION_MESSAGE);
+            pReceivingnew.getTxtreceivingno().requestFocus();
+            } else if (date.equals("")) {
+                JOptionPane.showMessageDialog(null, "Date masih Kosong !", "Informasi",
+                    JOptionPane.INFORMATION_MESSAGE);
+            pReceivingnew.getTxtdate().requestFocus();
+            } else if (supplier.equals("")) {
+                JOptionPane.showMessageDialog(null, "Supplier masih Kosong !", "Informasi",
+                    JOptionPane.INFORMATION_MESSAGE);
+            pReceivingnew.getCmbsupplier().requestFocus();
+            } else if (partnumber.equals("")) {
+                JOptionPane.showMessageDialog(null, "Part Number masih Kosong !", "Informasi",
+                    JOptionPane.INFORMATION_MESSAGE);
+            pReceivingnew.getTxtpartnumber().requestFocus();
+            } else if (partname.equals("")) {
+                JOptionPane.showMessageDialog(null, "Part Name masih Kosong !", "Informasi",
+                    JOptionPane.INFORMATION_MESSAGE);
+            pReceivingnew.getTxtpartname().requestFocus();
+            } else if (qty.equals("")) {
+                JOptionPane.showMessageDialog(null, "Qty Receive masih Kosong !", "Informasi",
+                    JOptionPane.INFORMATION_MESSAGE);
+            pReceivingnew.getTxtqty().requestFocus();
+            } else {
+                try {
+                    connection = Koneksi.sambung();
+                    PreparedStatement statement = null;
+                    statement = connection.prepareStatement(insert);
+                    statement.setString(1, receivingno);
+                    statement.setString(2, date);
+                    statement.setString(3, supplier);
+                    statement.setString(4, partnumber);
+                    statement.setString(5, partname);
+                    statement.setInt(6, Integer.valueOf(qty));
+                    statement.executeUpdate();
+                    Receivingupdatestock();
+                    statement.close();
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+                    JOptionPane.showMessageDialog(null,"Data berhasil Disimpan",
+                        "Informasi",JOptionPane.INFORMATION_MESSAGE);
+                clear_mdetailnew();
+                
+                CardLayout c1 = (CardLayout) pCard.getLayout();
+                c1.show(pCard, "panelreceiving");
+                isitabelreceiving();
+            }    
+        } else {
+            JOptionPane.showMessageDialog(null,"Data Sudah Ada",
+                 "Informasi",JOptionPane.WARNING_MESSAGE);
+            pReceivingnew.getTxtreceivingno().requestFocus();
+        }
+    }
+    
+    private void Receivingupdatestock () {
+        
+        String partnumber = pReceivingnew.getTxtpartnumber().getText();
+        String qty = pReceivingnew.getTxtqty().getText();
+        String sqlstock = "SELECT oh FROM part WHERE partnumber ='"+partnumber+"' ";
+        try {
+            connection = Koneksi.sambung();
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery(sqlstock);
+            while (rs.next()) {
+                String stocklama = rs.getString(1);
+                int stock = Integer.parseInt(qty) + Integer.parseInt(stocklama);
+                String sql =  "UPDATE part SET oh = '"+stock+"' WHERE partnumber = '" +partnumber+ "' ";
+                try {
+                   connection = Koneksi.sambung();
+                   Statement stmn = connection.createStatement();
+                   stmn.executeUpdate(sql); 
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        
+    }
+    
+    private void searchresultReceiving () {
+        Object header [] = {"Receiving No", "Transaction Date", "Supplier", "Part Number",
+                            "Part Name", "Qty Receive"};
+   
+        DefaultTableModel model = new DefaultTableModel(null, header) {
+            public boolean isCellEditable(int row, int column) {
+            return false;
+            }
+        };
+        pReceiving.getTabelreceiving().setModel(model);
+        
+        String sql = "SELECT * From receiving WHERE CONCAT (id,receivingno, date, "
+                + "supplier, partnumber, partname ) LIKE "
+                + "'%"+pReceiving.getTxtsearch().getText()+"%' ";
+        
+        try {
+            connection = Koneksi.sambung();
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery(sql);
+            while (rs.next()) {
+                String kolom1 = rs.getString(2);
+                String kolom2 = rs.getString(3);
+                String kolom3 = rs.getString(4);
+                String kolom4 = rs.getString(5);
+                String kolom5 = rs.getString(6);
+                String kolom6 = rs.getString(7);
+                
+                String kolom [] = {kolom1, kolom2, kolom3, kolom4,
+                                    kolom5, kolom6};
+                model.addRow(kolom);
+            }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
