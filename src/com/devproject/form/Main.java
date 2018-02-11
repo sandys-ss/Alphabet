@@ -6,6 +6,7 @@
 package com.devproject.form;
 
 import com.devproject.conn.Koneksi;
+import com.devproject.validation.ValidasiIssuing;
 import com.devproject.validation.ValidasiLocation;
 import com.devproject.validation.ValidasiMaster;
 import com.devproject.validation.ValidasiReceiving;
@@ -75,6 +76,7 @@ public class Main extends javax.swing.JFrame {
         pCard.add(pSupplier, "panelsupplier");
         pCard.add(pReceiving, "panelreceiving");
         pCard.add(pReceivingnew, "panelreceivingnew");
+        pCard.add(pIssuing, "panelissuing");
         
         CardLayout c1 = (CardLayout)pCard.getLayout();
         c1.show(pCard, "panelutama"); 
@@ -89,6 +91,7 @@ public class Main extends javax.swing.JFrame {
         pMain.addActionListenerLocation(new Aksi_menuUtama_location());
         pMain.addActionListenerSupplier(new Aksi_menuUtama_supplier());
         pMain.addActionListenerReceiving(new Aksi_menuUtama_receiving());
+        pMain.addActionListenerIssuing(new Aksi_menuUtama_issuing());
         
         //pMaster Action
         pMaster.addActionListenerMasterImport(new Aksi_masterimport());
@@ -156,6 +159,14 @@ public class Main extends javax.swing.JFrame {
         pReceivingnew.addActionListenerreceivingnewTabel(new Aksi_receivingnewtabel());
         pReceivingnew.addActionListenerReceivingnewclear(new Aksi_receivingnewclear());
         pReceivingnew.addActionListenerReceivingnewsave(new Aksi_receivingnewsave());
+        
+        //pIssuing
+        pIssuing.addActionListenerIssuingcancel(new Aksi_issuingback());
+        pIssuing.addActionListenerIssuingclear(new Aksi_issuingclear());
+        pIssuing.addActionListenerissuingTabel(new Aksi_issuingtabel());
+        pIssuing.addKeyListenerIssuingSearch(new Aksi_issuingsearchkey());
+        pIssuing.addActionListenerIssuingsave(new Aksi_issuingsave());
+        
     }
     
     class Aksi_menuUtama_master implements ActionListener {
@@ -196,6 +207,18 @@ public class Main extends javax.swing.JFrame {
             CardLayout c1 = (CardLayout) pCard.getLayout();
             c1.show(pCard, "panelsupplier");
             isitabelsupplier();
+        }
+    }
+    
+    class Aksi_menuUtama_issuing implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            CardLayout c1 = (CardLayout) pCard.getLayout();
+            c1.show(pCard, "panelissuing");
+            isitabelIssuingpart();
+            issuingno();
+            pIssuing.setTxtcustomer("CUSTOMER");
         }
     }
     
@@ -930,6 +953,98 @@ public class Main extends javax.swing.JFrame {
         }
         
     }
+    
+    class Aksi_issuingback implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            CardLayout c1 = (CardLayout) pCard.getLayout();
+            c1.show(pCard, "panelutama");
+            clearissuing();
+        }
+        
+    }
+    
+    class Aksi_issuingclear implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            clearissuing();
+        }
+        
+    }
+    
+    class Aksi_issuingtabel implements MouseListener {
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            int x = e.getClickCount();
+            if (x == 2) {
+                int xrow = pIssuing.getTabelpart().getSelectedRow();
+                String partnumber = (String) pIssuing.getTabelpart().getValueAt(xrow, 0);
+                String partname = (String) pIssuing.getTabelpart().getValueAt(xrow, 1);
+        
+                pIssuing.setTxtpartnumber(partnumber);
+                pIssuing.setTxtpartname(partname);
+            }
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+            
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+            
+        }
+
+    }
+    
+    class Aksi_issuingsearchkey implements KeyListener {
+
+        @Override
+        public void keyTyped(KeyEvent e) {
+
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+           if( e.getKeyCode() == KeyEvent.VK_ENTER ) {
+               searchresultIssuingpart();
+           } else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+               isitabelIssuingpart();
+           } else if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+               isitabelIssuingpart();
+               pIssuing.setTxtsearch("");
+           }
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+            
+        }
+        
+    }
+    
+    class Aksi_issuingsave implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            insertissuing();
+        }
+        
+    }
 
       
     // Method
@@ -1137,6 +1252,8 @@ public class Main extends javax.swing.JFrame {
                         
                         String partno = ((XSSFCell) cellStoreArrayList.get(3)).toString();
                         String qty = ((XSSFCell) cellStoreArrayList.get(5)).toString();
+                        float number = Float.parseFloat(qty);
+                        int value = (int) number;
                         String sqlstock = "SELECT oh FROM part WHERE partnumber ='"+partno+"' ";
                         
                         try {
@@ -1145,7 +1262,8 @@ public class Main extends javax.swing.JFrame {
                             ResultSet rs = stm.executeQuery(sqlstock);
                             while (rs.next()) {
                                 String stocklama = rs.getString(1);
-                                int stock = Integer.parseInt(qty) + Integer.parseInt(stocklama);
+                                //System.out.println(value);
+                                int stock = value + Integer.parseInt(stocklama);
                                 String sql = "UPDATE part SET oh = '" + stock + "' WHERE partnumber = '" + partno+ "' ";
                                 try {
                                     connection = Koneksi.sambung();
@@ -2343,7 +2461,9 @@ public class Main extends javax.swing.JFrame {
                 String Nol = "00";
                 String no = "RECV" + Nol + AN;
                pReceivingnew.setTxtreceivingno(no);
-            } 
+            } else {
+                pReceivingnew.setTxtreceivingno("RECV001");
+            }
 
            }catch(Exception e){
            JOptionPane.showMessageDialog(null, e);
@@ -2426,7 +2546,7 @@ public class Main extends javax.swing.JFrame {
     
     private void clearreceivingnew () {
         pReceivingnew.getTabelpart().clearSelection();
-        pReceivingnew.getTxtdate().setDate(null);
+        pReceivingnew.setTxtdate(null);
         pReceivingnew.setTxtpartnumber("");
         pReceivingnew.setTxtpartname("");
         pReceivingnew.setTxtsearch("");
@@ -2568,6 +2688,165 @@ public class Main extends javax.swing.JFrame {
             System.out.println(e.getMessage());
         }
     }
+    
+    private void clearissuing () {
+        pIssuing.setTxtcustomer("CUSTOMER");
+        pIssuing.setTxtpartnumber("");
+        pIssuing.setTxtpartname("");
+        pIssuing.setTxtsearch("");
+        pIssuing.setTxtqty("");
+        pIssuing.setTxtdate(null);
+        pIssuing.getTabelpart().clearSelection();
+        issuingno();
+    }
+    
+    private void isitabelIssuingpart () {
+        Object header [] = {"Part Number", "Part Name"};
+   
+        DefaultTableModel model = new DefaultTableModel(null, header) {
+            public boolean isCellEditable(int row, int column) {
+            return false;
+            }
+        };
+        pIssuing.getTabelpart().setModel(model);
+        
+        String sql = "SELECT * FROM part ORDER BY partnumber";
+        
+        try {
+            connection = Koneksi.sambung();
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery(sql);
+            while (rs.next()) {
+                String kolom1 = rs.getString(2);
+                String kolom2 = rs.getString(3);
+                
+                String kolom [] = {kolom1, kolom2};  
+                model.addRow(kolom);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }    
+    }
+    
+     private void issuingno () {
+       try {
+            String sql="select * from issuing order by id desc";
+            connection = Koneksi.sambung();
+           Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery(sql);
+            if (rs.next()) {
+                String id = rs.getString("id");
+                System.out.println(id);
+                String AN = "" + (Integer.parseInt(id) + 1);
+                String Nol = "00";
+                String no = "CASE" + Nol + AN;
+                pIssuing.setTxtissuingno(no);
+            } else {
+                pIssuing.setTxtissuingno("CASE001");
+            }
+
+           }catch(Exception e){
+           JOptionPane.showMessageDialog(null, e);
+           }
+     } 
+     
+     private void searchresultIssuingpart () {
+        Object header [] = {"Part Number", "Part Name"};
+   
+        DefaultTableModel model = new DefaultTableModel(null, header) {
+            public boolean isCellEditable(int row, int column) {
+            return false;
+            }
+        };
+        pIssuing.getTabelpart().setModel(model);
+        
+        String sql = "SELECT * From part WHERE CONCAT (id, partnumber, partname) "
+                + "LIKE '%"+pIssuing.getTxtsearch().getText()+"%' ";
+        
+        try {
+            connection = Koneksi.sambung();
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery(sql);
+            while (rs.next()) {
+                String kolom1 = rs.getString(2);
+                String kolom2 = rs.getString(3);
+                
+                String kolom [] = {kolom1, kolom2};
+                
+                model.addRow(kolom);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+     
+    private void insertissuing() {
+        String issuingno = pIssuing.getTxtissuingno().getText();
+        SimpleDateFormat t5 = new SimpleDateFormat("yyyy-MM-dd");
+        String date =  (String) t5.format (pIssuing.getTxtdate().getDate());
+        String customer = pIssuing.getTxtcustomer().getText();
+        String partnumber = pIssuing.getTxtpartnumber().getText();
+        String partname = pIssuing.getTxtpartname().getText();
+        String qty = pIssuing.getTxtqty().getText();
+        
+        String insert = "INSERT INTO issuing (issuingno,date,customer,partnumber,"
+            + "partname, qty) VALUES (?,?,?,?,?,?);" ;
+        
+        ValidasiIssuing valid = new ValidasiIssuing();
+        valid.validasi_part(issuingno);
+        
+        if (valid.xissuingno == "") {
+            if (issuingno.equals("")) {
+                JOptionPane.showMessageDialog(null, "Issuing No masih Kosong !", "Informasi",
+                    JOptionPane.INFORMATION_MESSAGE);
+            pIssuing.getTxtissuingno().requestFocus();
+            } else if (date.equals(null)) {
+                JOptionPane.showMessageDialog(null, "Date masih Kosong !", "Informasi",
+                    JOptionPane.INFORMATION_MESSAGE);
+            pIssuing.getTxtdate().requestFocus();
+            } else if (customer.equals("")) {
+                JOptionPane.showMessageDialog(null, "Customer masih Kosong !", "Informasi",
+                    JOptionPane.INFORMATION_MESSAGE);
+            pIssuing.getTxtcustomer().requestFocus();
+            } else if (partnumber.equals("")) {
+                JOptionPane.showMessageDialog(null, "Part Number masih Kosong !", "Informasi",
+                    JOptionPane.INFORMATION_MESSAGE);
+            pIssuing.getTxtpartnumber().requestFocus();
+            } else if (partname.equals("")) {
+                JOptionPane.showMessageDialog(null, "Part Name masih Kosong !", "Informasi",
+                    JOptionPane.INFORMATION_MESSAGE);
+            pIssuing.getTxtpartname().requestFocus();
+            } else if (qty.equals("")) {
+                JOptionPane.showMessageDialog(null, "Qty masih Kosong !", "Informasi",
+                    JOptionPane.INFORMATION_MESSAGE);
+            pIssuing.getTxtqty().requestFocus();
+            } else {
+                try {
+                    connection = Koneksi.sambung();
+                    PreparedStatement statement = null;
+                    statement = connection.prepareStatement(insert);
+                    statement.setString(1, issuingno);
+                    statement.setString(2, date);
+                    statement.setString(3, customer);
+                    statement.setString(4, partnumber);
+                    statement.setString(5, partname);
+                    statement.setInt(6, Integer.valueOf(qty));
+                    statement.executeUpdate();
+                    Receivingupdatestock();
+                    statement.close();
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+                    JOptionPane.showMessageDialog(null,"Data berhasil Disimpan",
+                        "Informasi",JOptionPane.INFORMATION_MESSAGE);
+                clearissuing();
+            }    
+        } else {
+            JOptionPane.showMessageDialog(null,"Data Sudah Ada",
+                 "Informasi",JOptionPane.WARNING_MESSAGE);
+            pIssuing.getTxtissuingno().requestFocus();
+        }
+    }
      
     /**
      * This method is called from within the constructor to initialize the form.
@@ -2588,6 +2867,7 @@ public class Main extends javax.swing.JFrame {
         pSupplier = new com.devproject.form.pSupplier();
         pReceiving = new com.devproject.form.pReceiving();
         pReceivingnew = new com.devproject.form.pReceivingnew();
+        pIssuing = new com.devproject.form.pIssuing();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -2602,6 +2882,7 @@ public class Main extends javax.swing.JFrame {
         pCard.add(pSupplier, "card8");
         pCard.add(pReceiving, "card9");
         pCard.add(pReceivingnew, "card10");
+        pCard.add(pIssuing, "card11");
 
         getContentPane().add(pCard, java.awt.BorderLayout.CENTER);
 
@@ -2648,6 +2929,7 @@ public class Main extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel pCard;
     private com.devproject.form.pGlass pGlass;
+    private com.devproject.form.pIssuing pIssuing;
     private com.devproject.form.pLocation pLocation;
     private com.devproject.form.pMain pMain;
     private com.devproject.form.pMaster pMaster;
