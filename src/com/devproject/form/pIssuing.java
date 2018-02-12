@@ -48,6 +48,10 @@ public class pIssuing extends javax.swing.JPanel {
     public void addActionListenerIssuingsave(ActionListener l) {
         btnsave.addActionListener(l);
     }
+    
+    public void addActionListenerIssuingimport(ActionListener l) {
+        btnimport.addActionListener(l);
+    }
 
     public JTable getTabelpart() {
         return tabelpart;
@@ -144,6 +148,7 @@ public class pIssuing extends javax.swing.JPanel {
         jLabel9 = new javax.swing.JLabel();
         txtsearch = new javax.swing.JTextField();
         txtcustomer = new javax.swing.JTextField();
+        btnimport = new com.devproject.component.Tombol_Master();
         panelTransparan2 = new com.devproject.component.PanelTransparan();
         jLabel7 = new javax.swing.JLabel();
 
@@ -171,7 +176,7 @@ public class pIssuing extends javax.swing.JPanel {
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Qty");
-        panelTransparan1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 510, -1, 10));
+        panelTransparan1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 510, -1, -1));
 
         txtqty.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         txtqty.addActionListener(new java.awt.event.ActionListener() {
@@ -189,7 +194,7 @@ public class pIssuing extends javax.swing.JPanel {
         btnsave.setForeground(new java.awt.Color(255, 255, 255));
         btnsave.setText("Save");
         btnsave.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        panelTransparan1.add(btnsave, new org.netbeans.lib.awtextra.AbsoluteConstraints(1000, 550, 90, 30));
+        panelTransparan1.add(btnsave, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 550, 90, 30));
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
@@ -244,6 +249,11 @@ public class pIssuing extends javax.swing.JPanel {
         txtcustomer.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         panelTransparan1.add(txtcustomer, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 70, 1180, 30));
 
+        btnimport.setForeground(new java.awt.Color(255, 255, 255));
+        btnimport.setText("Import");
+        btnimport.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        panelTransparan1.add(btnimport, new org.netbeans.lib.awtextra.AbsoluteConstraints(1000, 550, 90, 30));
+
         panelBackground1.add(panelTransparan1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 60, 1320, 610));
 
         panelTransparan2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -266,6 +276,7 @@ public class pIssuing extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.devproject.component.Tombol_Master btncancel;
     private com.devproject.component.Tombol_Master btnclear;
+    private com.devproject.component.Tombol_Master btnimport;
     private com.devproject.component.Tombol_Master btnsave;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

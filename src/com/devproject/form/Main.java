@@ -77,6 +77,7 @@ public class Main extends javax.swing.JFrame {
         pCard.add(pReceiving, "panelreceiving");
         pCard.add(pReceivingnew, "panelreceivingnew");
         pCard.add(pIssuing, "panelissuing");
+        pCard.add(pInventory, "panelinventory");
         
         CardLayout c1 = (CardLayout)pCard.getLayout();
         c1.show(pCard, "panelutama"); 
@@ -92,6 +93,7 @@ public class Main extends javax.swing.JFrame {
         pMain.addActionListenerSupplier(new Aksi_menuUtama_supplier());
         pMain.addActionListenerReceiving(new Aksi_menuUtama_receiving());
         pMain.addActionListenerIssuing(new Aksi_menuUtama_issuing());
+        pMain.addActionListenerInventory(new Aksi_menuUtama_inventory());
         
         //pMaster Action
         pMaster.addActionListenerMasterImport(new Aksi_masterimport());
@@ -166,6 +168,15 @@ public class Main extends javax.swing.JFrame {
         pIssuing.addActionListenerissuingTabel(new Aksi_issuingtabel());
         pIssuing.addKeyListenerIssuingSearch(new Aksi_issuingsearchkey());
         pIssuing.addActionListenerIssuingsave(new Aksi_issuingsave());
+        pIssuing.addActionListenerIssuingimport(new Aksi_issuingimport());
+        
+        //pInventory
+        pInventory.addActionListenerinventoryback(new Aksi_inventoryback());
+        pInventory.addActionListenerinventoryclear(new Aksi_inventoryclear());
+        pInventory.addActionListenerinventoryrefresh(new Aksi_inventoryrefresh());
+        pInventory.addActionListenerinventorysearch(new Aksi_inventorysearch());
+        pInventory.addKeyListenerinventorySearch(new Aksi_inventorysearchkey());
+        pInventory.addActionListenerinventoryTabel(new Aksi_inventorytabel());
         
     }
     
@@ -219,6 +230,16 @@ public class Main extends javax.swing.JFrame {
             isitabelIssuingpart();
             issuingno();
             pIssuing.setTxtcustomer("CUSTOMER");
+        }
+    }
+    
+    class Aksi_menuUtama_inventory implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            CardLayout c1 = (CardLayout) pCard.getLayout();
+            c1.show(pCard, "panelinventory");
+            isitabelInventorypart();
         }
     }
     
@@ -798,7 +819,7 @@ public class Main extends javax.swing.JFrame {
         
     }
     
-     class Aksi_receivingsearchkey implements KeyListener {
+    class Aksi_receivingsearchkey implements KeyListener {
 
         @Override
         public void keyTyped(KeyEvent e) {
@@ -1045,6 +1066,83 @@ public class Main extends javax.swing.JFrame {
         }
         
     }
+    
+    class Aksi_issuingimport implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            getGlassPane().setVisible(true);
+            importissuing();
+            getGlassPane().setVisible(false);
+            isitabelIssuingpart();
+        }
+        
+    }
+    
+    class Aksi_inventoryback implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            CardLayout c1 = (CardLayout) pCard.getLayout();
+            c1.show(pCard, "panelutama");
+            pInventory.setTxtsearch("");
+            pInventory.getTabelMaster().clearSelection();
+        }
+        
+    }
+    
+    class Aksi_inventoryclear implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            inventoryclear();
+        }
+        
+    }
+    
+    class Aksi_inventoryrefresh implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            isitabelInventorypart();
+        }
+        
+    }
+    
+    class Aksi_inventorysearch implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            searchresultInventory();
+        }
+        
+    }
+    
+    class Aksi_inventorysearchkey implements KeyListener {
+
+        @Override
+        public void keyTyped(KeyEvent e) {
+
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+           if( e.getKeyCode() == KeyEvent.VK_ENTER ) {
+               searchresultInventory();
+           } else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+               isitabelInventorypart();
+           } else if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+               isitabelInventorypart();
+               pInventory.setTxtsearch("");
+           }
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+            
+        }
+        
+    }
 
       
     // Method
@@ -1264,6 +1362,81 @@ public class Main extends javax.swing.JFrame {
                                 String stocklama = rs.getString(1);
                                 //System.out.println(value);
                                 int stock = value + Integer.parseInt(stocklama);
+                                String sql = "UPDATE part SET oh = '" + stock + "' WHERE partnumber = '" + partno+ "' ";
+                                try {
+                                    connection = Koneksi.sambung();
+                                    Statement stmn = connection.createStatement();
+                                    stmn.executeUpdate(sql);
+                                } catch (Exception e) {
+                                    System.out.println(e.getMessage());
+                                }
+                            }
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                        }
+                        
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                //System.out.print("Import Sukses !");
+                JOptionPane.showMessageDialog(null, "Data berhasil Disimpan",
+                        "Informasi", JOptionPane.INFORMATION_MESSAGE);
+                isitabelpart();
+            } catch (SQLException ex) {
+                //System.out.print("Export gagal");
+                JOptionPane.showMessageDialog(null, ex.getErrorCode(),
+                        "Informasi", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+    }
+    
+     private void importissuing () {
+        JFileChooser fileChooser = new JFileChooser();
+        int returnValue = fileChooser.showOpenDialog(null);
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            System.out.println(selectedFile.getName());
+            String fileName = selectedFile.getAbsolutePath();
+
+            ArrayList dataHolder = readExcelFilePart(fileName);
+
+            try {
+                String query = "insert into issuing (issuingno, date, customer, "
+                        + "partnumber, partname, qty) values (?, ?, ?, ?, ?, ?)";
+                connection = Koneksi.sambung();
+                PreparedStatement statement = null;
+                statement = connection.prepareStatement(query);
+                int count = 0;
+
+                ArrayList cellStoreArrayList = null;
+
+                //insert into database
+                for (int i = 1; i < dataHolder.size(); i++) {
+                    cellStoreArrayList = (ArrayList) dataHolder.get(i);
+                    try {
+                        statement.setString(1, ((XSSFCell) cellStoreArrayList.get(0)).toString());
+                        statement.setString(2, ((XSSFCell) cellStoreArrayList.get(1)).toString());
+                        statement.setString(3, ((XSSFCell) cellStoreArrayList.get(2)).toString());
+                        statement.setString(4, ((XSSFCell) cellStoreArrayList.get(3)).toString());
+                        statement.setString(5, ((XSSFCell) cellStoreArrayList.get(4)).toString());
+                        statement.setString(6, ((XSSFCell) cellStoreArrayList.get(5)).toString());
+                        statement.executeUpdate();
+                        
+                        String partno = ((XSSFCell) cellStoreArrayList.get(3)).toString();
+                        String qty = ((XSSFCell) cellStoreArrayList.get(5)).toString();
+                        float number = Float.parseFloat(qty);
+                        int value = (int) number;
+                        String sqlstock = "SELECT oh FROM part WHERE partnumber ='"+partno+"' ";
+                        
+                        try {
+                            connection = Koneksi.sambung();
+                            Statement stm = connection.createStatement();
+                            ResultSet rs = stm.executeQuery(sqlstock);
+                            while (rs.next()) {
+                                String stocklama = rs.getString(1);
+                                //System.out.println(value);
+                                int stock = Integer.parseInt(stocklama) - value;
                                 String sql = "UPDATE part SET oh = '" + stock + "' WHERE partnumber = '" + partno+ "' ";
                                 try {
                                     connection = Koneksi.sambung();
@@ -2698,6 +2871,7 @@ public class Main extends javax.swing.JFrame {
         pIssuing.setTxtdate(null);
         pIssuing.getTabelpart().clearSelection();
         issuingno();
+        isitabelIssuingpart();
     }
     
     private void isitabelIssuingpart () {
@@ -2832,7 +3006,7 @@ public class Main extends javax.swing.JFrame {
                     statement.setString(5, partname);
                     statement.setInt(6, Integer.valueOf(qty));
                     statement.executeUpdate();
-                    Receivingupdatestock();
+                    Issuingupdatestock();
                     statement.close();
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
@@ -2846,6 +3020,165 @@ public class Main extends javax.swing.JFrame {
                  "Informasi",JOptionPane.WARNING_MESSAGE);
             pIssuing.getTxtissuingno().requestFocus();
         }
+    }
+    
+     private void Issuingupdatestock () {
+        
+        String partnumber = pIssuing.getTxtpartnumber().getText();
+        String qty = pIssuing.getTxtqty().getText();
+        String sqlstock = "SELECT oh FROM part WHERE partnumber ='"+partnumber+"' ";
+        try {
+            connection = Koneksi.sambung();
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery(sqlstock);
+            while (rs.next()) {
+                String stocklama = rs.getString(1);
+                int stock = Integer.parseInt(stocklama) - Integer.parseInt(qty);
+                String sql =  "UPDATE part SET oh = '"+stock+"' WHERE partnumber = '" +partnumber+ "' ";
+                try {
+                   connection = Koneksi.sambung();
+                   Statement stmn = connection.createStatement();
+                   stmn.executeUpdate(sql); 
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        
+    }
+     
+    private void isitabelInventorypart () {
+        Object header [] = {"Part Number", "Part Name", "On Hand"};
+   
+        DefaultTableModel model = new DefaultTableModel(null, header) {
+            public boolean isCellEditable(int row, int column) {
+            return false;
+            }
+        };
+        pInventory.getTabelMaster().setModel(model);
+        
+        String sql = "SELECT * FROM part ORDER BY partnumber";
+        
+        try {
+            connection = Koneksi.sambung();
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery(sql);
+            while (rs.next()) {
+                String kolom1 = rs.getString(2);
+                String kolom2 = rs.getString(3);
+                String kolom3 = rs.getString(6);
+                
+                String kolom [] = {kolom1, kolom2, kolom3};  
+                model.addRow(kolom);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }    
+    }
+    
+    private void inventoryclear() {
+        pInventory.getTabelMaster().clearSelection();
+        pInventory.setTxtsearch("");
+        pInventory.setTxtpartnumber("");
+        pInventory.setTxtpartname("");
+        pInventory.setTxtoh("");
+        pInventory.setTxtmin("");
+        pInventory.setTxtmax("");
+        pInventory.setTxtaverage("");
+        pInventory.setTxtoc("");
+        pInventory.setTxtleadtime("");
+        pInventory.setTxtss("");
+        pInventory.setTxtsoqday("");
+        pInventory.setTxtsoqmonth("");
+        pInventory.setTxtmipday("");
+        pInventory.setTxtmipmonth("");
+    }
+    
+    private void searchresultInventory () {
+        Object header [] = {"Part Number", "Part Name", "On Hand"};
+   
+        DefaultTableModel model = new DefaultTableModel(null, header) {
+            public boolean isCellEditable(int row, int column) {
+            return false;
+            }
+        };
+        pInventory.getTabelMaster().setModel(model);
+        
+        String sql = "SELECT * From part WHERE CONCAT (id, partnumber, partname, oh) "
+                + "LIKE '%"+pInventory.getTxtsearch().getText()+"%' ";
+        
+        try {
+            connection = Koneksi.sambung();
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery(sql);
+            while (rs.next()) {
+                String kolom1 = rs.getString(2);
+                String kolom2 = rs.getString(3);
+                String kolom3 = rs.getString(6);
+                
+                String kolom [] = {kolom1, kolom2, kolom3};
+                
+                model.addRow(kolom);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    class Aksi_inventorytabel implements MouseListener {
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            int x = e.getClickCount();
+            if (x == 2) {
+                int xrow = pInventory.getTabelMaster().getSelectedRow();
+                String partnumber = (String) pInventory.getTabelMaster().getValueAt(xrow, 0);
+                String partname = (String) pInventory.getTabelMaster().getValueAt(xrow, 1);
+                String oh = (String) pInventory.getTabelMaster().getValueAt(xrow, 2);
+                String min = "";
+                
+                String sql = "SELECT MIN(qty) FROM issuing WHERE partnumber = '" +partnumber+ "' ";
+
+                try {
+                    connection = Koneksi.sambung();
+                    Statement stm = connection.createStatement();
+                    ResultSet rs = stm.executeQuery(sql);
+                    while (rs.next()) {
+                        min = rs.getString(1);
+                    }
+                } catch (Exception ex) {
+                    System.out.println(ex.getMessage());
+                }
+        
+                pInventory.setTxtpartnumber(partnumber);
+                pInventory.setTxtpartname(partname);
+                pInventory.setTxtoh(oh);
+                pInventory.setTxtmin(min);
+            }
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+            
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+            
+        }
+
     }
      
     /**
@@ -2868,6 +3201,7 @@ public class Main extends javax.swing.JFrame {
         pReceiving = new com.devproject.form.pReceiving();
         pReceivingnew = new com.devproject.form.pReceivingnew();
         pIssuing = new com.devproject.form.pIssuing();
+        pInventory = new com.devproject.form.pInventory();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -2883,6 +3217,7 @@ public class Main extends javax.swing.JFrame {
         pCard.add(pReceiving, "card9");
         pCard.add(pReceivingnew, "card10");
         pCard.add(pIssuing, "card11");
+        pCard.add(pInventory, "card12");
 
         getContentPane().add(pCard, java.awt.BorderLayout.CENTER);
 
@@ -2929,6 +3264,7 @@ public class Main extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel pCard;
     private com.devproject.form.pGlass pGlass;
+    private com.devproject.form.pInventory pInventory;
     private com.devproject.form.pIssuing pIssuing;
     private com.devproject.form.pLocation pLocation;
     private com.devproject.form.pMain pMain;
