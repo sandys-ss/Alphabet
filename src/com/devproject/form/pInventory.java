@@ -100,14 +100,6 @@ public class pInventory extends javax.swing.JPanel {
         txtmin.setText(min);
     }
 
-    public JTextField getTxtmipday() {
-        return txtmipday;
-    }
-
-    public void setTxtmipday(String mipday) {
-        txtmipday.setText(mipday);
-    }
-
     public JTextField getTxtmipmonth() {
         return txtmipmonth;
     }
@@ -146,14 +138,6 @@ public class pInventory extends javax.swing.JPanel {
 
     public void setTxtpartnumber(String partnumber) {
         txtpartnumber.setText(partnumber);
-    }
-
-    public JTextField getTxtsoqday() {
-        return txtsoqday;
-    }
-
-    public void setTxtsoqday(String soqday) {
-        txtsoqday.setText(soqday);
     }
 
     public JTextField getTxtsoqmonth() {
@@ -207,7 +191,6 @@ public class pInventory extends javax.swing.JPanel {
         jLabel7 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         txtmin = new javax.swing.JTextField();
-        txtsoqday = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         txtleadtime = new javax.swing.JTextField();
@@ -216,10 +199,7 @@ public class pInventory extends javax.swing.JPanel {
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
-        jLabel19 = new javax.swing.JLabel();
-        jLabel20 = new javax.swing.JLabel();
         txtmipmonth = new javax.swing.JTextField();
-        txtmipday = new javax.swing.JTextField();
         txtsoqmonth = new javax.swing.JTextField();
 
         setLayout(new java.awt.BorderLayout());
@@ -357,10 +337,6 @@ public class pInventory extends javax.swing.JPanel {
         txtmin.setEnabled(false);
         panelTransparan2.add(txtmin, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 20, 240, 30));
 
-        txtsoqday.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        txtsoqday.setEnabled(false);
-        panelTransparan2.add(txtsoqday, new org.netbeans.lib.awtextra.AbsoluteConstraints(1240, 10, 90, 30));
-
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
         jLabel10.setText("Day");
@@ -391,34 +367,20 @@ public class pInventory extends javax.swing.JPanel {
         jLabel16.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel16.setForeground(new java.awt.Color(255, 255, 255));
         jLabel16.setText("Suggest Order Quantity (Month)");
-        panelTransparan2.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(1000, 50, -1, 30));
+        panelTransparan2.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(990, 10, -1, 30));
 
         jLabel18.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel18.setForeground(new java.awt.Color(255, 255, 255));
         jLabel18.setText("Maximum Inventory Position (Month)");
-        panelTransparan2.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(1000, 130, -1, 30));
-
-        jLabel19.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel19.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel19.setText("Suggest Order Quantity (Day)");
-        panelTransparan2.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(1000, 10, -1, 30));
-
-        jLabel20.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel20.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel20.setText("Maximum Inventory Position (Day)");
-        panelTransparan2.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(1000, 90, -1, 30));
+        panelTransparan2.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(990, 90, -1, 30));
 
         txtmipmonth.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         txtmipmonth.setEnabled(false);
-        panelTransparan2.add(txtmipmonth, new org.netbeans.lib.awtextra.AbsoluteConstraints(1240, 130, 90, 30));
-
-        txtmipday.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        txtmipday.setEnabled(false);
-        panelTransparan2.add(txtmipday, new org.netbeans.lib.awtextra.AbsoluteConstraints(1240, 90, 90, 30));
+        panelTransparan2.add(txtmipmonth, new org.netbeans.lib.awtextra.AbsoluteConstraints(990, 120, 330, 30));
 
         txtsoqmonth.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         txtsoqmonth.setEnabled(false);
-        panelTransparan2.add(txtsoqmonth, new org.netbeans.lib.awtextra.AbsoluteConstraints(1240, 50, 90, 30));
+        panelTransparan2.add(txtsoqmonth, new org.netbeans.lib.awtextra.AbsoluteConstraints(990, 50, 330, 30));
 
         panelBackground1.add(panelTransparan2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 1340, 170));
 
@@ -447,9 +409,7 @@ public class pInventory extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -465,14 +425,12 @@ public class pInventory extends javax.swing.JPanel {
     private javax.swing.JTextField txtleadtime;
     private javax.swing.JTextField txtmax;
     private javax.swing.JTextField txtmin;
-    private javax.swing.JTextField txtmipday;
     private javax.swing.JTextField txtmipmonth;
     private javax.swing.JTextField txtoc;
     private javax.swing.JTextField txtoh;
     private javax.swing.JTextField txtpartname;
     private javax.swing.JTextField txtpartnumber;
     private javax.swing.JTextField txtsearch;
-    private javax.swing.JTextField txtsoqday;
     private javax.swing.JTextField txtsoqmonth;
     private javax.swing.JTextField txtss;
     // End of variables declaration//GEN-END:variables

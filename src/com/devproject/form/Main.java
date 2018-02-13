@@ -30,6 +30,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -78,6 +79,7 @@ public class Main extends javax.swing.JFrame {
         pCard.add(pReceivingnew, "panelreceivingnew");
         pCard.add(pIssuing, "panelissuing");
         pCard.add(pInventory, "panelinventory");
+        pCard.add(pReport, "panelreport");
         
         CardLayout c1 = (CardLayout)pCard.getLayout();
         c1.show(pCard, "panelutama"); 
@@ -94,6 +96,7 @@ public class Main extends javax.swing.JFrame {
         pMain.addActionListenerReceiving(new Aksi_menuUtama_receiving());
         pMain.addActionListenerIssuing(new Aksi_menuUtama_issuing());
         pMain.addActionListenerInventory(new Aksi_menuUtama_inventory());
+        pMain.addActionListeneReport(new Aksi_menuUtama_report());
         
         //pMaster Action
         pMaster.addActionListenerMasterImport(new Aksi_masterimport());
@@ -177,6 +180,13 @@ public class Main extends javax.swing.JFrame {
         pInventory.addActionListenerinventorysearch(new Aksi_inventorysearch());
         pInventory.addKeyListenerinventorySearch(new Aksi_inventorysearchkey());
         pInventory.addActionListenerinventoryTabel(new Aksi_inventorytabel());
+        pInventory.addActionListenerinventorycalculate(new Aksi_inventorycal());
+        
+        //pReport
+        pReport.addActionListenerReportback(new Aksi_reportback());
+        pReport.addActionListenerReportrefresh(new Aksi_reportrefresh());
+        pReport.addActionListenerreportsearch(new Aksi_reportsearch());
+        pReport.addKeyListenerreportSearch(new Aksi_reportsearchkey());
         
     }
     
@@ -240,8 +250,22 @@ public class Main extends javax.swing.JFrame {
             CardLayout c1 = (CardLayout) pCard.getLayout();
             c1.show(pCard, "panelinventory");
             isitabelInventorypart();
+            pInventory.setTxtleadtime("1");
+            pInventory.setTxtss("1");
         }
     }
+    
+    class Aksi_menuUtama_report implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            CardLayout c1 = (CardLayout) pCard.getLayout();
+            c1.show(pCard, "panelreport");
+            isitabelreport();
+            pReport.setTxtsearch("");
+        }
+    }
+    
     
     class Aksi_masterimport implements ActionListener {
 
@@ -1134,6 +1158,103 @@ public class Main extends javax.swing.JFrame {
            } else if (e.getKeyCode() == KeyEvent.VK_DELETE) {
                isitabelInventorypart();
                pInventory.setTxtsearch("");
+           }
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+            
+        }
+        
+    }
+    
+    class Aksi_inventorytabel implements MouseListener {
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            int x = e.getClickCount();
+            if (x == 2) {
+                inventory();
+            }
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+            
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+            
+        }
+
+    }
+    
+    class Aksi_inventorycal implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            calculate();
+        }
+        
+    }
+    
+    class Aksi_reportback implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            CardLayout c1 = (CardLayout) pCard.getLayout();
+            c1.show(pCard, "panelutama");
+        }
+        
+    }
+    
+    class Aksi_reportrefresh implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            isitabelreport();
+            pReport.getTabelreport().clearSelection();
+            pReport.setTxtsearch("");
+        }
+        
+    }
+    
+    class Aksi_reportsearch implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            searchresultreport();
+        }
+        
+    }
+    
+    class Aksi_reportsearchkey implements KeyListener {
+
+        @Override
+        public void keyTyped(KeyEvent e) {
+
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+           if( e.getKeyCode() == KeyEvent.VK_ENTER ) {
+               searchresultreport();
+           } else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+               isitabelreport();
+           } else if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+               isitabelreport();
+               pReport.setTxtsearch("");
            }
         }
 
@@ -2870,7 +2991,6 @@ public class Main extends javax.swing.JFrame {
         pIssuing.setTxtqty("");
         pIssuing.setTxtdate(null);
         pIssuing.getTabelpart().clearSelection();
-        issuingno();
         isitabelIssuingpart();
     }
     
@@ -2965,11 +3085,7 @@ public class Main extends javax.swing.JFrame {
         
         String insert = "INSERT INTO issuing (issuingno,date,customer,partnumber,"
             + "partname, qty) VALUES (?,?,?,?,?,?);" ;
-        
-        ValidasiIssuing valid = new ValidasiIssuing();
-        valid.validasi_part(issuingno);
-        
-        if (valid.xissuingno == "") {
+      
             if (issuingno.equals("")) {
                 JOptionPane.showMessageDialog(null, "Issuing No masih Kosong !", "Informasi",
                     JOptionPane.INFORMATION_MESSAGE);
@@ -3014,12 +3130,7 @@ public class Main extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null,"Data berhasil Disimpan",
                         "Informasi",JOptionPane.INFORMATION_MESSAGE);
                 clearissuing();
-            }    
-        } else {
-            JOptionPane.showMessageDialog(null,"Data Sudah Ada",
-                 "Informasi",JOptionPane.WARNING_MESSAGE);
-            pIssuing.getTxtissuingno().requestFocus();
-        }
+            } 
     }
     
      private void Issuingupdatestock () {
@@ -3088,12 +3199,10 @@ public class Main extends javax.swing.JFrame {
         pInventory.setTxtmax("");
         pInventory.setTxtaverage("");
         pInventory.setTxtoc("");
-        pInventory.setTxtleadtime("");
-        pInventory.setTxtss("");
-        pInventory.setTxtsoqday("");
         pInventory.setTxtsoqmonth("");
-        pInventory.setTxtmipday("");
         pInventory.setTxtmipmonth("");
+        pInventory.setTxtss("1");
+        pInventory.setTxtleadtime("1");
     }
     
     private void searchresultInventory () {
@@ -3127,58 +3236,170 @@ public class Main extends javax.swing.JFrame {
         }
     }
     
-    class Aksi_inventorytabel implements MouseListener {
+    private void inventory () {
+        int xrow = pInventory.getTabelMaster().getSelectedRow();
+        String partnumber = (String) pInventory.getTabelMaster().getValueAt(xrow, 0);
+        String partname = (String) pInventory.getTabelMaster().getValueAt(xrow, 1);
+        String oh = (String) pInventory.getTabelMaster().getValueAt(xrow, 2);
+        int min = 0;
+        int max = 0;
+        double average = 0;
+        double leadtime = 1;
+        double safetystock = 1;
 
-        @Override
-        public void mouseClicked(MouseEvent e) {
-            int x = e.getClickCount();
-            if (x == 2) {
-                int xrow = pInventory.getTabelMaster().getSelectedRow();
-                String partnumber = (String) pInventory.getTabelMaster().getValueAt(xrow, 0);
-                String partname = (String) pInventory.getTabelMaster().getValueAt(xrow, 1);
-                String oh = (String) pInventory.getTabelMaster().getValueAt(xrow, 2);
-                String min = "";
-                
-                String sql = "SELECT MIN(qty) FROM issuing WHERE partnumber = '" +partnumber+ "' ";
+        String sql = "SELECT MIN(qty) FROM issuing WHERE partnumber = '" + partnumber + "' ";
+        String sql2 = "SELECT MAX(qty) FROM issuing WHERE partnumber = '" + partnumber + "' ";
+        String sql3 = "SELECT AVG(qty) FROM issuing WHERE partnumber = '" + partnumber + "' ";
 
-                try {
-                    connection = Koneksi.sambung();
-                    Statement stm = connection.createStatement();
-                    ResultSet rs = stm.executeQuery(sql);
-                    while (rs.next()) {
-                        min = rs.getString(1);
-                    }
-                } catch (Exception ex) {
-                    System.out.println(ex.getMessage());
-                }
-        
-                pInventory.setTxtpartnumber(partnumber);
-                pInventory.setTxtpartname(partname);
-                pInventory.setTxtoh(oh);
-                pInventory.setTxtmin(min);
+        try {
+            connection = Koneksi.sambung();
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery(sql);
+            while (rs.next()) {
+                min = rs.getInt(1);
             }
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
         }
 
-        @Override
-        public void mousePressed(MouseEvent e) {
-            
+        try {
+            connection = Koneksi.sambung();
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery(sql2);
+            while (rs.next()) {
+                max = rs.getInt(1);
+            }
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+        
+        try {
+            connection = Koneksi.sambung();
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery(sql3);
+            while (rs.next()) {
+                average = rs.getDouble(1);
+            }
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+             
+        double mad = average * 20;
+        double orderc = Math.round(average);
+        double lt = leadtime / 20;
+        double ss = safetystock / 20;
+        System.out.println(ss);
+        System.out.println(lt);
+        System.out.println(orderc);
+        System.out.println(mad);
+        double mip = Math.round(mad * (orderc + lt + ss));
+        
+        int soq = (int) (mip - Integer.parseInt(oh));
+        if (soq < 0) {
+            soq = 0;
         }
 
-        @Override
-        public void mouseReleased(MouseEvent e) {
-            
+        pInventory.setTxtpartnumber(partnumber);
+        pInventory.setTxtpartname(partname);
+        pInventory.setTxtoh(oh);
+        pInventory.setTxtmin(String.valueOf(min));
+        pInventory.setTxtmax(String.valueOf(max));
+        pInventory.setTxtaverage(String.valueOf(average));
+        pInventory.setTxtoc(String.valueOf(orderc));
+        pInventory.setTxtmipmonth(String.valueOf(mip));
+        pInventory.setTxtsoqmonth(String.valueOf(soq));
+    }
+    
+    private void calculate (){
+        String oh = pInventory.getTxtoh().getText();
+        String average = pInventory.getTxtaverage().getText();
+        String oc = pInventory.getTxtoc().getText();
+        String lt = pInventory.getTxtleadtime().getText();
+        String ss = pInventory.getTxtss().getText();
+        
+        double mad = Double.parseDouble(average) * 20;
+        double ltt = Double.parseDouble(lt) / 20;
+        double sss = Double.parseDouble(ss) / 20;
+        double occ = Double.parseDouble(oc);
+        double mip = Math.round(mad * (occ + ltt + sss));
+        
+        int soq = (int) (mip - Integer.parseInt(oh));
+        if (soq < 0) {
+            soq = 0;
         }
-
-        @Override
-        public void mouseEntered(MouseEvent e) {
-            
+        
+        pInventory.setTxtmipmonth(String.valueOf(mip));
+        pInventory.setTxtsoqmonth(String.valueOf(soq));
+    }
+    
+    private void isitabelreport () {
+        Object header [] = {"Issuing No", "Transaction Date", "Customer", 
+                            "Part Number", "Part Name", "Qty"};
+   
+        DefaultTableModel model = new DefaultTableModel(null, header) {
+            public boolean isCellEditable(int row, int column) {
+            return false;
+            }
+        };
+        pReport.getTabelreport().setModel(model);
+        
+        String sql = "SELECT * FROM issuing ORDER BY date desc";
+        
+        try {
+            connection = Koneksi.sambung();
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery(sql);
+            while (rs.next()) {
+                String kolom1 = rs.getString(2);
+                String kolom2 = rs.getString(3);
+                String kolom3 = rs.getString(4);
+                String kolom4 = rs.getString(5);
+                String kolom5 = rs.getString(6);
+                String kolom6 = rs.getString(7);
+                
+                String kolom [] = {kolom1, kolom2, kolom3, kolom4,
+                                    kolom5, kolom6};  
+                model.addRow(kolom);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }    
+    }
+    
+    private void searchresultreport () {
+        Object header [] = {"Issuing No", "Transaction Date", "Customer", "Part Number",
+                            "Part Name", "Qty"};
+   
+        DefaultTableModel model = new DefaultTableModel(null, header) {
+            public boolean isCellEditable(int row, int column) {
+            return false;
+            }
+        };
+        pReport.getTabelreport().setModel(model);
+        
+        String sql = "SELECT * From issuing WHERE CONCAT (id,issuingno, date, "
+                + "customer, partnumber, partname, qty ) LIKE "
+                + "'%"+pReport.getTxtsearch().getText()+"%' ";
+        
+        try {
+            connection = Koneksi.sambung();
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery(sql);
+            while (rs.next()) {
+                String kolom1 = rs.getString(2);
+                String kolom2 = rs.getString(3);
+                String kolom3 = rs.getString(4);
+                String kolom4 = rs.getString(5);
+                String kolom5 = rs.getString(6);
+                String kolom6 = rs.getString(7);
+                
+                String kolom [] = {kolom1, kolom2, kolom3, kolom4,
+                                    kolom5, kolom6};
+                model.addRow(kolom);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
-
-        @Override
-        public void mouseExited(MouseEvent e) {
-            
-        }
-
     }
      
     /**
@@ -3202,6 +3423,7 @@ public class Main extends javax.swing.JFrame {
         pReceivingnew = new com.devproject.form.pReceivingnew();
         pIssuing = new com.devproject.form.pIssuing();
         pInventory = new com.devproject.form.pInventory();
+        pReport = new com.devproject.form.pReport();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -3218,6 +3440,7 @@ public class Main extends javax.swing.JFrame {
         pCard.add(pReceivingnew, "card10");
         pCard.add(pIssuing, "card11");
         pCard.add(pInventory, "card12");
+        pCard.add(pReport, "card13");
 
         getContentPane().add(pCard, java.awt.BorderLayout.CENTER);
 
@@ -3273,6 +3496,7 @@ public class Main extends javax.swing.JFrame {
     private com.devproject.form.pMdetailnew pMdetailnew;
     private com.devproject.form.pReceiving pReceiving;
     private com.devproject.form.pReceivingnew pReceivingnew;
+    private com.devproject.form.pReport pReport;
     private com.devproject.form.pSupplier pSupplier;
     // End of variables declaration//GEN-END:variables
 }

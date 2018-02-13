@@ -58,7 +58,7 @@ public class pIssuing extends javax.swing.JPanel {
     }
 
     public JDateChooser getTxtdate() {
-        return txtdate;
+        return this.txtdate;
     }
 
     public JTextField getTxtpartname() {
