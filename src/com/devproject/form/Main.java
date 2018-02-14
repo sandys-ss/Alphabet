@@ -80,6 +80,7 @@ public class Main extends javax.swing.JFrame {
         pCard.add(pIssuing, "panelissuing");
         pCard.add(pInventory, "panelinventory");
         pCard.add(pReport, "panelreport");
+        pCard.add(pShowReport, "panelshowreport");
         
         CardLayout c1 = (CardLayout)pCard.getLayout();
         c1.show(pCard, "panelutama"); 
@@ -187,6 +188,11 @@ public class Main extends javax.swing.JFrame {
         pReport.addActionListenerReportrefresh(new Aksi_reportrefresh());
         pReport.addActionListenerreportsearch(new Aksi_reportsearch());
         pReport.addKeyListenerreportSearch(new Aksi_reportsearchkey());
+        pReport.addActionListenerReportexport(new Aksi_reportexport());
+        pReport.addActionListenerReport(new Aksi_report());
+        
+        //pShowReport
+        pShowReport.addActionListenerRback(new Aksi_rback());
         
     }
     
@@ -1264,8 +1270,40 @@ public class Main extends javax.swing.JFrame {
         }
         
     }
+    
+    class Aksi_reportexport implements ActionListener {
 
-      
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            getGlassPane().setVisible(true);
+            exportissuing();
+            getGlassPane().setVisible(false);
+            isitabelreport();
+        }
+        
+    }
+    
+    class Aksi_report implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            CardLayout c1 = (CardLayout) pCard.getLayout();
+            c1.show(pCard, "panelshowreport");
+        }
+        
+    }
+    
+    class Aksi_rback implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            CardLayout c1 = (CardLayout) pCard.getLayout();
+            c1.show(pCard, "panelreport");
+        }
+        
+    }
+    
+    
     // Method
     private static ArrayList readExcelFilePart(String fileName) {
         ArrayList cellArrayLisstHolder = new ArrayList();
@@ -1835,6 +1873,82 @@ public class Main extends javax.swing.JFrame {
                 row.createCell(3).setCellValue(rs.getString("partnumber"));
                 row.createCell(4).setCellValue(rs.getString("partname"));
                 row.createCell(5).setCellValue(rs.getString("qtyreceive"));
+            }
+            JFileChooser pilih = new JFileChooser();
+            FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                    "Excel File", "xlsx");
+            pilih.setFileFilter(filter);
+            int value = pilih.showSaveDialog(null);
+            if (value == JFileChooser.APPROVE_OPTION) {
+                File file = new File(pilih.getSelectedFile() + ".xlsx");
+                String yemi = file.getPath();
+                FileOutputStream fileOut = new FileOutputStream(yemi);
+                workbook.write(fileOut);
+                fileOut.close();
+                JOptionPane.showMessageDialog(null, "Data Berhasil Di Export",
+                        "Informasi", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(pMaster.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(pMaster.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+     private void exportissuing () {
+        final String sql = "SELECT * FROM issuing ORDER BY date;";
+
+        PreparedStatement statement = null;
+        try {
+            XSSFWorkbook workbook = new XSSFWorkbook();
+            XSSFSheet sheet = workbook.createSheet("Issuing");
+            XSSFRow rowhead = sheet.createRow((short) 0);
+
+            XSSFCellStyle myStyle = workbook.createCellStyle();
+            myStyle.setFillForegroundColor(new XSSFColor(Color.BLACK));
+            myStyle.setFillBackgroundColor(new XSSFColor(Color.WHITE));
+
+            XSSFFont font = workbook.createFont();
+            font.setColor(IndexedColors.BLACK.getIndex());
+            myStyle.setFont(font);
+
+            Cell c0 = rowhead.createCell(0);
+            c0.setCellValue("Issuing No");
+            c0.setCellStyle(myStyle);
+
+            Cell c1 = rowhead.createCell(1);
+            c1.setCellValue("Transaction Date");
+            c1.setCellStyle(myStyle);
+            
+            Cell c2 = rowhead.createCell(2);
+            c2.setCellValue("Customer");
+            c2.setCellStyle(myStyle);
+
+            Cell c3 = rowhead.createCell(3);
+            c3.setCellValue("Part Number");
+            c3.setCellStyle(myStyle);
+
+            Cell c4 = rowhead.createCell(4);
+            c4.setCellValue("Part Name");
+            c4.setCellStyle(myStyle);
+
+            Cell c5 = rowhead.createCell(5);
+            c5.setCellValue("Qty");
+            c5.setCellStyle(myStyle);
+
+            statement = connection.prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                int i = rs.getRow();
+                XSSFRow row = sheet.createRow((short) i);
+                row.createCell(0).setCellValue(rs.getString("issuingno"));
+                row.createCell(1).setCellValue(rs.getString("date"));
+                row.createCell(2).setCellValue(rs.getString("customer"));
+                row.createCell(3).setCellValue(rs.getString("partnumber"));
+                row.createCell(4).setCellValue(rs.getString("partname"));
+                row.createCell(5).setCellValue(rs.getString("qty"));
             }
             JFileChooser pilih = new JFileChooser();
             FileNameExtensionFilter filter = new FileNameExtensionFilter(
@@ -3424,6 +3538,7 @@ public class Main extends javax.swing.JFrame {
         pIssuing = new com.devproject.form.pIssuing();
         pInventory = new com.devproject.form.pInventory();
         pReport = new com.devproject.form.pReport();
+        pShowReport = new com.devproject.form.pShowReport();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -3441,6 +3556,7 @@ public class Main extends javax.swing.JFrame {
         pCard.add(pIssuing, "card11");
         pCard.add(pInventory, "card12");
         pCard.add(pReport, "card13");
+        pCard.add(pShowReport, "card14");
 
         getContentPane().add(pCard, java.awt.BorderLayout.CENTER);
 
@@ -3497,6 +3613,7 @@ public class Main extends javax.swing.JFrame {
     private com.devproject.form.pReceiving pReceiving;
     private com.devproject.form.pReceivingnew pReceivingnew;
     private com.devproject.form.pReport pReport;
+    private com.devproject.form.pShowReport pShowReport;
     private com.devproject.form.pSupplier pSupplier;
     // End of variables declaration//GEN-END:variables
 }
