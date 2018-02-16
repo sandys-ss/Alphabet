@@ -31,6 +31,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -81,6 +82,9 @@ public class Main extends javax.swing.JFrame {
         pCard.add(pInventory, "panelinventory");
         pCard.add(pReport, "panelreport");
         pCard.add(pShowReport, "panelshowreport");
+        pCard.add(pSetting, "panelsetting");
+        pCard.add(pAdmin, "paneladmin");
+        pCard.add(pAdminChange, "panelchangepass");
         
         CardLayout c1 = (CardLayout)pCard.getLayout();
         c1.show(pCard, "panelutama"); 
@@ -98,6 +102,7 @@ public class Main extends javax.swing.JFrame {
         pMain.addActionListenerIssuing(new Aksi_menuUtama_issuing());
         pMain.addActionListenerInventory(new Aksi_menuUtama_inventory());
         pMain.addActionListeneReport(new Aksi_menuUtama_report());
+        pMain.addActionListenerSetting(new Aksi_menuUtama_setting());
         
         //pMaster Action
         pMaster.addActionListenerMasterImport(new Aksi_masterimport());
@@ -190,9 +195,26 @@ public class Main extends javax.swing.JFrame {
         pReport.addKeyListenerreportSearch(new Aksi_reportsearchkey());
         pReport.addActionListenerReportexport(new Aksi_reportexport());
         pReport.addActionListenerReport(new Aksi_report());
+        pReport.addActionListenerReporttabel(new Aksi_reporttabel());
         
         //pShowReport
         pShowReport.addActionListenerRback(new Aksi_rback());
+        pShowReport.addActionListenerRsearch(new Aksi_rsearch());
+        pShowReport.addActionListenerRClear(new Aksi_rclear());
+        pShowReport.addActionListenerRexport(new Aksi_rexport());
+        
+        //pSetting
+        pSetting.addActionListenerSettingcancel(new Aksi_settingcancel());
+        pSetting.addActionListenerSettingLogin(new Aksi_settinglogin());
+        pSetting.addKeyListenerSettingpass(new Aksi_settingpass());
+        
+        //pAdmin
+        pAdmin.addActionListenerAdminLogout(new Aksi_adminlogout());
+        pAdmin.addActionListenerAdminChangePass(new Aksi_adminchange());
+        
+        //pAdminChange
+        pAdminChange.addActionListenerSettingcancel(new Aksi_admincancel());
+        pAdminChange.addActionListenerSettingUpdate(new Aksi_adminupdate());
         
     }
     
@@ -269,6 +291,16 @@ public class Main extends javax.swing.JFrame {
             c1.show(pCard, "panelreport");
             isitabelreport();
             pReport.setTxtsearch("");
+        }
+    }
+    
+    class Aksi_menuUtama_setting implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            CardLayout c1 = (CardLayout) pCard.getLayout();
+            c1.show(pCard, "panelsetting");
+            pSetting.getTxtusername().requestFocus();
         }
     }
     
@@ -1221,6 +1253,9 @@ public class Main extends javax.swing.JFrame {
         public void actionPerformed(ActionEvent e) {
             CardLayout c1 = (CardLayout) pCard.getLayout();
             c1.show(pCard, "panelutama");
+            pReport.getTabelreport().clearSelection();
+            pReport.setTxtsearch("");
+            pReport.setTxtinvoice("Select No case");
         }
         
     }
@@ -1232,6 +1267,7 @@ public class Main extends javax.swing.JFrame {
             isitabelreport();
             pReport.getTabelreport().clearSelection();
             pReport.setTxtsearch("");
+            pReport.setTxtinvoice("Select No Case");
         }
         
     }
@@ -1283,12 +1319,48 @@ public class Main extends javax.swing.JFrame {
         
     }
     
+    class Aksi_reporttabel implements MouseListener {
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            int x = e.getClickCount();
+            if (x == 2) {
+                int xrow = pReport.getTabelreport().getSelectedRow();
+                String caseno = (String) pReport.getTabelreport().getValueAt(xrow, 0);
+        
+                pReport.setTxtinvoice(caseno);
+            }
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+            
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+            
+        }
+
+    }
+    
     class Aksi_report implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
             CardLayout c1 = (CardLayout) pCard.getLayout();
             c1.show(pCard, "panelshowreport");
+            isitabelreportdetail();
         }
         
     }
@@ -1299,8 +1371,115 @@ public class Main extends javax.swing.JFrame {
         public void actionPerformed(ActionEvent e) {
             CardLayout c1 = (CardLayout) pCard.getLayout();
             c1.show(pCard, "panelreport");
+            clearshow();
         }
         
+    }
+    
+    class Aksi_rsearch implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            searchresultshow();
+        }
+        
+    }
+    
+    class Aksi_rclear implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            clearshow();
+        }
+        
+    }
+    
+    class Aksi_rexport implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            getGlassPane().setVisible(true);
+            exporrReport();
+            getGlassPane().setVisible(false);
+        }
+        
+    }
+    
+    class Aksi_settingcancel implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            CardLayout c1 = (CardLayout) pCard.getLayout();
+            c1.show(pCard, "panelutama");
+            pSetting.setTxtusername("");
+            pSetting.setTxtpassword("");
+        }
+        
+    }
+    
+    class Aksi_settinglogin implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            login();
+        }
+    }
+    
+    class Aksi_settingpass implements KeyListener {
+
+        @Override
+        public void keyTyped(KeyEvent e) {
+
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+           if( e.getKeyCode() == KeyEvent.VK_ENTER ) {
+               login();
+           } 
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+            
+        }
+        
+    }
+    
+    class Aksi_adminlogout implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            CardLayout c1 = (CardLayout) pCard.getLayout();
+            c1.show(pCard, "panelsetting");
+            pSetting.getTxtusername().requestFocus();
+        }
+    }
+    
+    class Aksi_adminchange implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            CardLayout c1 = (CardLayout) pCard.getLayout();
+            c1.show(pCard, "panelchangepass");
+        }
+    }
+    
+    class Aksi_admincancel implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            CardLayout c1 = (CardLayout) pCard.getLayout();
+            c1.show(pCard, "paneladmin");
+        }
+    }
+    
+    class Aksi_adminupdate implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            updatepass();
+        }
     }
     
     
@@ -1899,7 +2078,7 @@ public class Main extends javax.swing.JFrame {
     
      private void exportissuing () {
         final String sql = "SELECT * FROM issuing ORDER BY date;";
-
+        
         PreparedStatement statement = null;
         try {
             XSSFWorkbook workbook = new XSSFWorkbook();
@@ -1937,6 +2116,95 @@ public class Main extends javax.swing.JFrame {
             Cell c5 = rowhead.createCell(5);
             c5.setCellValue("Qty");
             c5.setCellStyle(myStyle);
+            
+            statement = connection.prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                int i = rs.getRow();
+                XSSFRow row = sheet.createRow((short) i);
+                row.createCell(0).setCellValue(rs.getString("issuingno"));
+                row.createCell(1).setCellValue(rs.getString("date"));
+                row.createCell(2).setCellValue(rs.getString("customer"));
+                row.createCell(3).setCellValue(rs.getString("partnumber"));
+                row.createCell(4).setCellValue(rs.getString("partname"));
+                row.createCell(5).setCellValue(rs.getString("qty"));
+            }
+            JFileChooser pilih = new JFileChooser();
+            FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                    "Excel File", "xlsx");
+            pilih.setFileFilter(filter);
+            int value = pilih.showSaveDialog(null);
+            if (value == JFileChooser.APPROVE_OPTION) {
+                File file = new File(pilih.getSelectedFile() + ".xlsx");
+                String yemi = file.getPath();
+                FileOutputStream fileOut = new FileOutputStream(yemi);
+                workbook.write(fileOut);
+                fileOut.close();
+                JOptionPane.showMessageDialog(null, "Data Berhasil Di Export",
+                        "Informasi", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(pMaster.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(pMaster.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+     
+    private void exporrReport () {
+        SimpleDateFormat t5 = new SimpleDateFormat("yyyy-MM-dd");
+        String start =  (String) t5.format (pShowReport.getTxtstart().getDate());
+        String end =  (String) t5.format (pShowReport.getTxtend().getDate());
+        
+        final String sql = "SELECT * FROM issuing WHERE date BETWEEN '"+start+"' AND"
+                + " '"+end+"' ";
+
+        PreparedStatement statement = null;
+        try {
+            XSSFWorkbook workbook = new XSSFWorkbook();
+            XSSFSheet sheet = workbook.createSheet("Sales Report");
+            XSSFRow rowhead = sheet.createRow((short) 0);
+
+            XSSFCellStyle myStyle = workbook.createCellStyle();
+            myStyle.setFillForegroundColor(new XSSFColor(Color.BLACK));
+            myStyle.setFillBackgroundColor(new XSSFColor(Color.WHITE));
+
+            XSSFFont font = workbook.createFont();
+            font.setColor(IndexedColors.BLACK.getIndex());
+            myStyle.setFont(font);
+
+            Cell c0 = rowhead.createCell(0);
+            c0.setCellValue("Issuing No");
+            c0.setCellStyle(myStyle);
+
+            Cell c1 = rowhead.createCell(1);
+            c1.setCellValue("Transaction Date");
+            c1.setCellStyle(myStyle);
+            
+            Cell c2 = rowhead.createCell(2);
+            c2.setCellValue("Customer");
+            c2.setCellStyle(myStyle);
+
+            Cell c3 = rowhead.createCell(3);
+            c3.setCellValue("Part Number");
+            c3.setCellStyle(myStyle);
+
+            Cell c4 = rowhead.createCell(4);
+            c4.setCellValue("Part Name");
+            c4.setCellStyle(myStyle);
+
+            Cell c5 = rowhead.createCell(5);
+            c5.setCellValue("Qty");
+            c5.setCellStyle(myStyle);
+            
+            Cell c6 = rowhead.createCell(6);
+            c6.setCellValue("Price List");
+            c6.setCellStyle(myStyle);
+            
+            Cell c7 = rowhead.createCell(7);
+            c7.setCellValue("Subtotal");
+            c7.setCellStyle(myStyle);
 
             statement = connection.prepareStatement(sql);
             ResultSet rs = statement.executeQuery();
@@ -1949,6 +2217,17 @@ public class Main extends javax.swing.JFrame {
                 row.createCell(3).setCellValue(rs.getString("partnumber"));
                 row.createCell(4).setCellValue(rs.getString("partname"));
                 row.createCell(5).setCellValue(rs.getString("qty"));
+                
+                String sql2 = "SELECT price FROM part WHERE partnumber = '"+rs.getString("partnumber")+"'";
+                connection = Koneksi.sambung();
+                Statement stm2 = connection.createStatement(); 
+                ResultSet rs2 = stm2.executeQuery(sql2);
+                while (rs2.next()) {
+                    row.createCell(6).setCellValue(rs2.getString(1));
+                    int subtotal = Integer.parseInt(rs.getString("qty")) * Integer.parseInt(rs2.getString(1));
+                    row.createCell(7).setCellValue(subtotal);
+                }
+                
             }
             JFileChooser pilih = new JFileChooser();
             FileNameExtensionFilter filter = new FileNameExtensionFilter(
@@ -2038,17 +2317,27 @@ public class Main extends javax.swing.JFrame {
             Statement stm = connection.createStatement();
             ResultSet rs = stm.executeQuery(sql);
             while (rs.next()) {
+                DecimalFormat kursIndonesia = (DecimalFormat) DecimalFormat.getCurrencyInstance();
+                DecimalFormatSymbols formatRp = new DecimalFormatSymbols();
+
+                formatRp.setCurrencySymbol("Rp. ");
+                formatRp.setMonetaryDecimalSeparator(',');
+                formatRp.setGroupingSeparator('.');
+
+                kursIndonesia.setDecimalFormatSymbols(formatRp);
+                
                 String kolom1 = rs.getString(2);
                 String kolom2 = rs.getString(3);
                 String kolom3 = rs.getString(4);
                 String kolom4 = rs.getString(5);
                 String kolom5 = rs.getString(6);
                 String kolom6 = rs.getString(7);
+                String kolom6rp = kursIndonesia.format(Integer.parseInt(kolom6));
                 String kolom7 = rs.getString(8);
+                String kolom7rp = kursIndonesia.format(Integer.parseInt(kolom7));
                 
                 String kolom [] = {kolom1, kolom2, kolom3, kolom4,
-                                    kolom5, kolom6, kolom7};
-                
+                                    kolom5, kolom6rp, kolom7rp};  
                 model.addRow(kolom);
             }
         } catch (Exception e) {
@@ -2074,16 +2363,27 @@ public class Main extends javax.swing.JFrame {
             Statement stm = connection.createStatement();
             ResultSet rs = stm.executeQuery(sql);
             while (rs.next()) {
+                DecimalFormat kursIndonesia = (DecimalFormat) DecimalFormat.getCurrencyInstance();
+                DecimalFormatSymbols formatRp = new DecimalFormatSymbols();
+
+                formatRp.setCurrencySymbol("Rp. ");
+                formatRp.setMonetaryDecimalSeparator(',');
+                formatRp.setGroupingSeparator('.');
+
+                kursIndonesia.setDecimalFormatSymbols(formatRp);
+                
                 String kolom1 = rs.getString(2);
                 String kolom2 = rs.getString(3);
                 String kolom3 = rs.getString(4);
                 String kolom4 = rs.getString(5);
                 String kolom5 = rs.getString(6);
                 String kolom6 = rs.getString(7);
+                String kolom6rp = kursIndonesia.format(Integer.parseInt(kolom6));
                 String kolom7 = rs.getString(8);
+                String kolom7rp = kursIndonesia.format(Integer.parseInt(kolom7));
                 
                 String kolom [] = {kolom1, kolom2, kolom3, kolom4,
-                                    kolom5, kolom6, kolom7};  
+                                    kolom5, kolom6rp, kolom7rp};  
                 model.addRow(kolom);
             }
         } catch (Exception e) {
@@ -3515,6 +3815,204 @@ public class Main extends javax.swing.JFrame {
             System.out.println(e.getMessage());
         }
     }
+    
+     private void isitabelreportdetail () {
+        Object header [] = {"Issuing No", "Transaction Date", "Customer", 
+                            "Part Number", "Part Name", "Qty", "Price List",
+                            "Subtotal"};
+   
+        DefaultTableModel model = new DefaultTableModel(null, header) {
+            public boolean isCellEditable(int row, int column) {
+            return false;
+            }
+        };
+        pShowReport.getTabelreport().setModel(model);
+        
+        String sql2 = "SELECT a.issuingno, a.date, a.customer,"
+                + "a.partnumber, a.partname, a.qty, b.price "
+                + "FROM issuing a, part b WHERE a.partnumber = "
+                + "b.partnumber ORDER BY a.date DESC";
+        
+        try {
+            connection = Koneksi.sambung();
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery(sql2);
+            int sum = 0;
+            while (rs.next()) {
+                DecimalFormat kursIndonesia = (DecimalFormat) DecimalFormat.getCurrencyInstance();
+                DecimalFormatSymbols formatRp = new DecimalFormatSymbols();
+
+                formatRp.setCurrencySymbol("Rp. ");
+                formatRp.setMonetaryDecimalSeparator(',');
+                formatRp.setGroupingSeparator('.');
+
+                kursIndonesia.setDecimalFormatSymbols(formatRp);
+                
+                String kolom1 = rs.getString(1);
+                String kolom2 = rs.getString(2);
+                String kolom3 = rs.getString(3);
+                String kolom4 = rs.getString(4);
+                String kolom5 = rs.getString(5);
+                String kolom6 = rs.getString(6);
+                String kolom7 = rs.getString(7);
+                String kolom7rp = kursIndonesia.format(Integer.parseInt(kolom7));
+                
+                int subtotal = Integer.parseInt(kolom6) * Integer.parseInt(kolom7);
+                String subtotalrupiah = kursIndonesia.format(subtotal);
+                String kolom8 = subtotalrupiah;
+                
+                sum += subtotal;
+                String sumrupiah = kursIndonesia.format(sum);
+                
+                String kolom [] = {kolom1, kolom2, kolom3, kolom4,
+                                    kolom5, kolom6, kolom7rp, kolom8};  
+                model.addRow(kolom);
+                pShowReport.setTxttotal(String.valueOf(sumrupiah));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }    
+    }
+     
+     private void searchresultshow () {
+          Object header [] = {"Issuing No", "Transaction Date", "Customer", 
+                            "Part Number", "Part Name", "Qty", "Price List",
+                            "Subtotal"};
+   
+        DefaultTableModel model = new DefaultTableModel(null, header) {
+            public boolean isCellEditable(int row, int column) {
+            return false;
+            }
+        };
+        pShowReport.getTabelreport().setModel(model);
+        
+        SimpleDateFormat t5 = new SimpleDateFormat("yyyy-MM-dd");
+        String start =  (String) t5.format (pShowReport.getTxtstart().getDate());
+        String end =  (String) t5.format (pShowReport.getTxtend().getDate());
+        
+        String sql = "SELECT * FROM issuing WHERE date BETWEEN '"+start+"' AND"
+                + " '"+end+"' ";
+        
+        try {
+            connection = Koneksi.sambung();
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery(sql);
+            int sum = 0;
+            while (rs.next()) {
+                DecimalFormat kursIndonesia = (DecimalFormat) DecimalFormat.getCurrencyInstance();
+                DecimalFormatSymbols formatRp = new DecimalFormatSymbols();
+
+                formatRp.setCurrencySymbol("Rp. ");
+                formatRp.setMonetaryDecimalSeparator(',');
+                formatRp.setGroupingSeparator('.');
+
+                kursIndonesia.setDecimalFormatSymbols(formatRp);
+                
+                String kolom1 = rs.getString(2);
+                String kolom2 = rs.getString(3);
+                String kolom3 = rs.getString(4);
+                String kolom4 = rs.getString(5);
+                String kolom5 = rs.getString(6);
+                String kolom6 = rs.getString(7);
+                String kolom7 = "";
+                
+                String sql2 = "SELECT price FROM part WHERE partnumber = '"+kolom4+"'";
+                connection = Koneksi.sambung();
+                Statement stm2 = connection.createStatement();
+                ResultSet rs2 = stm2.executeQuery(sql2);
+                while (rs2.next()) {
+                    kolom7 = rs2.getString(1);
+                }
+                String kolom7rp = kursIndonesia.format(Integer.parseInt(kolom7));
+                
+                int subtotal = Integer.parseInt(kolom6) * Integer.parseInt(kolom7);
+                String subtotalrupiah = kursIndonesia.format(subtotal);
+                String kolom8 = subtotalrupiah;
+                
+                sum += subtotal;
+                String sumrupiah = kursIndonesia.format(sum);
+                
+                String kolom [] = {kolom1, kolom2, kolom3, kolom4,
+                                    kolom5, kolom6, kolom7rp, kolom8};  
+                model.addRow(kolom);
+                pShowReport.setTxttotal(String.valueOf(sumrupiah));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }    
+     }
+     
+     private void clearshow () {
+         pShowReport.getTxtstart().setDate(null);
+         pShowReport.getTxtend().setDate(null);
+         pShowReport.getTabelreport().clearSelection();
+         isitabelreportdetail();
+     }
+     
+     private void login () {
+         try {
+            String user = pSetting.getTxtusername().getText().trim();
+            String pass = String.valueOf(pSetting.getTxtpassword().getPassword()).trim();
+            
+            String sql = "select password from user where username = '"+user+"' ";
+            
+            connection = Koneksi.sambung();
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery(sql);
+            
+            if (rs.next()) {
+                String pass2 = rs.getString("password");
+                if (pass2.equals(pass)) {
+                    CardLayout c1 = (CardLayout) pCard.getLayout();
+                    c1.show(pCard, "paneladmin");
+                    pSetting.getTxtusername().setText("");
+                    pSetting.getTxtpassword().setText("");
+                } else {
+                    JOptionPane.showMessageDialog(null, "password salah", "Warning",
+                            JOptionPane.WARNING_MESSAGE);
+                    pSetting.getTxtusername().setText("");
+                    pSetting.getTxtpassword().setText("");
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Username Tidak ditemukan", "Warning",
+                        JOptionPane.WARNING_MESSAGE);
+                pSetting.getTxtusername().setText("");
+                pSetting.getTxtpassword().setText("");
+                stm.close();
+            }
+            
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+     }
+     
+     private void updatepass () {
+        String user = pAdminChange.getTxtusername().getText().trim();
+        String pass = String.valueOf(pAdminChange.getTxtpassword().getPassword()).trim();
+        
+        String sql = "UPDATE user SET password = '"+pass+"' WHERE username = '"+user+"' ";
+
+        if (pass.equals("")) {
+                JOptionPane.showMessageDialog(null, "Password masih Kosong !", "Informasi",
+                    JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                try {
+                    connection = Koneksi.sambung();
+                    PreparedStatement statement = null;
+                    statement = connection.prepareStatement(sql);
+                    Statement stm = connection.createStatement();
+                    stm.executeUpdate(sql);
+                    stm.close();
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
+                }
+                    JOptionPane.showMessageDialog(null,"Data berhasil Di Update",
+                        "Informasi",JOptionPane.INFORMATION_MESSAGE);
+                    pAdminChange.setTxtpassword("");
+                    CardLayout c1 = (CardLayout) pCard.getLayout();
+                    c1.show(pCard, "paneladmin");
+            }
+     }
      
     /**
      * This method is called from within the constructor to initialize the form.
@@ -3539,6 +4037,9 @@ public class Main extends javax.swing.JFrame {
         pInventory = new com.devproject.form.pInventory();
         pReport = new com.devproject.form.pReport();
         pShowReport = new com.devproject.form.pShowReport();
+        pSetting = new com.devproject.form.pSetting();
+        pAdmin = new com.devproject.form.pAdmin();
+        pAdminChange = new com.devproject.form.pAdminChange();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -3557,6 +4058,9 @@ public class Main extends javax.swing.JFrame {
         pCard.add(pInventory, "card12");
         pCard.add(pReport, "card13");
         pCard.add(pShowReport, "card14");
+        pCard.add(pSetting, "card15");
+        pCard.add(pAdmin, "card16");
+        pCard.add(pAdminChange, "card17");
 
         getContentPane().add(pCard, java.awt.BorderLayout.CENTER);
 
@@ -3601,6 +4105,8 @@ public class Main extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private com.devproject.form.pAdmin pAdmin;
+    private com.devproject.form.pAdminChange pAdminChange;
     private javax.swing.JPanel pCard;
     private com.devproject.form.pGlass pGlass;
     private com.devproject.form.pInventory pInventory;
@@ -3613,6 +4119,7 @@ public class Main extends javax.swing.JFrame {
     private com.devproject.form.pReceiving pReceiving;
     private com.devproject.form.pReceivingnew pReceivingnew;
     private com.devproject.form.pReport pReport;
+    private com.devproject.form.pSetting pSetting;
     private com.devproject.form.pShowReport pShowReport;
     private com.devproject.form.pSupplier pSupplier;
     // End of variables declaration//GEN-END:variables

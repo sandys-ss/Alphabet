@@ -5,10 +5,12 @@
  */
 package com.devproject.form;
 
+import com.toedter.calendar.JDateChooser;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.sql.Connection;
+import java.util.Date;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
@@ -31,11 +33,9 @@ public class pShowReport extends javax.swing.JPanel {
     public void addActionListenerRback (ActionListener l) {
         btnback.addActionListener(l);
     }
-    
 
-    
-    public void addActionListenerRrefresh (ActionListener l) {
-        btnrefresh.addActionListener(l);
+    public void addActionListenerRClear(ActionListener l) {
+        btnclear.addActionListener(l);
     }
     
     public void addActionListenerRsearch (ActionListener l) {
@@ -48,6 +48,30 @@ public class pShowReport extends javax.swing.JPanel {
     
     public JTable getTabelreport() {
         return tabelreport;
+    }
+
+    public JDateChooser getTxtend() {
+        return this.txtend;
+    }
+
+    public void setTxtend(Date end) {
+        txtend.setDate(end);
+    }
+
+    public JDateChooser getTxtstart() {
+        return this.txtstart;
+    }
+
+    public void setTxtstart(Date start) {
+        txtstart.setDate(start);
+    }
+
+    public JTextField getTxttotal() {
+        return txttotal;
+    }
+
+    public void setTxttotal(String total) {
+        txttotal.setText(total);
     }
 
        /**
@@ -66,14 +90,17 @@ public class pShowReport extends javax.swing.JPanel {
         btndelete = new com.devproject.component.Tombol_Master();
         btnback = new com.devproject.component.Tombol_Master();
         btnexport = new com.devproject.component.Tombol_Master();
-        btnrefresh = new com.devproject.component.Tombol_Master();
+        btnclear = new com.devproject.component.Tombol_Master();
         btnsearch = new com.devproject.component.Tombol_Master();
-        txtuntil = new com.toedter.calendar.JDateChooser();
+        txtend = new com.toedter.calendar.JDateChooser();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         txtstart = new com.toedter.calendar.JDateChooser();
+        btnprint = new com.devproject.component.Tombol_Master();
+        jLabel3 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabelreport = new javax.swing.JTable();
+        txttotal = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -106,31 +133,36 @@ public class pShowReport extends javax.swing.JPanel {
         btnexport.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         panelTransparan1.add(btnexport, new org.netbeans.lib.awtextra.AbsoluteConstraints(1250, 10, 80, 30));
 
-        btnrefresh.setForeground(new java.awt.Color(255, 255, 255));
-        btnrefresh.setText("Refresh");
-        btnrefresh.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        panelTransparan1.add(btnrefresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(1160, 10, 80, 30));
+        btnclear.setForeground(new java.awt.Color(255, 255, 255));
+        btnclear.setText("Clear");
+        btnclear.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        panelTransparan1.add(btnclear, new org.netbeans.lib.awtextra.AbsoluteConstraints(1160, 10, 80, 30));
 
         btnsearch.setForeground(new java.awt.Color(255, 255, 255));
         btnsearch.setText("Search");
         btnsearch.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        panelTransparan1.add(btnsearch, new org.netbeans.lib.awtextra.AbsoluteConstraints(1070, 10, 80, 30));
+        panelTransparan1.add(btnsearch, new org.netbeans.lib.awtextra.AbsoluteConstraints(980, 10, 80, 30));
 
-        txtuntil.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        panelTransparan1.add(txtuntil, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 10, 170, 30));
+        txtend.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        panelTransparan1.add(txtend, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 10, 170, 30));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("TO");
-        panelTransparan1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 20, -1, -1));
-
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("FROM");
-        panelTransparan1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 20, -1, -1));
+        panelTransparan1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 20, -1, -1));
 
         txtstart.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        panelTransparan1.add(txtstart, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 10, 170, 30));
+        panelTransparan1.add(txtstart, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 10, 170, 30));
+
+        btnprint.setForeground(new java.awt.Color(255, 255, 255));
+        btnprint.setText("Print");
+        btnprint.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        panelTransparan1.add(btnprint, new org.netbeans.lib.awtextra.AbsoluteConstraints(1070, 10, 80, 30));
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("FROM");
+        panelTransparan1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 20, -1, -1));
 
         panelBackground1.add(panelTransparan1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 1340, 50));
 
@@ -147,7 +179,16 @@ public class pShowReport extends javax.swing.JPanel {
         ));
         jScrollPane1.setViewportView(tabelreport);
 
-        panelBackground1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 1340, 610));
+        panelBackground1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 1340, 550));
+
+        txttotal.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        txttotal.setEnabled(false);
+        panelBackground1.add(txttotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 630, 400, 50));
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("TOTAL SALES");
+        panelBackground1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 640, -1, -1));
 
         add(panelBackground1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
@@ -155,19 +196,22 @@ public class pShowReport extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.devproject.component.Tombol_Master btnback;
+    private com.devproject.component.Tombol_Master btnclear;
     private com.devproject.component.Tombol_Master btndelete;
     private com.devproject.component.Tombol_Master btnexport;
-    private com.devproject.component.Tombol_Master btnrefresh;
+    private com.devproject.component.Tombol_Master btnprint;
     private com.devproject.component.Tombol_Master btnsave;
     private com.devproject.component.Tombol_Master btnsearch;
     private com.devproject.component.Tombol_Master btnupdate;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private com.devproject.component.PanelBackground panelBackground1;
     private com.devproject.component.PanelTransparan panelTransparan1;
     private javax.swing.JTable tabelreport;
+    private com.toedter.calendar.JDateChooser txtend;
     private com.toedter.calendar.JDateChooser txtstart;
-    private com.toedter.calendar.JDateChooser txtuntil;
+    private javax.swing.JTextField txttotal;
     // End of variables declaration//GEN-END:variables
 }

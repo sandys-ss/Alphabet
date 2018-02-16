@@ -129,6 +129,27 @@
             </Constraint>
           </Constraints>
         </Component>
+        <Component class="com.devproject.form.pSetting" name="pSetting">
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignCardLayout" value="org.netbeans.modules.form.compat2.layouts.DesignCardLayout$CardConstraintsDescription">
+              <CardConstraints cardName="card15"/>
+            </Constraint>
+          </Constraints>
+        </Component>
+        <Component class="com.devproject.form.pAdmin" name="pAdmin">
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignCardLayout" value="org.netbeans.modules.form.compat2.layouts.DesignCardLayout$CardConstraintsDescription">
+              <CardConstraints cardName="card16"/>
+            </Constraint>
+          </Constraints>
+        </Component>
+        <Component class="com.devproject.form.pAdminChange" name="pAdminChange">
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignCardLayout" value="org.netbeans.modules.form.compat2.layouts.DesignCardLayout$CardConstraintsDescription">
+              <CardConstraints cardName="card17"/>
+            </Constraint>
+          </Constraints>
+        </Component>
       </SubComponents>
     </Container>
   </SubComponents>
