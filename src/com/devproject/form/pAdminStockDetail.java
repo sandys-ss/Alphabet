@@ -14,14 +14,14 @@ import javax.swing.JTextField;
  *
  * @author LC01
  */
-public class pMdetail extends javax.swing.JPanel {
+public class pAdminStockDetail extends javax.swing.JPanel {
 
     /**
      * Creates new form pMaster
      */
     Connection connection;
     
-    public pMdetail() {
+    public pAdminStockDetail() {
         initComponents();
     }
 
@@ -45,7 +45,7 @@ public class pMdetail extends javax.swing.JPanel {
         txtpricelist.setText(pricelist);
     }
 
-    public void addActionListenerMdetailback (ActionListener l) {
+    public void addActionListenerAdminSback (ActionListener l) {
         btncancel.addActionListener(l);
     }
 
@@ -69,12 +69,8 @@ public class pMdetail extends javax.swing.JPanel {
         return txtpricelist;
     }
       
-    public void addActionListenerMdetailupdate (ActionListener l) {
+    public void addActionListenerAdminSupdate (ActionListener l) {
          btnupdate.addActionListener(l);
-    }
-    
-    public void addActionListenerMdetaildelete (ActionListener l) {
-         btndelete.addActionListener(l);
     }
 
     public JComboBox<String> getCmbzone() {
@@ -120,7 +116,6 @@ public class pMdetail extends javax.swing.JPanel {
         txtlandedcost = new javax.swing.JTextField();
         btncancel = new com.devproject.component.Tombol_Master();
         btnupdate = new com.devproject.component.Tombol_Master();
-        btndelete = new com.devproject.component.Tombol_Master();
         jLabel8 = new javax.swing.JLabel();
         txtpartname = new javax.swing.JTextField();
         cmbzone = new javax.swing.JComboBox<>();
@@ -171,7 +166,6 @@ public class pMdetail extends javax.swing.JPanel {
         txtpartnumber.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         panelTransparan1.add(txtpartnumber, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 30, 1210, 30));
 
-        txtoh.setEditable(false);
         txtoh.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         txtoh.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -191,12 +185,7 @@ public class pMdetail extends javax.swing.JPanel {
         btnupdate.setForeground(new java.awt.Color(255, 255, 255));
         btnupdate.setText("Update");
         btnupdate.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        panelTransparan1.add(btnupdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(1030, 390, 90, 30));
-
-        btndelete.setForeground(new java.awt.Color(255, 255, 255));
-        btndelete.setText("Delete");
-        btndelete.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        panelTransparan1.add(btndelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(1130, 390, 90, 30));
+        panelTransparan1.add(btnupdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(1130, 390, 90, 30));
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
@@ -233,7 +222,6 @@ public class pMdetail extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.devproject.component.Tombol_Master btncancel;
-    private com.devproject.component.Tombol_Master btndelete;
     private com.devproject.component.Tombol_Master btnupdate;
     private javax.swing.JComboBox<String> cmblocation;
     private javax.swing.JComboBox<String> cmbzone;

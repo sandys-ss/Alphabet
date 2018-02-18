@@ -5,8 +5,10 @@
  */
 package com.devproject.form;
 
+import com.toedter.calendar.JDateChooser;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
+import java.util.Date;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 
@@ -14,85 +16,76 @@ import javax.swing.JTextField;
  *
  * @author LC01
  */
-public class pMdetail extends javax.swing.JPanel {
+public class pAdminReceivingDetail extends javax.swing.JPanel {
 
     /**
      * Creates new form pMaster
      */
     Connection connection;
     
-    public pMdetail() {
+    public pAdminReceivingDetail() {
         initComponents();
     }
 
-    public void setTxtpartnumber(String partnumber) {
-        txtpartnumber.setText(partnumber);
-    }
-
-    public void setTxtlandedcost(String landedcost) {
-        txtlandedcost.setText(landedcost);
-    }
-
-    public void setTxtoh(String oh) {
-        txtoh.setText(oh);
-    }
-
-    public void setTxtpartname(String partname) {
-        txtpartname.setText(partname);
-    }
-
-    public void setTxtpricelist(String pricelist) {
-        txtpricelist.setText(pricelist);
-    }
-
-    public void addActionListenerMdetailback (ActionListener l) {
+   public void addActionListenerAdminRback (ActionListener l) {
         btncancel.addActionListener(l);
     }
 
-    public JTextField getTxtlandedcost() {
-        return txtlandedcost;
+    public void addActionListenerAdminRupdate(ActionListener l) {
+         btnupdate.addActionListener(l);
+    }
+    
+    public void addActionListenerAdminRdelete (ActionListener l) {
+         btndelete.addActionListener(l);
     }
 
-    public JTextField getTxtoh() {
-        return txtoh;
+    public JComboBox<String> getCmbsupplier() {
+        return cmbsupplier;
+    }
+
+    public void setCmbsupplier(String supplier, String select) {
+        cmbsupplier.addItem(supplier);
+        cmbsupplier.setSelectedItem(select);
     }
 
     public JTextField getTxtpartname() {
         return txtpartname;
     }
 
+    public void setTxtpartname(String partname) {
+        txtpartname.setText(partname);
+    }
+
     public JTextField getTxtpartnumber() {
         return txtpartnumber;
     }
 
-    public JTextField getTxtpricelist() {
-        return txtpricelist;
-    }
-      
-    public void addActionListenerMdetailupdate (ActionListener l) {
-         btnupdate.addActionListener(l);
-    }
-    
-    public void addActionListenerMdetaildelete (ActionListener l) {
-         btndelete.addActionListener(l);
+    public void setTxtpartnumber(String partnumber) {
+        txtpartnumber.setText(partnumber);
     }
 
-    public JComboBox<String> getCmbzone() {
-        return cmbzone;
+    public JTextField getTxtqty() {
+        return txtqty;
     }
 
-    public void setCmbzone(String zone, String select) {
-        cmbzone.addItem(zone);
-        cmbzone.setSelectedItem(select);
+    public void setTxtqty(String qty) {
+        txtqty.setText(qty);
     }
 
-    public JComboBox<String> getCmblocation() {
-        return cmblocation;
+    public JTextField getTxtreceivingno() {
+        return txtreceivingno;
     }
-    
-    public void setCmblocation(String location, String select) {
-        cmblocation.addItem(location);
-        cmblocation.setSelectedItem(select);
+
+    public void setTxtreceivingno(String receivingno) {
+        txtreceivingno.setText(receivingno);
+    }
+
+    public JDateChooser getTxtdate() {
+        return txtdate;
+    }
+
+    public void setTxtdate(Date date) {
+        txtdate.setDate(date);
     }
    
 
@@ -108,23 +101,21 @@ public class pMdetail extends javax.swing.JPanel {
 
         panelBackground1 = new com.devproject.component.PanelBackground();
         panelTransparan1 = new com.devproject.component.PanelTransparan();
-        jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        txtpricelist = new javax.swing.JTextField();
+        txtreceivingno = new javax.swing.JTextField();
         txtpartnumber = new javax.swing.JTextField();
-        txtoh = new javax.swing.JTextField();
-        txtlandedcost = new javax.swing.JTextField();
+        txtqty = new javax.swing.JTextField();
         btncancel = new com.devproject.component.Tombol_Master();
         btnupdate = new com.devproject.component.Tombol_Master();
         btndelete = new com.devproject.component.Tombol_Master();
         jLabel8 = new javax.swing.JLabel();
+        cmbsupplier = new javax.swing.JComboBox<>();
         txtpartname = new javax.swing.JTextField();
-        cmbzone = new javax.swing.JComboBox<>();
-        cmblocation = new javax.swing.JComboBox<>();
+        txtdate = new com.toedter.calendar.JDateChooser();
         panelTransparan2 = new com.devproject.component.PanelTransparan();
         jLabel7 = new javax.swing.JLabel();
 
@@ -134,83 +125,79 @@ public class pMdetail extends javax.swing.JPanel {
 
         panelTransparan1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Price List");
-        panelTransparan1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 340, -1, -1));
-
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Part Number");
+        jLabel2.setText("Receiving No");
         panelTransparan1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Part Name");
+        jLabel3.setText("Transaction Date");
         panelTransparan1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, -1, -1));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("Zone");
+        jLabel4.setText("Supplier");
         panelTransparan1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, -1, -1));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setText("On Hand");
+        jLabel5.setText("Part name");
         panelTransparan1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 230, -1, -1));
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("Landed Cost");
+        jLabel6.setText("Qty Receive");
         panelTransparan1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 290, -1, -1));
 
-        txtpricelist.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        panelTransparan1.add(txtpricelist, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 340, 1210, 30));
+        txtreceivingno.setEditable(false);
+        txtreceivingno.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        panelTransparan1.add(txtreceivingno, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 30, 1190, 30));
 
-        txtpartnumber.setEditable(false);
         txtpartnumber.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        panelTransparan1.add(txtpartnumber, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 30, 1210, 30));
-
-        txtoh.setEditable(false);
-        txtoh.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        txtoh.addActionListener(new java.awt.event.ActionListener() {
+        txtpartnumber.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtohActionPerformed(evt);
+                txtpartnumberActionPerformed(evt);
             }
         });
-        panelTransparan1.add(txtoh, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 230, 1210, 30));
+        panelTransparan1.add(txtpartnumber, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 180, 1190, 30));
 
-        txtlandedcost.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        panelTransparan1.add(txtlandedcost, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 290, 1210, 30));
+        txtqty.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        panelTransparan1.add(txtqty, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 290, 1190, 30));
 
         btncancel.setForeground(new java.awt.Color(255, 255, 255));
         btncancel.setText("Cancel");
         btncancel.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        panelTransparan1.add(btncancel, new org.netbeans.lib.awtextra.AbsoluteConstraints(1230, 390, 90, 30));
+        panelTransparan1.add(btncancel, new org.netbeans.lib.awtextra.AbsoluteConstraints(1230, 340, 90, 30));
 
         btnupdate.setForeground(new java.awt.Color(255, 255, 255));
         btnupdate.setText("Update");
         btnupdate.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        panelTransparan1.add(btnupdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(1030, 390, 90, 30));
+        panelTransparan1.add(btnupdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(1030, 340, 90, 30));
 
         btndelete.setForeground(new java.awt.Color(255, 255, 255));
         btndelete.setText("Delete");
         btndelete.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        panelTransparan1.add(btndelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(1130, 390, 90, 30));
+        panelTransparan1.add(btndelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(1130, 340, 90, 30));
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel8.setText("Location");
+        jLabel8.setText("Part Number");
         panelTransparan1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 180, -1, -1));
 
+        cmbsupplier.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        panelTransparan1.add(cmbsupplier, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 130, 1190, 30));
+
         txtpartname.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        panelTransparan1.add(txtpartname, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 80, 1210, 30));
+        txtpartname.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtpartnameActionPerformed(evt);
+            }
+        });
+        panelTransparan1.add(txtpartname, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 230, 1190, 30));
 
-        cmbzone.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        panelTransparan1.add(cmbzone, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 130, 1210, 30));
-
-        cmblocation.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        panelTransparan1.add(cmblocation, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 180, 1210, 30));
+        txtdate.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        panelTransparan1.add(txtdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 80, 1190, 30));
 
         panelBackground1.add(panelTransparan1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 1340, 610));
 
@@ -218,26 +205,28 @@ public class pMdetail extends javax.swing.JPanel {
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel7.setText("Update Detail Part");
-        panelTransparan2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 10, 130, 20));
+        jLabel7.setText("Update Receiving");
+        panelTransparan2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 130, 20));
 
         panelBackground1.add(panelTransparan2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 140, 40));
 
         add(panelBackground1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtohActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtohActionPerformed
+    private void txtpartnumberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtpartnumberActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtohActionPerformed
+    }//GEN-LAST:event_txtpartnumberActionPerformed
+
+    private void txtpartnameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtpartnameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtpartnameActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.devproject.component.Tombol_Master btncancel;
     private com.devproject.component.Tombol_Master btndelete;
     private com.devproject.component.Tombol_Master btnupdate;
-    private javax.swing.JComboBox<String> cmblocation;
-    private javax.swing.JComboBox<String> cmbzone;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JComboBox<String> cmbsupplier;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -248,11 +237,11 @@ public class pMdetail extends javax.swing.JPanel {
     private com.devproject.component.PanelBackground panelBackground1;
     private com.devproject.component.PanelTransparan panelTransparan1;
     private com.devproject.component.PanelTransparan panelTransparan2;
-    private javax.swing.JTextField txtlandedcost;
-    private javax.swing.JTextField txtoh;
+    private com.toedter.calendar.JDateChooser txtdate;
     private javax.swing.JTextField txtpartname;
     private javax.swing.JTextField txtpartnumber;
-    private javax.swing.JTextField txtpricelist;
+    private javax.swing.JTextField txtqty;
+    private javax.swing.JTextField txtreceivingno;
     // End of variables declaration//GEN-END:variables
 
    

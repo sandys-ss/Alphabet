@@ -150,6 +150,55 @@
             </Constraint>
           </Constraints>
         </Component>
+        <Component class="com.devproject.form.pAdminReceiving" name="pAdminReceiving">
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignCardLayout" value="org.netbeans.modules.form.compat2.layouts.DesignCardLayout$CardConstraintsDescription">
+              <CardConstraints cardName="card18"/>
+            </Constraint>
+          </Constraints>
+        </Component>
+        <Component class="com.devproject.form.pAdminReceivingDetail" name="pAdminReceivingDetail">
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignCardLayout" value="org.netbeans.modules.form.compat2.layouts.DesignCardLayout$CardConstraintsDescription">
+              <CardConstraints cardName="card19"/>
+            </Constraint>
+          </Constraints>
+        </Component>
+        <Component class="com.devproject.form.pAdminIssuing" name="pAdminIssuing">
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignCardLayout" value="org.netbeans.modules.form.compat2.layouts.DesignCardLayout$CardConstraintsDescription">
+              <CardConstraints cardName="card20"/>
+            </Constraint>
+          </Constraints>
+        </Component>
+        <Component class="com.devproject.form.pAdminIssuingDetail" name="pAdminIssuingDetail">
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignCardLayout" value="org.netbeans.modules.form.compat2.layouts.DesignCardLayout$CardConstraintsDescription">
+              <CardConstraints cardName="card21"/>
+            </Constraint>
+          </Constraints>
+        </Component>
+        <Component class="com.devproject.form.pAdminStock" name="pAdminStock">
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignCardLayout" value="org.netbeans.modules.form.compat2.layouts.DesignCardLayout$CardConstraintsDescription">
+              <CardConstraints cardName="card22"/>
+            </Constraint>
+          </Constraints>
+        </Component>
+        <Component class="com.devproject.form.pAdminStockDetail" name="pAdminStockDetail">
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignCardLayout" value="org.netbeans.modules.form.compat2.layouts.DesignCardLayout$CardConstraintsDescription">
+              <CardConstraints cardName="card23"/>
+            </Constraint>
+          </Constraints>
+        </Component>
+        <Component class="com.devproject.form.pAdminTruncate" name="pAdminTruncate">
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignCardLayout" value="org.netbeans.modules.form.compat2.layouts.DesignCardLayout$CardConstraintsDescription">
+              <CardConstraints cardName="card24"/>
+            </Constraint>
+          </Constraints>
+        </Component>
       </SubComponents>
     </Container>
   </SubComponents>

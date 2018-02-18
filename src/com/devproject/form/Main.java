@@ -6,7 +6,6 @@
 package com.devproject.form;
 
 import com.devproject.conn.Koneksi;
-import com.devproject.validation.ValidasiIssuing;
 import com.devproject.validation.ValidasiLocation;
 import com.devproject.validation.ValidasiMaster;
 import com.devproject.validation.ValidasiReceiving;
@@ -32,8 +31,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -85,6 +86,13 @@ public class Main extends javax.swing.JFrame {
         pCard.add(pSetting, "panelsetting");
         pCard.add(pAdmin, "paneladmin");
         pCard.add(pAdminChange, "panelchangepass");
+        pCard.add(pAdminReceiving, "paneladminreceiving");
+        pCard.add(pAdminReceivingDetail, "panelreceivingdetail");
+        pCard.add(pAdminIssuing, "paneladminissuing");
+        pCard.add(pAdminIssuingDetail, "paneladminissuingdetail");
+        pCard.add(pAdminStock, "paneladminstock");
+        pCard.add(pAdminStockDetail, "paneladminstockdetail");
+        pCard.add(pAdminTruncate, "paneladmintruncate");
         
         CardLayout c1 = (CardLayout)pCard.getLayout();
         c1.show(pCard, "panelutama"); 
@@ -211,10 +219,53 @@ public class Main extends javax.swing.JFrame {
         //pAdmin
         pAdmin.addActionListenerAdminLogout(new Aksi_adminlogout());
         pAdmin.addActionListenerAdminChangePass(new Aksi_adminchange());
+        pAdmin.addActionListenerAdminRceiving(new Aksi_adminreceiving());
+        pAdmin.addActionListenerAdminIssuing(new Aksi_adminissuing());
+        pAdmin.addActionListenerAdminStock(new Aksi_adminstock());
+        pAdmin.addActionListenerAdminTruncate(new Aksi_admintruncate());
         
         //pAdminChange
         pAdminChange.addActionListenerSettingcancel(new Aksi_admincancel());
         pAdminChange.addActionListenerSettingUpdate(new Aksi_adminupdate());
+        
+        //pAdminReceiving
+        pAdminReceiving.addActionListenerAdminReceivingback(new Aksi_adminreceivingback());
+        pAdminReceiving.addActionListenerAdminReceivingsearch(new Aksi_adminreceivingsearch());
+        pAdminReceiving.addKeyListenerAdminreceivingSearch(new Aksi_adminreceivingsearchkey());
+        pAdminReceiving.addActionListenerAdminReceivingrefresh(new Aksi_adminreceivingrefresh());
+        pAdminReceiving.addActionListenerAdminReceivingtabel(new Aksi_adminreceivingtabel());
+        
+        //pAdminRdetail
+        pAdminReceivingDetail.addActionListenerAdminRback(new Aksi_adminRback());
+        pAdminReceivingDetail.addActionListenerAdminRdelete(new Aksi_adminRdelete());
+        pAdminReceivingDetail.addActionListenerAdminRupdate(new Aksi_adminRupdate());
+        
+        //pAdminIssuing
+        pAdminIssuing.addActionListenerAdminIssuingback(new Aksi_adminissuingback());
+        pAdminIssuing.addActionListenerAdminIssuingrefresh(new Aksi_adminissuingrefresh());
+        pAdminIssuing.addActionListenerAdminIssuingsearch(new Aksi_adminissuingsearch());
+        pAdminIssuing.addKeyListenerAdminIssuingSearch(new Aksi_adminissuingsearchkey());
+        pAdminIssuing.addActionListenerAdminIssuingtabel(new Aksi_adminissuingtabel());
+        
+        //pAdminIdetail
+        pAdminIssuingDetail.addActionListenerAdminIback(new Aksi_adminIback());
+        pAdminIssuingDetail.addActionListenerAdminIdelete(new Aksi_adminIdelete());
+        pAdminIssuingDetail.addActionListenerAdminIupdate(new Aksi_adminIupdate());
+        
+        //pAdminStock
+        pAdminStock.addActionListenerAdminStockback(new Aksi_adminStockback());
+        pAdminStock.addActionListenerAdminStockrefresh(new Aksi_adminStockrefresh());
+        pAdminStock.addActionListenerAdminStocksearch(new Aksi_adminStocksearch());
+        pAdminStock.addKeyListenerAdminStockSearch(new Aksi_adminstocksearchkey());
+        pAdminStock.addActionListenerAdminStockTabel(new Aksi_adminstocktabel());
+        
+        //pAdminSdetail
+        pAdminStockDetail.addActionListenerAdminSback(new Aksi_adminSback());
+        pAdminStockDetail.addActionListenerAdminSupdate(new Aksi_adminSupdate());
+        
+        //pAdminTruncate
+        pAdminTruncate.addActionListenerAdminTback(new Aksi_adminTback());
+        pAdminTruncate.addActionListenerAdminTtruncate(new Aksi_adminTtruncate());
         
     }
     
@@ -1465,6 +1516,26 @@ public class Main extends javax.swing.JFrame {
         }
     }
     
+    class Aksi_adminreceiving implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            CardLayout c1 = (CardLayout) pCard.getLayout();
+            c1.show(pCard, "paneladminreceiving");
+            isitabelAdminreceiving();
+        }
+    }
+    
+     class Aksi_adminissuing implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            CardLayout c1 = (CardLayout) pCard.getLayout();
+            c1.show(pCard, "paneladminissuing");
+            isitabelAdminissuing();
+        }
+    }
+    
     class Aksi_admincancel implements ActionListener {
 
         @Override
@@ -1482,6 +1553,376 @@ public class Main extends javax.swing.JFrame {
         }
     }
     
+    class Aksi_adminreceivingback implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            CardLayout c1 = (CardLayout) pCard.getLayout();
+            c1.show(pCard, "paneladmin");
+            pAdminReceiving.setTxtsearch("");
+            pAdminReceiving.getTabelAdminreceiving().clearSelection();
+        }
+    }
+    
+    class Aksi_adminreceivingsearch implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            searchresultAdminReceiving();
+        }
+    }
+    
+    class Aksi_adminreceivingsearchkey implements KeyListener {
+
+        @Override
+        public void keyTyped(KeyEvent e) {
+
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+           if( e.getKeyCode() == KeyEvent.VK_ENTER ) {
+               searchresultAdminReceiving();
+           } else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+               isitabelAdminreceiving();
+           } else if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+               isitabelAdminreceiving();
+               pAdminReceiving.setTxtsearch("");
+           }
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+            
+        }
+        
+    }
+     
+     class Aksi_adminreceivingrefresh implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            pAdminReceiving.setTxtsearch("");
+            pAdminReceiving.getTabelAdminreceiving().clearSelection();
+        }
+    }
+     
+    class Aksi_adminreceivingtabel implements MouseListener {
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            int x = e.getClickCount();
+            if (x == 2) {
+                //System.out.println("Klik okke. saya part detail");
+                CardLayout c1 = (CardLayout) pCard.getLayout();
+                c1.show(pCard, "panelreceivingdetail");
+                isiReceivingDetail();
+            }
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+            
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+            
+        }
+
+    }
+    
+    class Aksi_adminRback implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            CardLayout c1 = (CardLayout) pCard.getLayout();
+            c1.show(pCard, "paneladminreceiving");
+        }
+    }
+    
+    class Aksi_adminRdelete implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            deletereceiving();
+        }
+    }
+    
+    class Aksi_adminRupdate implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            updatereceiving();
+        }
+    }
+    
+    class Aksi_adminissuingback implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            CardLayout c1 = (CardLayout) pCard.getLayout();
+            c1.show(pCard, "paneladmin");
+            pAdminIssuing.setTxtsearch("");
+            pAdminIssuing.getTabelAdminissuing().clearSelection();
+        }
+    }
+     
+    class Aksi_adminissuingrefresh implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            pAdminIssuing.setTxtsearch("");
+            pAdminIssuing.getTabelAdminissuing().clearSelection();
+        }
+    }
+    
+    class Aksi_adminissuingsearch implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            searchresultAdminIssuing();
+        }
+    }
+    
+    class Aksi_adminissuingsearchkey implements KeyListener {
+
+        @Override
+        public void keyTyped(KeyEvent e) {
+
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+           if( e.getKeyCode() == KeyEvent.VK_ENTER ) {
+               searchresultAdminIssuing();
+           } else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+               isitabelAdminissuing();
+           } else if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+               isitabelAdminissuing();
+               pAdminIssuing.setTxtsearch("");
+           }
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+            
+        }
+        
+    }
+    
+    class Aksi_adminissuingtabel implements MouseListener {
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            int x = e.getClickCount();
+            if (x == 2) {
+                //System.out.println("Klik okke. saya part detail");
+                CardLayout c1 = (CardLayout) pCard.getLayout();
+                c1.show(pCard, "paneladminissuingdetail");
+                isiIssuingDetail();
+            }
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+            
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+            
+        }
+
+    }
+    
+    class Aksi_adminIback implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            CardLayout c1 = (CardLayout) pCard.getLayout();
+            c1.show(pCard, "paneladminissuing");
+        }
+    }
+    
+    class Aksi_adminIdelete implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            deleteissuing();
+        }
+    }
+    
+    class Aksi_adminIupdate implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            updateissuing();
+        }
+    }
+    
+    class Aksi_adminstock implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            CardLayout c1 = (CardLayout) pCard.getLayout();
+            c1.show(pCard, "paneladminstock");
+            pAdminStock.setTxtsearch("");
+            pAdminStock.getTabelMaster().clearSelection();
+            isitabelAdminStock();
+        }
+    }
+    
+    class Aksi_adminStockback implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            CardLayout c1 = (CardLayout) pCard.getLayout();
+            c1.show(pCard, "paneladmin");
+        }
+    }
+    
+    class Aksi_adminStockrefresh implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            pAdminStock.setTxtsearch("");
+            pAdminStock.getTabelMaster().clearSelection();
+            isitabelAdminStock();
+        }
+    }
+    
+    class Aksi_adminStocksearch implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            searchresultAdminStock();
+        }
+    }
+    
+    class Aksi_adminstocksearchkey implements KeyListener {
+
+        @Override
+        public void keyTyped(KeyEvent e) {
+
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+           if( e.getKeyCode() == KeyEvent.VK_ENTER ) {
+               searchresultAdminStock();
+           } else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+               isitabelAdminStock();
+           } else if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+               isitabelAdminStock();
+               pAdminStock.setTxtsearch("");
+           }
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+            
+        }
+        
+    }
+    
+    class Aksi_adminstocktabel implements MouseListener {
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            int x = e.getClickCount();
+            if (x == 2) {
+                //System.out.println("Klik okke. saya part detail");
+                CardLayout c1 = (CardLayout) pCard.getLayout();
+                c1.show(pCard, "paneladminstockdetail");
+                isiStockdetail();
+            }
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+            
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+            
+        }
+
+    }
+    
+    class Aksi_adminSback implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            CardLayout c1 = (CardLayout) pCard.getLayout();
+            c1.show(pCard, "paneladminstock");
+        }
+    }
+    
+    class Aksi_adminSupdate implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            updateStock();
+        }
+    }
+    
+    class Aksi_admintruncate implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            CardLayout c1 = (CardLayout) pCard.getLayout();
+            c1.show(pCard, "paneladmintruncate");
+        }
+    }
+    
+    class Aksi_adminTback implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            CardLayout c1 = (CardLayout) pCard.getLayout();
+            c1.show(pCard, "paneladmin");
+        }
+    }
+    
+    class Aksi_adminTtruncate implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            truncate();
+        }
+    }
     
     // Method
     private static ArrayList readExcelFilePart(String fileName) {
@@ -2265,8 +2706,21 @@ public class Main extends javax.swing.JFrame {
         pMdetail.setTxtpartnumber(partnumber);
         pMdetail.setTxtpartname(partname);
         pMdetail.setTxtoh(onhand);
-        pMdetail.setTxtlandedcost(landedcost);
-        pMdetail.setTxtpricelist(pricelist);
+        
+        String sqll = "SELECT landedcost, price FROM part WHERE partnumber = '"+partnumber+"' ";
+        
+        try {
+            connection = Koneksi.sambung();
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery(sqll);
+            while (rs.next()) {
+                pMdetail.setTxtlandedcost(rs.getString("landedcost"));
+                pMdetail.setTxtpricelist(rs.getString("price"));
+            }
+               rs.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
         
         String sql = "SELECT description FROM zone ORDER BY description";
         
@@ -2369,6 +2823,7 @@ public class Main extends javax.swing.JFrame {
                 formatRp.setCurrencySymbol("Rp. ");
                 formatRp.setMonetaryDecimalSeparator(',');
                 formatRp.setGroupingSeparator('.');
+               // formatRp.
 
                 kursIndonesia.setDecimalFormatSymbols(formatRp);
                 
@@ -3123,7 +3578,7 @@ public class Main extends javax.swing.JFrame {
         }
     }
     
-     private void isitabelreceiving () {
+    private void isitabelreceiving () {
         Object header [] = {"Receiving No", "Transaction Date", "Supplier", 
                             "Part Number", "Part Name", "Qty Receive"};
    
@@ -3544,6 +3999,7 @@ public class Main extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null,"Data berhasil Disimpan",
                         "Informasi",JOptionPane.INFORMATION_MESSAGE);
                 clearissuing();
+                issuingno();
             } 
     }
     
@@ -4014,6 +4470,621 @@ public class Main extends javax.swing.JFrame {
             }
      }
      
+    private void isitabelAdminreceiving () {
+        Object header [] = {"Receiving No", "Transaction Date", "Supplier", 
+                            "Part Number", "Part Name", "Qty Receive"};
+   
+        DefaultTableModel model = new DefaultTableModel(null, header) {
+            public boolean isCellEditable(int row, int column) {
+            return false;
+            }
+        };
+        pAdminReceiving.getTabelAdminreceiving().setModel(model);
+        
+        String sql = "SELECT * FROM receiving ORDER BY receivingno";
+        
+        try {
+            connection = Koneksi.sambung();
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery(sql);
+            while (rs.next()) {
+                String kolom1 = rs.getString(2);
+                String kolom2 = rs.getString(3);
+                String kolom3 = rs.getString(4);
+                String kolom4 = rs.getString(5);
+                String kolom5 = rs.getString(6);
+                String kolom6 = rs.getString(7);
+                
+                String kolom [] = {kolom1, kolom2, kolom3, kolom4,
+                                    kolom5, kolom6};  
+                model.addRow(kolom);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }    
+    }
+     
+    private void searchresultAdminReceiving () {
+        Object header [] = {"Receiving No", "Transaction Date", "Supplier", "Part Number",
+                            "Part Name", "Qty Receive"};
+   
+        DefaultTableModel model = new DefaultTableModel(null, header) {
+            public boolean isCellEditable(int row, int column) {
+            return false;
+            }
+        };
+        pAdminReceiving.getTabelAdminreceiving().setModel(model);
+        
+        String sql = "SELECT * From receiving WHERE CONCAT (id,receivingno, date, "
+                + "supplier, partnumber, partname ) LIKE "
+                + "'%"+pAdminReceiving.getTxtsearch().getText()+"%' ";
+        
+        try {
+            connection = Koneksi.sambung();
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery(sql);
+            while (rs.next()) {
+                String kolom1 = rs.getString(2);
+                String kolom2 = rs.getString(3);
+                String kolom3 = rs.getString(4);
+                String kolom4 = rs.getString(5);
+                String kolom5 = rs.getString(6);
+                String kolom6 = rs.getString(7);
+                
+                String kolom [] = {kolom1, kolom2, kolom3, kolom4,
+                                    kolom5, kolom6};
+                model.addRow(kolom);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+     
+    private void isiReceivingDetail () {
+        int xrow = pAdminReceiving.getTabelAdminreceiving().getSelectedRow();
+        String receivingno = (String) pAdminReceiving.getTabelAdminreceiving().getValueAt(xrow, 0);
+        String date = (String) pAdminReceiving.getTabelAdminreceiving().getValueAt(xrow, 1);
+        String supplier = (String) pAdminReceiving.getTabelAdminreceiving().getValueAt(xrow, 2);
+        String partnumber = (String) pAdminReceiving.getTabelAdminreceiving().getValueAt(xrow, 3);
+        String partname = (String) pAdminReceiving.getTabelAdminreceiving().getValueAt(xrow, 4);
+        String qty = (String) pAdminReceiving.getTabelAdminreceiving().getValueAt(xrow, 5);
+       
+        pAdminReceivingDetail.setTxtreceivingno(receivingno);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date dates = null;
+        try {
+            dates = sdf.parse(date);
+        } catch (ParseException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        System.out.println(dates);
+        pAdminReceivingDetail.setTxtdate(dates);
+        pAdminReceivingDetail.setTxtpartnumber(partnumber);
+        pAdminReceivingDetail.setTxtpartname(partname);
+        pAdminReceivingDetail.setTxtqty(qty);
+        
+        String sql = "SELECT suppliername FROM supplier ORDER BY id";
+        
+        try {
+            connection = Koneksi.sambung();
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery(sql);
+            while (rs.next()) {
+                pAdminReceivingDetail.setCmbsupplier(rs.getString("suppliername"), supplier);
+            }
+               rs.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        
+    }
+    
+    private void deletereceiving () {
+        String receivingno = pAdminReceivingDetail.getTxtreceivingno().getText();
+        String sql = "DELETE FROM receiving WHERE receivingno = '"+receivingno+"' ";
+        
+        if (receivingno.equals("")) {
+            JOptionPane.showMessageDialog(null, "Receiving No masih kosong", "Informasi",
+                    JOptionPane.WARNING_MESSAGE);
+            pAdminReceivingDetail.getTxtreceivingno().requestFocus();
+        } else {
+            int pilih = JOptionPane.showConfirmDialog(null, "Yakin Mau Hapus Data ini ?",
+                "Warning", JOptionPane.YES_NO_OPTION);
+        
+        if (pilih == JOptionPane.YES_OPTION) {
+           try {
+               connection = Koneksi.sambung();
+               PreparedStatement statement = null;
+               statement = connection.prepareStatement(sql);
+               Statement stm = connection.createStatement();
+               stm.execute(sql);
+               stm.close();
+           } catch (Exception e) {
+               System.out.println(e.getMessage());
+           }
+            
+            CardLayout c1 = (CardLayout) pCard.getLayout();
+            c1.show(pCard, "paneladminreceiving");
+            isitabelAdminreceiving();
+        }
+        }
+    }
+    
+    private void updatereceiving () {  
+        String receivingno = pAdminReceivingDetail.getTxtreceivingno().getText();
+        SimpleDateFormat t5 = new SimpleDateFormat("yyyy-MM-dd");
+        String date =  (String) t5.format (pAdminReceivingDetail.getTxtdate().getDate());
+        String supplier = pAdminReceivingDetail.getCmbsupplier().getSelectedItem().toString();
+        String partnumber= pAdminReceivingDetail.getTxtpartnumber().getText();
+        String partname = pAdminReceivingDetail.getTxtpartname().getText();
+        String qty = pAdminReceivingDetail.getTxtqty().getText();
+        
+        String sql = "UPDATE receiving SET date = '"+date+"', supplier = '"+supplier+"', "
+                + "partnumber = '"+partnumber+"', partname = '"+partname+"',"
+                + "qtyreceive = '"+qty+"' WHERE receivingno = '"+receivingno+"' ";
+        
+        if (receivingno.equals("")) {
+                JOptionPane.showMessageDialog(null, "Receiving No masih Kosong !", "Informasi",
+                    JOptionPane.INFORMATION_MESSAGE);
+            pAdminReceivingDetail.getTxtreceivingno().requestFocus();
+            } else if (date.equals("")) {
+                JOptionPane.showMessageDialog(null, "Date masih Kosong !", "Informasi",
+                    JOptionPane.INFORMATION_MESSAGE);
+            pAdminReceivingDetail.getTxtdate().requestFocus();
+            } else if (supplier.equals("")) {
+                JOptionPane.showMessageDialog(null, "Supplier masih Kosong !", "Informasi",
+                    JOptionPane.INFORMATION_MESSAGE);
+            pAdminReceivingDetail.getCmbsupplier().requestFocus();
+            } else if (partnumber.equals("")) {
+                JOptionPane.showMessageDialog(null, "Part Number masih Kosong !", "Informasi",
+                    JOptionPane.INFORMATION_MESSAGE);
+            pAdminReceivingDetail.getTxtpartnumber().requestFocus();
+            } else if (partname.equals("")) {
+                JOptionPane.showMessageDialog(null, "Part name masih Kosong !", "Informasi",
+                    JOptionPane.INFORMATION_MESSAGE);
+            pAdminReceivingDetail.getTxtpartname().requestFocus();
+            } else if (qty.equals("")) {
+                JOptionPane.showMessageDialog(null, "Qty masih Kosong !", "Informasi",
+                    JOptionPane.INFORMATION_MESSAGE);
+            pAdminReceivingDetail.getTxtqty().requestFocus();
+            } else {
+                try {
+                    connection = Koneksi.sambung();
+                    PreparedStatement statement = null;
+                    statement = connection.prepareStatement(sql);
+                    Statement stm = connection.createStatement();
+                    stm.executeUpdate(sql);
+                    stm.close();
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
+                }
+                    JOptionPane.showMessageDialog(null,"Data berhasil Di Update",
+                        "Informasi",JOptionPane.INFORMATION_MESSAGE);
+                    
+                    CardLayout c1 = (CardLayout) pCard.getLayout();
+                    c1.show(pCard, "paneladminreceiving");
+                    isitabelAdminreceiving();
+            }
+    }
+    
+    private void isitabelAdminissuing () {
+        Object header [] = {"Issuing No", "Transaction Date", "Customer", 
+                            "Part Number", "Part Name", "Qty"};
+   
+        DefaultTableModel model = new DefaultTableModel(null, header) {
+            public boolean isCellEditable(int row, int column) {
+            return false;
+            }
+        };
+        pAdminIssuing.getTabelAdminissuing().setModel(model);
+        
+        String sql = "SELECT * FROM issuing ORDER BY issuingno";
+        
+        try {
+            connection = Koneksi.sambung();
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery(sql);
+            while (rs.next()) {
+                String kolom1 = rs.getString(2);
+                String kolom2 = rs.getString(3);
+                String kolom3 = rs.getString(4);
+                String kolom4 = rs.getString(5);
+                String kolom5 = rs.getString(6);
+                String kolom6 = rs.getString(7);
+                
+                String kolom [] = {kolom1, kolom2, kolom3, kolom4,
+                                    kolom5, kolom6};  
+                model.addRow(kolom);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }    
+    }
+    
+    private void searchresultAdminIssuing () {
+        Object header [] = {"Issuing No", "Transaction Date", "Customer", "Part Number",
+                            "Part Name", "Qty"};
+   
+        DefaultTableModel model = new DefaultTableModel(null, header) {
+            public boolean isCellEditable(int row, int column) {
+            return false;
+            }
+        };
+        pAdminIssuing.getTabelAdminissuing().setModel(model);
+        
+        String sql = "SELECT * From issuing WHERE CONCAT (id,issuingno, date, "
+                + "customer, partnumber, partname ) LIKE "
+                + "'%"+pAdminIssuing.getTxtsearch().getText()+"%' ";
+        
+        try {
+            connection = Koneksi.sambung();
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery(sql);
+            while (rs.next()) {
+                String kolom1 = rs.getString(2);
+                String kolom2 = rs.getString(3);
+                String kolom3 = rs.getString(4);
+                String kolom4 = rs.getString(5);
+                String kolom5 = rs.getString(6);
+                String kolom6 = rs.getString(7);
+                
+                String kolom [] = {kolom1, kolom2, kolom3, kolom4,
+                                    kolom5, kolom6};
+                model.addRow(kolom);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    private void isiIssuingDetail () {
+        int xrow = pAdminIssuing.getTabelAdminissuing().getSelectedRow();
+        String issuingno = (String) pAdminIssuing.getTabelAdminissuing().getValueAt(xrow, 0);
+        String date = (String) pAdminIssuing.getTabelAdminissuing().getValueAt(xrow, 1);
+        String customer = (String) pAdminIssuing.getTabelAdminissuing().getValueAt(xrow, 2);
+        String partnumber = (String) pAdminIssuing.getTabelAdminissuing().getValueAt(xrow, 3);
+        String partname = (String) pAdminIssuing.getTabelAdminissuing().getValueAt(xrow, 4);
+        String qty = (String) pAdminIssuing.getTabelAdminissuing().getValueAt(xrow, 5);
+       
+        pAdminIssuingDetail.setTxtissuingno(issuingno);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date dates = null;
+        try {
+            dates = sdf.parse(date);
+        } catch (ParseException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        System.out.println(dates);
+        pAdminIssuingDetail.setTxtdate(dates);
+        pAdminIssuingDetail.setTxtcustomer(customer);
+        pAdminIssuingDetail.setTxtpartnumber(partnumber);
+        pAdminIssuingDetail.setTxtpartname(partname);
+        pAdminIssuingDetail.setTxtqty(qty);
+       
+    }
+    
+    private void deleteissuing () {
+        String issuingno = pAdminIssuingDetail.getTxtissuingno().getText();
+        String sql = "DELETE FROM issuing WHERE issuingno = '"+issuingno+"' ";
+        
+        if (issuingno.equals("")) {
+            JOptionPane.showMessageDialog(null, "Issuing No masih kosong", "Informasi",
+                    JOptionPane.WARNING_MESSAGE);
+            pAdminIssuingDetail.getTxtissuingno().requestFocus();
+        } else {
+            int pilih = JOptionPane.showConfirmDialog(null, "Yakin Mau Hapus Data ini ?",
+                "Warning", JOptionPane.YES_NO_OPTION);
+        
+        if (pilih == JOptionPane.YES_OPTION) {
+           try {
+               connection = Koneksi.sambung();
+               PreparedStatement statement = null;
+               statement = connection.prepareStatement(sql);
+               Statement stm = connection.createStatement();
+               stm.execute(sql);
+               stm.close();
+           } catch (Exception e) {
+               System.out.println(e.getMessage());
+           }
+            
+            CardLayout c1 = (CardLayout) pCard.getLayout();
+            c1.show(pCard, "paneladminissuing");
+            isitabelAdminissuing();
+        }
+        }
+    }
+    
+    private void updateissuing () {  
+        String issuingno = pAdminIssuingDetail.getTxtissuingno().getText();
+        SimpleDateFormat t5 = new SimpleDateFormat("yyyy-MM-dd");
+        String date =  (String) t5.format (pAdminIssuingDetail.getTxtdate().getDate());
+        String customer = pAdminIssuingDetail.getTxtcustomer().getText();
+        String partnumber= pAdminIssuingDetail.getTxtpartnumber().getText();
+        String partname = pAdminIssuingDetail.getTxtpartname().getText();
+        String qty = pAdminIssuingDetail.getTxtqty().getText();
+        
+        String sql = "UPDATE issuing SET date = '"+date+"', customer = '"+customer+"', "
+                + "partnumber = '"+partnumber+"', partname = '"+partname+"',"
+                + "qty = '"+qty+"' WHERE issuingno = '"+issuingno+"' ";
+        
+        if (issuingno.equals("")) {
+                JOptionPane.showMessageDialog(null, "Issuing No masih Kosong !", "Informasi",
+                    JOptionPane.INFORMATION_MESSAGE);
+            pAdminIssuingDetail.getTxtissuingno().requestFocus();
+            } else if (date.equals("")) {
+                JOptionPane.showMessageDialog(null, "Date masih Kosong !", "Informasi",
+                    JOptionPane.INFORMATION_MESSAGE);
+            pAdminIssuingDetail.getTxtdate().requestFocus();
+            } else if (customer.equals("")) {
+                JOptionPane.showMessageDialog(null, "Customer masih Kosong !", "Informasi",
+                    JOptionPane.INFORMATION_MESSAGE);
+            pAdminIssuingDetail.getTxtcustomer().requestFocus();
+            } else if (partnumber.equals("")) {
+                JOptionPane.showMessageDialog(null, "Part Number masih Kosong !", "Informasi",
+                    JOptionPane.INFORMATION_MESSAGE);
+            pAdminIssuingDetail.getTxtpartnumber().requestFocus();
+            } else if (partname.equals("")) {
+                JOptionPane.showMessageDialog(null, "Part name masih Kosong !", "Informasi",
+                    JOptionPane.INFORMATION_MESSAGE);
+            pAdminIssuingDetail.getTxtpartname().requestFocus();
+            } else if (qty.equals("")) {
+                JOptionPane.showMessageDialog(null, "Qty masih Kosong !", "Informasi",
+                    JOptionPane.INFORMATION_MESSAGE);
+            pAdminIssuingDetail.getTxtqty().requestFocus();
+            } else {
+                try {
+                    connection = Koneksi.sambung();
+                    PreparedStatement statement = null;
+                    statement = connection.prepareStatement(sql);
+                    Statement stm = connection.createStatement();
+                    stm.executeUpdate(sql);
+                    stm.close();
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
+                }
+                    JOptionPane.showMessageDialog(null,"Data berhasil Di Update",
+                        "Informasi",JOptionPane.INFORMATION_MESSAGE);
+                    
+                    CardLayout c1 = (CardLayout) pCard.getLayout();
+                    c1.show(pCard, "paneladminissuing");
+                    isitabelAdminissuing();
+            }
+    }
+    
+    private void isitabelAdminStock () {
+        Object header [] = {"Part Number", "Part Name", "Zone", "Location", "On Hand",
+                            "Landed Cost", "Price List"};
+   
+        DefaultTableModel model = new DefaultTableModel(null, header) {
+            public boolean isCellEditable(int row, int column) {
+            return false;
+            }
+        };
+        pAdminStock.getTabelMaster().setModel(model);
+        
+        String sql = "SELECT * FROM part ORDER BY partnumber";
+        
+        try {
+            connection = Koneksi.sambung();
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery(sql);
+            while (rs.next()) {
+                DecimalFormat kursIndonesia = (DecimalFormat) DecimalFormat.getCurrencyInstance();
+                DecimalFormatSymbols formatRp = new DecimalFormatSymbols();
+
+                formatRp.setCurrencySymbol("Rp. ");
+                formatRp.setMonetaryDecimalSeparator(',');
+                formatRp.setGroupingSeparator('.');
+               // formatRp.
+
+                kursIndonesia.setDecimalFormatSymbols(formatRp);
+                
+                String kolom1 = rs.getString(2);
+                String kolom2 = rs.getString(3);
+                String kolom3 = rs.getString(4);
+                String kolom4 = rs.getString(5);
+                String kolom5 = rs.getString(6);
+                String kolom6 = rs.getString(7);
+                String kolom6rp = kursIndonesia.format(Integer.parseInt(kolom6));
+                String kolom7 = rs.getString(8);
+                String kolom7rp = kursIndonesia.format(Integer.parseInt(kolom7));
+                
+                String kolom [] = {kolom1, kolom2, kolom3, kolom4,
+                                    kolom5, kolom6rp, kolom7rp};  
+                model.addRow(kolom);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }    
+    }
+    
+    private void searchresultAdminStock () {
+        Object header [] = {"Part Number", "Part Name", "Zone", "Location",
+                            "On Hand", "Landed Cost", "Price List"};
+   
+        DefaultTableModel model = new DefaultTableModel(null, header) {
+            public boolean isCellEditable(int row, int column) {
+            return false;
+            }
+        };
+        pAdminStock.getTabelMaster().setModel(model);
+        
+        String sql = "SELECT * From part WHERE CONCAT (id, partnumber, partname, zone, location,"
+                    + "oh, landedcost, price) LIKE '%"+pAdminStock.getTxtsearch().getText()+"%' ";
+        
+        try {
+            connection = Koneksi.sambung();
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery(sql);
+            while (rs.next()) {
+                DecimalFormat kursIndonesia = (DecimalFormat) DecimalFormat.getCurrencyInstance();
+                DecimalFormatSymbols formatRp = new DecimalFormatSymbols();
+
+                formatRp.setCurrencySymbol("Rp. ");
+                formatRp.setMonetaryDecimalSeparator(',');
+                formatRp.setGroupingSeparator('.');
+
+                kursIndonesia.setDecimalFormatSymbols(formatRp);
+                
+                String kolom1 = rs.getString(2);
+                String kolom2 = rs.getString(3);
+                String kolom3 = rs.getString(4);
+                String kolom4 = rs.getString(5);
+                String kolom5 = rs.getString(6);
+                String kolom6 = rs.getString(7);
+                String kolom6rp = kursIndonesia.format(Integer.parseInt(kolom6));
+                String kolom7 = rs.getString(8);
+                String kolom7rp = kursIndonesia.format(Integer.parseInt(kolom7));
+                
+                String kolom [] = {kolom1, kolom2, kolom3, kolom4,
+                                    kolom5, kolom6rp, kolom7rp};  
+                model.addRow(kolom);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    private void isiStockdetail () {
+        int xrow = pAdminStock.getTabelMaster().getSelectedRow();
+        String partnumber = (String) pAdminStock.getTabelMaster().getValueAt(xrow, 0);
+        String partname = (String) pAdminStock.getTabelMaster().getValueAt(xrow, 1);
+        String zone = (String) pAdminStock.getTabelMaster().getValueAt(xrow, 2);
+        String location = (String) pAdminStock.getTabelMaster().getValueAt(xrow, 3);
+        String onhand = (String) pAdminStock.getTabelMaster().getValueAt(xrow, 4);
+        String landedcost = (String) pAdminStock.getTabelMaster().getValueAt(xrow, 5);
+        String pricelist = (String) pAdminStock.getTabelMaster().getValueAt(xrow, 6);
+        
+        pAdminStockDetail.setTxtpartnumber(partnumber);
+        pAdminStockDetail.setTxtpartname(partname);
+        pAdminStockDetail.setTxtoh(onhand);
+        
+        String sqll = "SELECT landedcost, price FROM part WHERE partnumber = '"+partnumber+"' ";
+        
+        try {
+            connection = Koneksi.sambung();
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery(sqll);
+            while (rs.next()) {
+                pAdminStockDetail.setTxtlandedcost(rs.getString("landedcost"));
+                pAdminStockDetail.setTxtpricelist(rs.getString("price"));
+            }
+               rs.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        
+        String sql = "SELECT description FROM zone ORDER BY description";
+        
+        try {
+            connection = Koneksi.sambung();
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery(sql);
+            while (rs.next()) {
+                pAdminStockDetail.setCmbzone(rs.getString("description"), zone);
+            }
+               rs.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        
+        String sql2 = "SELECT location FROM location ORDER BY location";
+        
+        try {
+            connection = Koneksi.sambung();
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery(sql2);
+            while (rs.next()) {
+                pAdminStockDetail.setCmblocation(rs.getString("location"), location);
+            }
+               rs.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        
+    }
+    
+    private void updateStock () {  
+        String partnumber = pAdminStockDetail.getTxtpartnumber().getText();
+        String partname = pAdminStockDetail.getTxtpartname().getText();
+        String zone = pAdminStockDetail.getCmbzone().getSelectedItem().toString();
+        String location = pAdminStockDetail.getCmblocation().getSelectedItem().toString();
+        String oh = pAdminStockDetail.getTxtoh().getText();
+        String landedcost = pAdminStockDetail.getTxtlandedcost().getText();
+        String price  = pAdminStockDetail.getTxtpricelist().getText();
+        
+        String sql = "UPDATE part SET partname = '"+partname+"', zone = '"+zone+"', "
+                + "location= '"+location+"', oh = '"+oh+"',"
+                + "landedcost = '"+landedcost+"', price = '"+price+"' "
+                + "WHERE partnumber = '"+partnumber+"' ";
+        
+        if (partnumber.equals("")) {
+                JOptionPane.showMessageDialog(null, "Part Number masih Kosong !", "Informasi",
+                    JOptionPane.INFORMATION_MESSAGE);
+            pAdminStockDetail.getTxtpartnumber().requestFocus();
+            } else if (partname.equals("")) {
+                JOptionPane.showMessageDialog(null, "Part Name masih Kosong !", "Informasi",
+                    JOptionPane.INFORMATION_MESSAGE);
+            pAdminStockDetail.getTxtpartname().requestFocus();
+            } else if (zone.equals("")) {
+                JOptionPane.showMessageDialog(null, "Zone masih Kosong !", "Informasi",
+                    JOptionPane.INFORMATION_MESSAGE);
+            pAdminStockDetail.getCmbzone().requestFocus();
+            } else if (location.equals("")) {
+                JOptionPane.showMessageDialog(null, "Location masih Kosong !", "Informasi",
+                    JOptionPane.INFORMATION_MESSAGE);
+            pAdminStockDetail.getCmblocation().requestFocus();
+            } else if (oh.equals("")) {
+                JOptionPane.showMessageDialog(null, "On Hand masih Kosong !", "Informasi",
+                    JOptionPane.INFORMATION_MESSAGE);
+            pAdminStockDetail.getTxtoh().requestFocus();
+            } else if (landedcost.equals("")) {
+                JOptionPane.showMessageDialog(null, "Landed Cost masih Kosong !", "Informasi",
+                    JOptionPane.INFORMATION_MESSAGE);
+            pAdminStockDetail.getTxtlandedcost().requestFocus();
+            } else if (price.equals("")) {
+                JOptionPane.showMessageDialog(null, "Price List masih Kosong !", "Informasi",
+                    JOptionPane.INFORMATION_MESSAGE);
+            pAdminStockDetail.getTxtpricelist().requestFocus();
+            } else {
+                try {
+                    connection = Koneksi.sambung();
+                    PreparedStatement statement = null;
+                    statement = connection.prepareStatement(sql);
+                    Statement stm = connection.createStatement();
+                    stm.executeUpdate(sql);
+                    stm.close();
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
+                }
+                    JOptionPane.showMessageDialog(null,"Data berhasil Di Update",
+                        "Informasi",JOptionPane.INFORMATION_MESSAGE);
+                    clear_mdetail();
+                    
+                    CardLayout c1 = (CardLayout) pCard.getLayout();
+                    c1.show(pCard, "paneladminstock");
+                    isitabelAdminStock();
+            }
+    }
+    
+    private void truncate () {
+        String tabel = pAdminTruncate.getCmbtabel().getSelectedItem().toString();
+        String sql = "TRUNCATE "+tabel+" ";
+        System.out.println(tabel);
+        try {
+            connection = Koneksi.sambung();
+            PreparedStatement statement = null;
+            statement = connection.prepareStatement(sql);
+            Statement stm = connection.createStatement();
+            stm.executeUpdate(sql);
+            stm.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        JOptionPane.showMessageDialog(null, "Data berhasil Di Delete",
+                "Informasi", JOptionPane.INFORMATION_MESSAGE);
+    }
+     
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -4040,6 +5111,13 @@ public class Main extends javax.swing.JFrame {
         pSetting = new com.devproject.form.pSetting();
         pAdmin = new com.devproject.form.pAdmin();
         pAdminChange = new com.devproject.form.pAdminChange();
+        pAdminReceiving = new com.devproject.form.pAdminReceiving();
+        pAdminReceivingDetail = new com.devproject.form.pAdminReceivingDetail();
+        pAdminIssuing = new com.devproject.form.pAdminIssuing();
+        pAdminIssuingDetail = new com.devproject.form.pAdminIssuingDetail();
+        pAdminStock = new com.devproject.form.pAdminStock();
+        pAdminStockDetail = new com.devproject.form.pAdminStockDetail();
+        pAdminTruncate = new com.devproject.form.pAdminTruncate();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -4061,6 +5139,13 @@ public class Main extends javax.swing.JFrame {
         pCard.add(pSetting, "card15");
         pCard.add(pAdmin, "card16");
         pCard.add(pAdminChange, "card17");
+        pCard.add(pAdminReceiving, "card18");
+        pCard.add(pAdminReceivingDetail, "card19");
+        pCard.add(pAdminIssuing, "card20");
+        pCard.add(pAdminIssuingDetail, "card21");
+        pCard.add(pAdminStock, "card22");
+        pCard.add(pAdminStockDetail, "card23");
+        pCard.add(pAdminTruncate, "card24");
 
         getContentPane().add(pCard, java.awt.BorderLayout.CENTER);
 
@@ -4107,6 +5192,13 @@ public class Main extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.devproject.form.pAdmin pAdmin;
     private com.devproject.form.pAdminChange pAdminChange;
+    private com.devproject.form.pAdminIssuing pAdminIssuing;
+    private com.devproject.form.pAdminIssuingDetail pAdminIssuingDetail;
+    private com.devproject.form.pAdminReceiving pAdminReceiving;
+    private com.devproject.form.pAdminReceivingDetail pAdminReceivingDetail;
+    private com.devproject.form.pAdminStock pAdminStock;
+    private com.devproject.form.pAdminStockDetail pAdminStockDetail;
+    private com.devproject.form.pAdminTruncate pAdminTruncate;
     private javax.swing.JPanel pCard;
     private com.devproject.form.pGlass pGlass;
     private com.devproject.form.pInventory pInventory;

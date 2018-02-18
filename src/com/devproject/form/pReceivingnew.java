@@ -173,7 +173,7 @@ public class pReceivingnew extends javax.swing.JPanel {
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Qty Receive");
-        panelTransparan1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 510, -1, 10));
+        panelTransparan1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 510, -1, 20));
 
         txtqty.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         txtqty.addActionListener(new java.awt.event.ActionListener() {

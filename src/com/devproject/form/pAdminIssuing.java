@@ -16,52 +16,40 @@ import javax.swing.JTextField;
  *
  * @author LC01
  */
-public class pReport extends javax.swing.JPanel {
+public class pAdminIssuing extends javax.swing.JPanel {
 
     /**
      * Creates new form pMaster
      */
     Connection connection;
     
-    public pReport() {
+    public pAdminIssuing() {
         initComponents();
        
     }
 
-    public void addActionListenerReportback (ActionListener l) {
+    public void addActionListenerAdminIssuingback (ActionListener l) {
         btnback.addActionListener(l);
     }
-    
-    public void addActionListenerReportinvoice(ActionListener l) {
-        btninvoice.addActionListener(l);
-    }
-    
-    public void addActionListenerReportrefresh (ActionListener l) {
+
+    public void addActionListenerAdminIssuingrefresh (ActionListener l) {
         btnrefresh.addActionListener(l);
     }
     
-    public void addActionListenerreportsearch (ActionListener l) {
+    public void addActionListenerAdminIssuingsearch (ActionListener l) {
         btnsearch.addActionListener(l);
     }
     
-    public void addKeyListenerreportSearch (KeyListener l) {
+    public void addKeyListenerAdminIssuingSearch (KeyListener l) {
         txtsearch.addKeyListener(l);
     }
     
-    public void addActionListenerReportexport (ActionListener l) {
-        btnexport.addActionListener(l);
-    }
-    
-    public void addActionListenerReport (ActionListener l) {
-        btnreport.addActionListener(l);
-    }
-    
-    public void addActionListenerReporttabel (MouseListener l) {
-         tabelreport.addMouseListener(l);
+    public void addActionListenerAdminIssuingtabel (MouseListener l) {
+         tabelissuing.addMouseListener(l);
     }
 
-    public JTable getTabelreport() {
-        return tabelreport;
+    public JTable getTabelAdminissuing() {
+        return tabelissuing;
     }
 
     public JTextField getTxtsearch() {
@@ -70,14 +58,6 @@ public class pReport extends javax.swing.JPanel {
 
     public void setTxtsearch(String search) {
         txtsearch.setText(search);
-    }
-
-    public JTextField getTxtinvoice() {
-        return txtinvoice;
-    }
-
-    public void setTxtinvoice(String invoice) {
-        txtinvoice.setText(invoice);
     }
        /**
      * This method is called from within the constructor to initialize the form.
@@ -94,15 +74,11 @@ public class pReport extends javax.swing.JPanel {
         btnupdate = new com.devproject.component.Tombol_Master();
         btndelete = new com.devproject.component.Tombol_Master();
         btnback = new com.devproject.component.Tombol_Master();
-        btnexport = new com.devproject.component.Tombol_Master();
-        btnreport = new com.devproject.component.Tombol_Master();
+        txtsearch = new javax.swing.JTextField();
         btnrefresh = new com.devproject.component.Tombol_Master();
         btnsearch = new com.devproject.component.Tombol_Master();
-        btninvoice = new com.devproject.component.Tombol_Master();
-        txtinvoice = new javax.swing.JTextField();
-        txtsearch = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tabelreport = new javax.swing.JTable();
+        tabelissuing = new javax.swing.JTable();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -130,42 +106,22 @@ public class pReport extends javax.swing.JPanel {
         btnback.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         panelTransparan1.add(btnback, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 80, 30));
 
-        btnexport.setForeground(new java.awt.Color(255, 255, 255));
-        btnexport.setText("Export");
-        btnexport.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        panelTransparan1.add(btnexport, new org.netbeans.lib.awtextra.AbsoluteConstraints(1250, 10, 80, 30));
-
-        btnreport.setForeground(new java.awt.Color(255, 255, 255));
-        btnreport.setText("Report");
-        btnreport.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        panelTransparan1.add(btnreport, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 10, 170, 30));
+        txtsearch.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        panelTransparan1.add(txtsearch, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 10, 310, 30));
 
         btnrefresh.setForeground(new java.awt.Color(255, 255, 255));
         btnrefresh.setText("Refresh");
         btnrefresh.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        panelTransparan1.add(btnrefresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(1160, 10, 80, 30));
+        panelTransparan1.add(btnrefresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(1250, 10, 80, 30));
 
         btnsearch.setForeground(new java.awt.Color(255, 255, 255));
         btnsearch.setText("Search");
         btnsearch.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        panelTransparan1.add(btnsearch, new org.netbeans.lib.awtextra.AbsoluteConstraints(1070, 10, 80, 30));
-
-        btninvoice.setForeground(new java.awt.Color(255, 255, 255));
-        btninvoice.setText("Print Invoice");
-        btninvoice.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        panelTransparan1.add(btninvoice, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 10, 170, 30));
-
-        txtinvoice.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        txtinvoice.setText("Select No Case");
-        txtinvoice.setEnabled(false);
-        panelTransparan1.add(txtinvoice, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 10, 170, 30));
-
-        txtsearch.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        panelTransparan1.add(txtsearch, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 10, 310, 30));
+        panelTransparan1.add(btnsearch, new org.netbeans.lib.awtextra.AbsoluteConstraints(1160, 10, 80, 30));
 
         panelBackground1.add(panelTransparan1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 1340, 50));
 
-        tabelreport.setModel(new javax.swing.table.DefaultTableModel(
+        tabelissuing.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {},
                 {},
@@ -176,7 +132,7 @@ public class pReport extends javax.swing.JPanel {
 
             }
         ));
-        jScrollPane1.setViewportView(tabelreport);
+        jScrollPane1.setViewportView(tabelissuing);
 
         panelBackground1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 1340, 610));
 
@@ -187,18 +143,14 @@ public class pReport extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.devproject.component.Tombol_Master btnback;
     private com.devproject.component.Tombol_Master btndelete;
-    private com.devproject.component.Tombol_Master btnexport;
-    private com.devproject.component.Tombol_Master btninvoice;
     private com.devproject.component.Tombol_Master btnrefresh;
-    private com.devproject.component.Tombol_Master btnreport;
     private com.devproject.component.Tombol_Master btnsave;
     private com.devproject.component.Tombol_Master btnsearch;
     private com.devproject.component.Tombol_Master btnupdate;
     private javax.swing.JScrollPane jScrollPane1;
     private com.devproject.component.PanelBackground panelBackground1;
     private com.devproject.component.PanelTransparan panelTransparan1;
-    private javax.swing.JTable tabelreport;
-    private javax.swing.JTextField txtinvoice;
+    private javax.swing.JTable tabelissuing;
     private javax.swing.JTextField txtsearch;
     // End of variables declaration//GEN-END:variables
 }
