@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="91302613-76c0-40ac-b356-e69ce6d461cf">
-	<queryString language="SQL">
-		<![CDATA[SELECT
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="issuingnom" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT 
 issuing.issuingno,
 issuing.date,
 issuing.customer,
@@ -11,7 +15,11 @@ issuing.qty,
 part.price
 FROM
 issuing issuing INNER JOIN part part
-ON issuing.partnumber = part.partnumber]]>
+ON 
+issuing.partnumber = part.partnumber
+WHERE
+issuingno = $P{issuingnom}
+]]>
 	</queryString>
 	<field name="issuingno" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -34,20 +42,98 @@ ON issuing.partnumber = part.partnumber]]>
 	<field name="price" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<variable name="sub" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{qty} * $F{price}]]></variableExpression>
+	</variable>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="79" splitType="Stretch"/>
+		<band height="21" splitType="Stretch">
+			<staticText>
+				<reportElement x="237" y="0" width="67" height="20" uuid="f7144b5b-4f21-4d39-b038-ab778b17be7f"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[INVOICE]]></text>
+			</staticText>
+		</band>
 	</title>
 	<pageHeader>
-		<band height="35" splitType="Stretch"/>
+		<band height="35" splitType="Stretch">
+			<textField>
+				<reportElement x="89" y="15" width="100" height="20" uuid="6db98316-9a01-4ac4-816a-385f04c17e8e"/>
+				<textFieldExpression><![CDATA[$F{customer}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="425" y="15" width="130" height="20" uuid="a97f841d-157d-4c1d-bdb6-1962d5bc6de0"/>
+				<textFieldExpression><![CDATA[$F{date}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="395" y="15" width="30" height="20" uuid="ab523785-72f1-4724-9703-064e08755830"/>
+				<text><![CDATA[Date :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="15" width="89" height="20" uuid="de3c4b59-be13-4653-a809-8ab0620d2dde"/>
+				<text><![CDATA[Customer Name :]]></text>
+			</staticText>
+		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="61" splitType="Stretch"/>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="63" height="20" uuid="10482079-0600-44a8-95fb-403b340fd9cd"/>
+				<text><![CDATA[Issuing No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="74" y="0" width="100" height="20" uuid="9aa56ff3-937e-495f-95c5-f94c261594ed"/>
+				<text><![CDATA[Part Number]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="189" y="0" width="133" height="20" uuid="e9a6075c-78f3-4265-ac33-4a55d1ddbd32"/>
+				<text><![CDATA[Part Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="334" y="0" width="45" height="20" uuid="2fadc9e8-223b-483b-96fa-150779399cd4"/>
+				<text><![CDATA[Qty]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="395" y="0" width="69" height="20" uuid="08716749-54cd-4d4e-b553-984aa1f4b1a2"/>
+				<text><![CDATA[Price List]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="475" y="0" width="80" height="20" uuid="0df4b2e2-5d99-44ef-86b6-c2176b390caf"/>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+		</band>
 	</columnHeader>
 	<detail>
-		<band height="125" splitType="Stretch"/>
+		<band height="25" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="63" height="20" uuid="b7e56eb7-8f01-4dbb-8672-0b86c22851ec"/>
+				<textFieldExpression><![CDATA[$F{issuingno}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="74" y="0" width="100" height="20" uuid="0e88d451-303d-464a-82f5-e7da0a97919a"/>
+				<textFieldExpression><![CDATA[$F{partnumber}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="189" y="0" width="133" height="20" uuid="651990f3-539c-4c5f-8cf3-65526a110196"/>
+				<textFieldExpression><![CDATA[$F{partname}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="334" y="0" width="45" height="20" uuid="b39ff929-706c-4203-a941-751e412d4589"/>
+				<textFieldExpression><![CDATA[$F{qty}]]></textFieldExpression>
+			</textField>
+			<textField pattern="Rp #,##0">
+				<reportElement x="395" y="0" width="69" height="20" uuid="d2438882-5000-4024-a8b0-3ddb4a956739"/>
+				<textFieldExpression><![CDATA[$F{price}]]></textFieldExpression>
+			</textField>
+			<textField pattern="Rp #,##0">
+				<reportElement x="475" y="0" width="80" height="20" uuid="74d83968-96ed-43ca-b725-bd3f455be2c7"/>
+				<textFieldExpression><![CDATA[$V{sub}]]></textFieldExpression>
+			</textField>
+		</band>
 	</detail>
 	<columnFooter>
 		<band height="45" splitType="Stretch"/>

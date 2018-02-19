@@ -35,13 +35,23 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.view.JasperViewer;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -204,6 +214,7 @@ public class Main extends javax.swing.JFrame {
         pReport.addActionListenerReportexport(new Aksi_reportexport());
         pReport.addActionListenerReport(new Aksi_report());
         pReport.addActionListenerReporttabel(new Aksi_reporttabel());
+        pReport.addActionListenerReportinvoice(new Aksi_reportinvoice());
         
         //pShowReport
         pShowReport.addActionListenerRback(new Aksi_rback());
@@ -1921,6 +1932,14 @@ public class Main extends javax.swing.JFrame {
         @Override
         public void actionPerformed(ActionEvent ae) {
             truncate();
+        }
+    }
+    
+    class Aksi_reportinvoice implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            preview();
         }
     }
     
@@ -5083,6 +5102,25 @@ public class Main extends javax.swing.JFrame {
         }
         JOptionPane.showMessageDialog(null, "Data berhasil Di Delete",
                 "Informasi", JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    private void preview() {
+        try {
+            File file = new File("src/com/devproject/invoice/invoice.jrxml");
+            JasperDesign jasperDesign = new JasperDesign();
+            jasperDesign = JRXmlLoader.load(file);
+
+            Map parameter = new HashMap();
+            parameter.clear();
+            parameter.put("issuingnom", pReport.getTxtinvoice().getText());
+
+            JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport,
+                    parameter, Koneksi.sambung());
+            JasperViewer.viewReport(jasperPrint, false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
      
     /**
